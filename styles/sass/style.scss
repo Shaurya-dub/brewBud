@@ -1,0 +1,25 @@
+@import "setup.scss";
+@import "mixins.scss";
+@import "variables.scss";
+@import "variables.scss";
+
+body {
+  background-image: url(../media/brickWall.jpg);
+  background-size: cover;
+}
+
+.headWrapper {
+  width: 60%;
+  margin: 0 auto;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wrapper {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 2px solid white;
+}
