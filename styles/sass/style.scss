@@ -12,14 +12,28 @@ body {
   width: 60%;
   margin: 0 auto;
   max-width: 900px;
-  display: flex;
-  flex-direction: column;
+  //   display: flex;
+  //   flex-direction: column;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .wrapper {
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
+  border: 2px solid white;
+}
+
+.breweryList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.breweryList li {
+  color: white;
+  width: calc((100% / 2) - 20px);
+  list-style: none;
   border: 2px solid white;
 }
