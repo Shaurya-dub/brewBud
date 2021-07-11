@@ -2,38 +2,102 @@
 @import "mixins.scss";
 @import "variables.scss";
 @import "variables.scss";
+@import "mediaQueries.scss";
+
+html {
+  font-size: 125%;
+}
 
 body {
   background-image: url(../media/brickWall.jpg);
   background-size: cover;
+  font-family: $chathura;
+  font-size: 1.5rem;
+}
+
+// header styling
+
+header {
+  padding-top: 40px;
+}
+
+h1 {
+  font-family: $sourceSansPro;
+  font-size: 4rem;
 }
 
 .headWrapper {
-  width: 60%;
+  width: 80%;
   margin: 0 auto;
   max-width: 900px;
+  padding: 20px 40px;
+  border-radius: 25px;
   //   display: flex;
   //   flex-direction: column;
-  align-items: center;
+  // justify-content: center;
+  text-align: center;
   flex-wrap: wrap;
+  background-color: rgb(253, 253, 253);
 }
 
 .wrapper {
   width: 90%;
   max-width: 1200px;
   margin: 0 auto;
-  border: 2px solid white;
+  // border: 2px solid white;
+  // padding: 20px;
 }
 
 .breweryList {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  padding-left: 0px;
+  // align-items: center;
+}
+
+.headWrapper form {
+  display: flex;
+  flex-wrap: wrap;
+  // background-color: aqua;
+  padding: 10px;
+  // height: 300px;
+  justify-content: center;
 }
 
 .breweryList li {
-  color: white;
+  visibility: none;
+  opacity: 0%;
+  color: black;
+  background-color: rgb(253, 253, 253);
   width: calc((100% / 2) - 20px);
   list-style: none;
   border: 2px solid white;
+  margin: 10px;
+  // align-self: center;
+  padding: 10px 30px;
+  text-align: center;
+  transition: all 0.5s linear;
+}
+
+.breweryList li.fade {
+  visibility: initial;
+  opacity: 100%;
+}
+
+.breweryList li.fade:hover,
+.breweryList li.fade:focus {
+  box-shadow: 10px 15px 15px #eff001;
+}
+
+.headWrapper input {
+  // width: ;
+  padding: 10px;
+  // margin-bottom: 30px;
+  display: inline-block;
+}
+
+.headWrapper form button {
+  width: 100%;
+  margin-top: 50px;
 }

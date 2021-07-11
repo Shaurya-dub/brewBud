@@ -35,6 +35,10 @@ const li =document.createElement('li');
 const h2 = document.createElement('h2');
 h2.append(str.name);
 li.appendChild(h2);
+setTimeout((e) => {
+    li.classList.add("fade");
+
+}, 100);
 const street= app.nullChecker(str.street,"Street address");
 const city= app.nullChecker(str.city,"City info");
 const state= app.nullChecker(str.state,"State info");
@@ -42,7 +46,7 @@ const postalCode= app.nullChecker(str.postal_code,"Postal Code");
 const phone= app.nullChecker(str.phone,"Phone Number");
 
 li.innerHTML = `<h2>${str.name}</h2>
-<p>${street}, ${city} ${postalCode} , ${state}</p>
+<p>${street}, ${city} ${postalCode}, ${state}</p>
 <p class="phone"> ${phone}</p>`
 // li.append(street);
 // console.log(street);
@@ -55,6 +59,7 @@ ul.appendChild(li);
 }
 
 app.form.addEventListener('submit', (e) => {
+    ul.innerHTML = "";
     const selectValue = document.querySelector('select').value;
     e.preventDefault();
     app.getCity();

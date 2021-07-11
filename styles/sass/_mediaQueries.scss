@@ -1,0 +1,19 @@
+@media (max-width: 730px) {
+  .headWrapper form input,
+  .headWrapper form select {
+    width: 100%;
+    padding: 10px;
+  }
+}
+
+@media (max-width: 650px) {
+  .breweryList {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+  .breweryList li.fade {
+    width: 100%;
+    // margin: none;
+  }
+}
