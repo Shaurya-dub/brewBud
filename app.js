@@ -10,23 +10,29 @@ app.button = document.querySelector('button');
 // When we get the information back, we loop through it
 // Append information to li
 // Append li to ul on page
+// 
 const ul = document.querySelector('ul');
+// select the select element on html
+// capture the value
+// add the value to the endpoint
 app.getCity = () => { 
     const inputValue = document.querySelector('input[type="text"]').value;
-    const url = new URL('https://api.openbrewerydb.org/breweries');
-    url.search = new URLSearchParams({
-        by_city: `${inputValue}`   
-    })
+    const selectValue = document.querySelector('select').value;
+    const url = new URL(`https://api.openbrewerydb.org/breweries?${selectValue}=${inputValue}`);
     
     fetch(url)
     .then(function(res){
         return res.json();
+        // console.log(res.json());
     })
     .then(function(brewery){
     brewery.forEach((result) => {
         app.displayFunction(result)
         // console.log(result);
     })
+    })
+    .catch((err) => {
+        
     })
     
 }
