@@ -10,11 +10,11 @@ app.button = document.querySelector('button');
 // Append information to li
 // Append li to ul on page
 const ul = document.querySelector('ul');
-app.getCity = () => { 
+app.getCity = (val1,val2) => { 
     const inputValue = document.querySelector('input[type="text"]').value;
     const url = new URL('https://api.openbrewerydb.org/breweries');
     url.search = new URLSearchParams({
-        by_city: `${inputValue}`   
+        by_dist: `${val1},${val2}`   
     })
     
     fetch(url)
@@ -24,7 +24,7 @@ app.getCity = () => {
     .then(function(brewery){
     brewery.forEach((result) => {
         app.displayFunction(result)
-        // console.log(result);
+        console.log(result);
     })
     })
     
@@ -75,9 +75,34 @@ if(!val) {
 }
 }
 
+
+
+// make a request to the map-quest endpoint
+// use zip-code as parameter
+// console.log result
+const geoCodeUrl = new URL('http://www.mapquestapi.com/geocoding/v1/address')
+geoCodeUrl.search = new URLSearchParams({
+    key: "zM0AFpO3tW2nnbysMdj2WZyhVow3QEAZ",
+    location: "33647",
+    outFormat: "json"
+})
+const geoCodeConverter = fetch(geoCodeUrl)
+.then((res) => {
+    return res.json()
+})
+
+.then ((data) => {
+    const coordinates = (data.results[0].locations[0].latLng);
+const {lat, lng} = coordinates
+console.log(lat,lng)
+app.getCity(lat,lng)
+})
+
 app.init = () => {
     // app.getCity();
 
 }
+
+// geoCodeConverter();
 
 app.init();
