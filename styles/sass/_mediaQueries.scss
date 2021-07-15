@@ -1,3 +1,13 @@
+@media (max-width: 950px) {
+  .headWrapper form {
+    display: flex;
+    flex-direction: column;
+  }
+  .headWrapper form select {
+    margin-top: 5%;
+  }
+}
+
 @media (max-width: 730px) {
   .headWrapper form input,
   .headWrapper form select {
@@ -7,6 +17,9 @@
 }
 
 @media (max-width: 650px) {
+  .headWrapper form button {
+    padding: 6px 20px;
+  }
   .breweryList {
     width: 100%;
     flex-direction: column;
@@ -14,6 +27,20 @@
   }
   .breweryList li.fade {
     width: 100%;
-    // margin: none;
+  }
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 3rem;
+  }
+  .headWrapper {
+    width: 90%;
+  }
+}
+
+@media (max-width: 450px) {
+  .headWrapper {
+    width: 95%;
   }
 }
