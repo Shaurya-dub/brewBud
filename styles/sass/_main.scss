@@ -1,0 +1,30 @@
+.wrapper {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.breweryList li {
+  visibility: none;
+  opacity: 0%;
+  color: rgb(253, 253, 253);
+  background-color: black;
+  width: calc((100% / 2) - 20px);
+  list-style: none;
+  border: 2px solid black;
+  margin: 10px;
+  padding: 10px 30px;
+  text-align: center;
+  transition: all 0.5s linear;
+}
+
+.breweryList li.fade {
+  visibility: initial;
+  opacity: 100%;
+}
+
+.breweryList li.fade:hover,
+.breweryList li.fade:focus {
+  animation: flickerborder 7s infinite alternate;
+  border: 2px solid rgb(253, 253, 253);
+}

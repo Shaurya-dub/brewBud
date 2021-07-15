@@ -27,6 +27,20 @@
   }
   .breweryList li.fade {
     width: 100%;
-    // margin: none;
+  }
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 3rem;
+  }
+  .headWrapper {
+    width: 90%;
+  }
+}
+
+@media (max-width: 450px) {
+  .headWrapper {
+    width: 95%;
   }
 }
