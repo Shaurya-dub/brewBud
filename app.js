@@ -11,7 +11,9 @@ app.button = document.querySelector('button');
 // Append li to ul on page
 const ul = document.querySelector('ul');
 app.getCity = () => { 
-    const inputValue = document.querySelector('input[type="text"]').value;
+    const inputValue = document.querySelector('input[type="text"]').value.trim();
+    
+    console.log(inputValue);
     const url = new URL('https://api.openbrewerydb.org/breweries');
     url.search = new URLSearchParams({
         by_city: `${inputValue}`   
