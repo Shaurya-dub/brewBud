@@ -109,7 +109,7 @@ app.form.addEventListener("submit", function (e) {
   const selectValue = document.querySelector("select").value;
   const inputValue = document.querySelector('input[type="text"]').value;
   ul.innerHTML = "";
-  if (selectValue === "by_dist") {
+  if (selectValue === "by_postal") {
     geoCodeUrl(inputValue);
   } else {
     app.getCity(selectValue, inputValue);
