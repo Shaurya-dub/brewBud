@@ -142,24 +142,24 @@ select {
 }
 
 button,
-html [type=button],
-[type=reset],
-[type=submit] {
+html [type="button"],
+[type="reset"],
+[type="submit"] {
   -webkit-appearance: button;
 }
 
 button::-moz-focus-inner,
-[type=button]::-moz-focus-inner,
-[type=reset]::-moz-focus-inner,
-[type=submit]::-moz-focus-inner {
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
   border-style: none;
   padding: 0;
 }
 
 button:-moz-focusring,
-[type=button]:-moz-focusring,
-[type=reset]:-moz-focusring,
-[type=submit]:-moz-focusring {
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
   outline: 1px dotted ButtonText;
 }
 
@@ -186,25 +186,25 @@ textarea {
   overflow: auto;
 }
 
-[type=checkbox],
-[type=radio] {
+[type="checkbox"],
+[type="radio"] {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   padding: 0;
 }
 
-[type=number]::-webkit-inner-spin-button,
-[type=number]::-webkit-outer-spin-button {
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
   height: auto;
 }
 
-[type=search] {
+[type="search"] {
   -webkit-appearance: textfield;
   outline-offset: -2px;
 }
 
-[type=search]::-webkit-search-cancel-button,
-[type=search]::-webkit-search-decoration {
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
@@ -269,14 +269,33 @@ html {
   overflow: hidden;
 }
 
+@media (max-width: 950px) {
+  .headWrapper form {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .headWrapper form select {
+    margin-top: 5%;
+  }
+}
+
 @media (max-width: 730px) {
   .headWrapper form input,
-.headWrapper form select {
+  .headWrapper form select {
     width: 100%;
     padding: 10px;
   }
 }
+
 @media (max-width: 650px) {
+  .headWrapper form button {
+    padding: 6px 20px;
+  }
   .breweryList {
     width: 100%;
     -webkit-box-orient: vertical;
@@ -287,17 +306,18 @@ html {
         -ms-flex-align: center;
             align-items: center;
   }
-
   .breweryList li.fade {
     width: 100%;
   }
 }
+
 html {
   font-size: 125%;
 }
 
 body {
-  background-image: url(../media/brickWall.jpg);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.5)), color-stop(100%), to(rgba(0, 0, 0, 0))), url(../media/brickWall.jpg);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), 100%, rgba(0, 0, 0, 0)), url(../media/brickWall.jpg);
   background-size: cover;
   font-family: "Chathura", sans-serif;
   font-size: 1.5rem;
@@ -310,18 +330,24 @@ header {
 h1 {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 4rem;
+  padding-bottom: 100px;
+  -webkit-animation: flicker 7s infinite alternate;
+          animation: flicker 7s infinite alternate;
 }
 
 .headWrapper {
   width: 80%;
   margin: 0 auto;
   max-width: 900px;
-  padding: 20px 40px;
+  padding: 60px 80px;
   border-radius: 25px;
   text-align: center;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  background-color: #fdfdfd;
+  background-color: black;
+  color: white;
+  -webkit-animation: flickerborder 7s infinite alternate;
+          animation: flickerborder 7s infinite alternate;
 }
 
 .wrapper {
@@ -357,11 +383,11 @@ h1 {
 .breweryList li {
   visibility: none;
   opacity: 0%;
-  color: black;
-  background-color: #fdfdfd;
+  color: #fdfdfd;
+  background-color: black;
   width: calc((100% / 2) - 20px);
   list-style: none;
-  border: 2px solid white;
+  border: 2px solid black;
   margin: 10px;
   padding: 10px 30px;
   text-align: center;
@@ -376,16 +402,71 @@ h1 {
 
 .breweryList li.fade:hover,
 .breweryList li.fade:focus {
-  -webkit-box-shadow: 10px 15px 15px #eff001;
-          box-shadow: 10px 15px 15px #eff001;
+  -webkit-animation: flickerborder 7s infinite alternate;
+          animation: flickerborder 7s infinite alternate;
+  border: 2px solid #fdfdfd;
 }
 
 .headWrapper input {
   padding: 10px;
+  margin-right: 3%;
   display: inline-block;
 }
 
 .headWrapper form button {
-  width: 100%;
-  margin-top: 50px;
+  padding: 10px 40px;
+  margin-top: 5%;
+  color: white;
+  border-radius: 100rem;
+  border: solid 3px transparent;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #08f, #ff00de);
+  background-origin: border-box;
+  background-clip: border-box;
+  -webkit-box-shadow: 2px 1000px 1px black inset;
+          box-shadow: 2px 1000px 1px black inset;
+}
+
+.headWrapper form button:hover {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+/* Animate neon flicker */
+@-webkit-keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem #ff00de, 0 0 4rem #ff00de, 0 0 6rem #ff00de, 0 0 8rem #ff00de, 0 0 10rem #ff00de;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem #ff00de, 0 0 4rem #ff00de, 0 0 6rem #ff00de, 0 0 8rem #ff00de, 0 0 10rem #ff00de;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+
+@-webkit-keyframes flickerborder {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    -webkit-box-shadow: 0 0 .5rem #fff, inset 0 0 .5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+            box-shadow: 0 0 .5rem #fff, inset 0 0 .5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+  }
+  20%, 24%, 55% {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }
+}
+
+@keyframes flickerborder {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    -webkit-box-shadow: 0 0 .5rem #fff, inset 0 0 .5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+            box-shadow: 0 0 .5rem #fff, inset 0 0 .5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+  }
+  20%, 24%, 55% {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }
 }
