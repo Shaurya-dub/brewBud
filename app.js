@@ -14,26 +14,28 @@ const ul = document.querySelector("ul");
 // select the select element on html
 // capture the value
 // add the value to the endpoint
-app.getCity = () => {
-  const inputValue = document.querySelector('input[type="text"]').value;
-  const selectValue = document.querySelector("select").value;
-  const url = new URL(
-    `https://api.openbrewerydb.org/breweries?${selectValue}=${inputValue}`
-  );
 
-  fetch(url)
-    .then(function (res) {
-      return res.json();
-      // console.log(res.json());
-    })
-    .then(function (brewery) {
-      brewery.forEach((result) => {
-        app.displayFunction(result);
-        // console.log(result);
-      });
-    })
-    .catch((err) => {});
-};
+// app.getCity = () => {
+//   const inputValue = document.querySelector('input[type="text"]').value;
+//   const selectValue = document.querySelector("select").value;
+//   const url = new URL(
+//     `https://api.openbrewerydb.org/breweries?${selectValue}=${inputValue}`
+//   );
+
+//   fetch(url)
+//     .then(function (res) {
+//       console.log(res);
+//       return res.json();
+//     })
+//     .then(function (brewery) {
+//       console.log(brewery);
+
+//       brewery.forEach((result) => {
+//         app.displayFunction(result);
+//       });
+//     });
+//   // .catch((err) => {});
+// };
 
 app.displayFunction = (str) => {
   const li = document.createElement("li");
@@ -55,21 +57,29 @@ app.displayFunction = (str) => {
 
   ul.appendChild(li);
 };
+
 app.getCity = (selectInput, userInput) => {
   const url = new URL(
     `https://api.openbrewerydb.org/breweries?${selectInput}=${userInput}`
   );
 
-  console.log(url);
+  //   console.log(url);
   fetch(url)
     .then(function (res) {
+      // if (res)
       return res.json();
     })
     .then(function (brewery) {
+      if (brewery.length < 1) {
+        throw new Error();
+      }
       brewery.forEach((result) => {
         app.displayFunction(result);
         // console.log(result);
       });
+    })
+    .catch((err) => {
+      app.errorHandlingFunc(err);
     });
 };
 
@@ -94,6 +104,9 @@ const geoCodeUrl = (zip) => {
       const latAndLng = `${lat.toFixed(4)},${lng.toFixed(4)}`;
       console.log(latAndLng);
       app.getCity("by_dist", latAndLng);
+    })
+    .catch((err) => {
+      app.errorHandlingFunc(err);
     });
 };
 
@@ -115,6 +128,10 @@ app.form.addEventListener("submit", function (e) {
     app.getCity(selectValue, inputValue);
   }
 });
+
+app.errorHandlingFunc = (e) => {
+  ul.innerHTML = `<div class="errorBox"> <img src = "media/wasted.gif"/> <p> Sorry, your search didn't return any results, try searching when you're sober</p></div>`;
+};
 
 app.init = () => {};
 
