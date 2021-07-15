@@ -4,44 +4,45 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CSS & Google fonts -->
     <link rel="stylesheet" href="styles/style.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Chathura:wght@300&family=Source+Sans+Pro:wght@600&display=swap"
-      rel="stylesheet"
-    />
-    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chathura:wght@300&family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet"/>
+    <title>Brewery Finder</title>
   </head>
   <body>
+    <!-- header starts here -->
     <header>
       <div class="headWrapper">
-        <h1>Brewery App</h1>
+        <h1>Brewery Finder</h1>
         <form action="#">
-          <label for="location" class="sr-only"
-            >Please enter the location you want to search</label
-          >
-          <input
-            type="text"
-            id="location"
-            placeholder="Enter location to search"
-            required
-          />
-          <label for="select" class="sr-only"
-            >Please pick how you want your search results filtered</label
-          >
+          <label for="location" class="sr-only">Please enter the location you want to search</label>
+          <input type="text" id="location" placeholder="Enter location to search" required />
+          <label for="select" class="sr-only">Please pick how you want your search results filtered</label>
           <select name="select" id="select" required>
             <option value="by_city">City</option>
             <option value="by_state">State</option>
+<<<<<<< HEAD
             <option value="by_dist">Zip-Code</option>
+=======
+            <option value="by_postal">Zip-Code</option>
+            <option value="by_name">Brewery Name</option>
+>>>>>>> main
           </select>
           <button>Search</button>
         </form>
       </div>
     </header>
+    <!-- main starts here -->
     <main>
       <div class="wrapper">
         <ul class="breweryList"></ul>
       </div>
     </main>
+    <!-- footer starts here -->
+    <footer>
+      <p>Created at <a href="https://junocollege.com/">Juno college of Technology</a> by Shaurya & Mao</p>
+    </footer>
+    <!-- Js  -->
     <script src="app.js"></script>
   </body>
 </html>
