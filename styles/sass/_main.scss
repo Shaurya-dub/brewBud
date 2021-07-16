@@ -28,3 +28,13 @@
   animation: flickerborder 7s infinite alternate;
   border: 2px solid rgb(253, 253, 253);
 }
+
+.errorBox {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  padding: 20px;
+  max-width: 800px;
+}

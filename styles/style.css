@@ -429,6 +429,23 @@ h1 {
   border: 2px solid #fdfdfd;
 }
 
+.errorBox {
+  background-color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: auto;
+  padding: 20px;
+  max-width: 800px;
+}
+
 footer {
   background-color: black;
   margin-bottom: 0;

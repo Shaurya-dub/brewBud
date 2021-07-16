@@ -1,42 +1,61 @@
-// test
-const app = {};
-
-app.form = document.querySelector("form");
-app.button = document.querySelector("button");
 // User types in location into input
 // on form submit, capture user input, make API call
 // API call uses parameter selected by user (city,postal code etc)
 // When we get the information back, we loop through it
 // Append information to li
 // Append li to ul on page
-//
+
+
+// namespace
+const app = {};
+// namespace variable
+app.form = document.querySelector("form");
+app.button = document.querySelector("button");
+
 const ul = document.querySelector("ul");
 // select the select element on html
 // capture the value
 // add the value to the endpoint
 
-// app.getCity = () => {
-//   const inputValue = document.querySelector('input[type="text"]').value;
-//   const selectValue = document.querySelector("select").value;
-//   const url = new URL(
-//     `https://api.openbrewerydb.org/breweries?${selectValue}=${inputValue}`
-//   );
+// Check for values from API call return null
+app.nullChecker = (val, term) => {
+  if (!val) {
+    return `${term} is unavailable`;
+  } else {
+    return `${val}`;
+  }
+};
 
-//   fetch(url)
-//     .then(function (res) {
-//       console.log(res);
-//       return res.json();
-//     })
-//     .then(function (brewery) {
-//       console.log(brewery);
+// error handling display's gif when error is encounter
+app.errorHandlingFunc = (e) => {
+  ul.innerHTML = `<div class="errorBox"> <img src = "media/wasted.gif"/> <p> Sorry, your search didn't return any results, try searching when you're sober</p></div>`;
+};
 
-//       brewery.forEach((result) => {
-//         app.displayFunction(result);
-//       });
-//     });
-//   // .catch((err) => {});
-// };
+// Make API call get brewery result based on parameters provided by user
+app.getCity = (selectInput, userInput) => {
+  const url = new URL(
+    `https://api.openbrewerydb.org/breweries?${selectInput}=${userInput}`
+    );
+    
+  fetch(url)
+    .then(function (res) {
+      return res.json();
+    })
+    .then(function (brewery) {
+      // throw error if API return empty result
+      if (brewery.length < 1) {
+        throw new Error();
+      }
+      brewery.forEach((result) => {
+        app.displayFunction(result);
+      });
+    })
+    .catch((err) => {
+      app.errorHandlingFunc(err);
+    });
+};
 
+// apeend result from API to the page
 app.displayFunction = (str) => {
   const li = document.createElement("li");
   const h2 = document.createElement("h2");
@@ -58,34 +77,11 @@ app.displayFunction = (str) => {
   ul.appendChild(li);
 };
 
-app.getCity = (selectInput, userInput) => {
-  const url = new URL(
-    `https://api.openbrewerydb.org/breweries?${selectInput}=${userInput}`
-  );
 
-  //   console.log(url);
-  fetch(url)
-    .then(function (res) {
-      // if (res)
-      return res.json();
-    })
-    .then(function (brewery) {
-      if (brewery.length < 1) {
-        throw new Error();
-      }
-      brewery.forEach((result) => {
-        app.displayFunction(result);
-        // console.log(result);
-      });
-    })
-    .catch((err) => {
-      app.errorHandlingFunc(err);
-    });
-};
-
-// make a request to the map-quest endpoint
-// use zip-code as parameter
-// console.log result
+// When user selects "postal code", we capture user input
+// make geoCodeConverter API call using that postal code
+// goCodeConverter returns us lat and longitude coordinates
+// we use the latitude and longitude coordinates to make API call to brewery API
 const geoCodeUrl = (zip) => {
   const geoUrl = new URL("https://api.geocod.io/v1.6/geocode");
   geoUrl.search = new URLSearchParams({
@@ -97,7 +93,6 @@ const geoCodeUrl = (zip) => {
     .then((res) => {
       return res.json();
     })
-
     .then((data) => {
       const coordinates = data.results[0].location;
       const { lat, lng } = coordinates;
@@ -110,18 +105,16 @@ const geoCodeUrl = (zip) => {
     });
 };
 
-app.nullChecker = (val, term) => {
-  if (!val) {
-    return `${term} is unavailable`;
-  } else {
-    return `${val}`;
-  }
-};
+
+// eventLister that calls function that make API call
 app.form.addEventListener("submit", function (e) {
   e.preventDefault();
   const selectValue = document.querySelector("select").value;
   const inputValue = document.querySelector('input[type="text"]').value;
   ul.innerHTML = "";
+  // original API will only search brewery at the exact zipcode provided by user
+  // instead of showing brewery nearby so zipcode must be converted to coordinate by making additinal API call
+  // when user search by zipcode
   if (selectValue === "by_postal") {
     geoCodeUrl(inputValue);
   } else {
@@ -129,15 +122,5 @@ app.form.addEventListener("submit", function (e) {
   }
 });
 
-app.errorHandlingFunc = (e) => {
-  ul.innerHTML = `<div class="errorBox"> <img src = "media/wasted.gif"/> <p> Sorry, your search didn't return any results, try searching when you're sober</p></div>`;
-};
 
-app.init = () => {};
 
-app.init();
-
-// When user selects "postal code", we capture user input
-// make geoCodeConverter API call using that postal code
-// goCodeConverter returns us lat and longitude coordinates
-// we use the latitude and longitude coordinates to make API call to brewery API
