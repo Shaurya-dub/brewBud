@@ -5,7 +5,6 @@
 // Append information to li
 // Append li to ul on page
 
-
 // namespace
 const app = {};
 // namespace variable
@@ -35,8 +34,8 @@ app.errorHandlingFunc = (e) => {
 app.getCity = (selectInput, userInput) => {
   const url = new URL(
     `https://api.openbrewerydb.org/breweries?${selectInput}=${userInput}`
-    );
-    
+  );
+
   fetch(url)
     .then(function (res) {
       return res.json();
@@ -55,9 +54,10 @@ app.getCity = (selectInput, userInput) => {
     });
 };
 
-// apeend result from API to the page
+// append result from API to the page
 app.displayFunction = (str) => {
   const li = document.createElement("li");
+  li.setAttribute("tabindex", 0);
   const h2 = document.createElement("h2");
   h2.append(str.name);
   li.appendChild(h2);
@@ -69,14 +69,14 @@ app.displayFunction = (str) => {
   const state = app.nullChecker(str.state, "State info");
   const postalCode = app.nullChecker(str.postal_code, "Postal Code");
   const phone = app.nullChecker(str.phone, "Phone Number");
+  const site = app.nullChecker(str.website_url, "Website");
 
   li.innerHTML = `<h2>${str.name}</h2>
     <p>${street}, ${city} ${postalCode}, ${state}</p>
-    <p class="phone"> ${phone}</p>`;
+    <p class="phone"> ${phone}</p> <a href="${site}">${site}</a>`;
 
   ul.appendChild(li);
 };
-
 
 // When user selects "postal code", we capture user input
 // make geoCodeConverter API call using that postal code
@@ -105,7 +105,6 @@ const geoCodeUrl = (zip) => {
     });
 };
 
-
 // eventLister that calls function that make API call
 app.form.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -121,6 +120,3 @@ app.form.addEventListener("submit", function (e) {
     app.getCity(selectValue, inputValue);
   }
 });
-
-
-

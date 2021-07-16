@@ -142,24 +142,24 @@ select {
 }
 
 button,
-html [type="button"],
-[type="reset"],
-[type="submit"] {
+html [type=button],
+[type=reset],
+[type=submit] {
   -webkit-appearance: button;
 }
 
 button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner {
+[type=button]::-moz-focus-inner,
+[type=reset]::-moz-focus-inner,
+[type=submit]::-moz-focus-inner {
   border-style: none;
   padding: 0;
 }
 
 button:-moz-focusring,
-[type="button"]:-moz-focusring,
-[type="reset"]:-moz-focusring,
-[type="submit"]:-moz-focusring {
+[type=button]:-moz-focusring,
+[type=reset]:-moz-focusring,
+[type=submit]:-moz-focusring {
   outline: 1px dotted ButtonText;
 }
 
@@ -186,25 +186,25 @@ textarea {
   overflow: auto;
 }
 
-[type="checkbox"],
-[type="radio"] {
+[type=checkbox],
+[type=radio] {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   padding: 0;
 }
 
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
+[type=number]::-webkit-inner-spin-button,
+[type=number]::-webkit-outer-spin-button {
   height: auto;
 }
 
-[type="search"] {
+[type=search] {
   -webkit-appearance: textfield;
   outline-offset: -2px;
 }
 
-[type="search"]::-webkit-search-cancel-button,
-[type="search"]::-webkit-search-decoration {
+[type=search]::-webkit-search-cancel-button,
+[type=search]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
@@ -325,7 +325,6 @@ h1 {
   margin-right: 3%;
   display: inline-block;
 }
-
 .headWrapper input:focus, .headWrapper input:hover, .headWrapper input:active {
   outline: 1px solid white;
   -webkit-box-shadow: 5px 5px 20px 10px white;
@@ -350,7 +349,6 @@ h1 {
   -webkit-box-shadow: 2px 1000px 1px black inset;
           box-shadow: 2px 1000px 1px black inset;
 }
-
 .headWrapper form button:hover, .headWrapper form button:focus {
   -webkit-box-shadow: none;
           box-shadow: none;
@@ -373,29 +371,26 @@ h1 {
     text-shadow: none;
   }
 }
-
 @-webkit-keyframes flickerborder {
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-    -webkit-box-shadow: 0 0 .5rem #fff, inset 0 0 .5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
-            box-shadow: 0 0 .5rem #fff, inset 0 0 .5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+    -webkit-box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+            box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
   }
   20%, 24%, 55% {
     -webkit-box-shadow: none;
             box-shadow: none;
   }
 }
-
 @keyframes flickerborder {
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-    -webkit-box-shadow: 0 0 .5rem #fff, inset 0 0 .5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
-            box-shadow: 0 0 .5rem #fff, inset 0 0 .5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+    -webkit-box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+            box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
   }
   20%, 24%, 55% {
     -webkit-box-shadow: none;
             box-shadow: none;
   }
 }
-
 .wrapper {
   width: 90%;
   max-width: 1200px;
@@ -429,6 +424,12 @@ h1 {
   border: 2px solid #fdfdfd;
 }
 
+.breweryList a {
+  color: #dba3d4;
+  -webkit-animation: flicker 7s infinite alternate;
+          animation: flicker 7s infinite alternate;
+}
+
 .errorBox {
   background-color: #fff;
   display: -webkit-box;
@@ -450,16 +451,14 @@ footer {
   background-color: black;
   margin-bottom: 0;
 }
-
 footer p {
   color: white;
   text-align: center;
   letter-spacing: 1px;
   margin-bottom: 0;
 }
-
 footer p a {
-  color: white;
+  color: #f755f7;
   text-decoration: none;
 }
 
@@ -473,23 +472,23 @@ footer p a {
         -ms-flex-direction: column;
             flex-direction: column;
   }
+
   .headWrapper form select {
     margin-top: 5%;
   }
 }
-
 @media (max-width: 730px) {
   .headWrapper form input,
-  .headWrapper form select {
+.headWrapper form select {
     width: 100%;
     padding: 10px;
   }
 }
-
 @media (max-width: 650px) {
   .headWrapper form button {
     padding: 6px 20px;
   }
+
   .breweryList {
     width: 100%;
     -webkit-box-orient: vertical;
@@ -500,26 +499,25 @@ footer p a {
         -ms-flex-align: center;
             align-items: center;
   }
+
   .breweryList li.fade {
     width: 100%;
   }
 }
-
 @media (max-width: 500px) {
   h1 {
     font-size: 3rem;
   }
+
   .headWrapper {
     width: 90%;
   }
 }
-
 @media (max-width: 450px) {
   .headWrapper {
     width: 95%;
   }
 }
-
 html {
   font-size: 125%;
 }

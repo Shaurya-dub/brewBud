@@ -29,6 +29,15 @@
   border: 2px solid rgb(253, 253, 253);
 }
 
+.breweryList a {
+  // text-decoration: none;
+  color: rgb(219, 163, 212);
+  // text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff,
+  //   0 0 2rem #ff00de, 0 0 4rem #ff00de, 0 0 6rem #ff00de, 0 0 8rem #ff00de,
+  //   0 0 10rem #ff00de;
+  animation: flicker 7s infinite alternate;
+}
+
 .errorBox {
   background-color: #fff;
   display: flex;
