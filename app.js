@@ -25,7 +25,7 @@ app.nullChecker = (val, term) => {
   }
 };
 
-// error handling display's gif when error is encounter
+// error handling display's gif when error is encountered
 app.errorHandlingFunc = (e) => {
   ul.innerHTML = `<div class="errorBox"> <img src = "media/wasted.gif"/> <p> Sorry, your search didn't return any results, try searching when you're sober</p></div>`;
 };
