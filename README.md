@@ -7,7 +7,7 @@ A brewery finder that utilizes API functionality to help you find breweries anyw
 This project was created using
 
 - HTML
-- CSS
+- Sass
 - JavaScript
 - Rest API
 
