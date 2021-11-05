@@ -4,7 +4,7 @@
 // When we get the information back, we loop through it
 // Append information to li
 // Append li to ul on page
-
+// import { config } from "dotenv";
 // namespace
 const app = {};
 // namespace variable
@@ -85,7 +85,7 @@ app.displayFunction = (str) => {
 const geoCodeUrl = (zip) => {
   const geoUrl = new URL("https://api.geocod.io/v1.6/geocode");
   geoUrl.search = new URLSearchParams({
-    api_key: config.api_key,
+    api_key: "f5f6a3963e8e7f855add9ab39beb6d800080009",
     postal_code: zip,
   });
 
