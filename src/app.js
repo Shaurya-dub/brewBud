@@ -83,13 +83,13 @@ app.displayFunction = (str) => {
 // goCodeConverter returns us lat and longitude coordinates
 // we use the latitude and longitude coordinates to make API call to brewery API
 const geoCodeUrl = (zip) => {
-  const geoUrl = new URL("https://api.geocod.io/v1.6/geocode");
-  geoUrl.search = new URLSearchParams({
-    api_key: "f5f6a3963e8e7f855add9ab39beb6d800080009",
-    postal_code: zip,
-  });
+  // const geoUrl = new URL("https://api.geocod.io/v1.6/geocode?");
+  // geoUrl.search = new URLSearchParams({
+  //   api_key: "f5f6a3963e8e7f855add9ab39beb6d800080009",
+  //   postal_code: zip,
+  // });
 
-  fetch(geoUrl)
+  fetch(`/.netlify/functions/fetch-coordinates?postal_code=${zip}`)
     .then((res) => {
       return res.json();
     })
