@@ -1,0 +1,487 @@
+html {
+  line-height: 1.15;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+article,
+aside,
+footer,
+header,
+nav,
+section {
+  display: block;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+figcaption,
+figure,
+main {
+  display: block;
+}
+
+figure {
+  margin: 1em 40px;
+}
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+  overflow: visible;
+}
+
+pre {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+a {
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline;
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted;
+}
+
+b,
+strong {
+  font-weight: inherit;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+code,
+kbd,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+dfn {
+  font-style: italic;
+}
+
+mark {
+  background-color: #ff0;
+  color: #000;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+audio,
+video {
+  display: inline-block;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+img {
+  border-style: none;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: sans-serif;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+button,
+input {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+html [type=button],
+[type=reset],
+[type=submit] {
+  -webkit-appearance: button;
+}
+
+button::-moz-focus-inner,
+[type=button]::-moz-focus-inner,
+[type=reset]::-moz-focus-inner,
+[type=submit]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+button:-moz-focusring,
+[type=button]:-moz-focusring,
+[type=reset]:-moz-focusring,
+[type=submit]:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+fieldset {
+  padding: 0.35em 0.75em 0.625em;
+}
+
+legend {
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+
+progress {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+textarea {
+  overflow: auto;
+}
+
+[type=checkbox],
+[type=radio] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+[type=number]::-webkit-inner-spin-button,
+[type=number]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+[type=search] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+[type=search]::-webkit-search-cancel-button,
+[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+details,
+menu {
+  display: block;
+}
+
+summary {
+  display: list-item;
+}
+
+canvas {
+  display: inline-block;
+}
+
+template {
+  display: none;
+}
+
+[hidden] {
+  display: none;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: "";
+  clear: both;
+  height: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  -webkit-clip-path: inset(100%);
+          clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+header {
+  padding-top: 40px;
+}
+
+h1 {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 4rem;
+  padding-bottom: 100px;
+  -webkit-animation: flicker 7s infinite alternate;
+          animation: flicker 7s infinite alternate;
+}
+
+.headWrapper {
+  width: 80%;
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 60px 80px;
+  border-radius: 25px;
+  text-align: center;
+  flex-wrap: wrap;
+  background-color: black;
+  color: white;
+  -webkit-animation: flickerborder 7s infinite alternate;
+          animation: flickerborder 7s infinite alternate;
+}
+
+.breweryList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-left: 0px;
+}
+
+.headWrapper form {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  justify-content: center;
+}
+
+.headWrapper input {
+  padding: 10px;
+  margin-right: 3%;
+  display: inline-block;
+}
+.headWrapper input:focus, .headWrapper input:hover, .headWrapper input:active {
+  outline: 1px solid white;
+  box-shadow: 5px 5px 20px 10px white;
+}
+
+.headWrapper select:focus,
+.headWrapper select:hover {
+  box-shadow: 5px 5px 20px 10px white;
+}
+
+.headWrapper form button {
+  padding: 10px 40px;
+  margin-top: 5%;
+  color: white;
+  border-radius: 100rem;
+  border: solid 3px transparent;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #08f, #ff00de);
+  background-origin: border-box;
+  background-clip: border-box;
+  box-shadow: 2px 1000px 1px black inset;
+}
+.headWrapper form button:hover, .headWrapper form button:focus {
+  box-shadow: none;
+}
+
+/* Animate neon flicker */
+@-webkit-keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem #ff00de, 0 0 4rem #ff00de, 0 0 6rem #ff00de, 0 0 8rem #ff00de, 0 0 10rem #ff00de;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem #ff00de, 0 0 4rem #ff00de, 0 0 6rem #ff00de, 0 0 8rem #ff00de, 0 0 10rem #ff00de;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+@-webkit-keyframes flickerborder {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+  }
+  20%, 24%, 55% {
+    box-shadow: none;
+  }
+}
+@keyframes flickerborder {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+  }
+  20%, 24%, 55% {
+    box-shadow: none;
+  }
+}
+.wrapper {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.breweryList li {
+  opacity: 100%;
+  color: #fdfdfd;
+  background-color: black;
+  width: calc((100% / 2) - 20px);
+  list-style: none;
+  border: 2px solid black;
+  margin: 10px;
+  padding: 10px 30px;
+  text-align: center;
+  transition: all 0.5s linear;
+}
+
+.breweryList li.fade {
+  visibility: initial;
+  opacity: 100%;
+}
+
+.breweryList li.fade:hover,
+.breweryList li.fade:focus {
+  -webkit-animation: flickerborder 7s infinite alternate;
+          animation: flickerborder 7s infinite alternate;
+  border: 2px solid #fdfdfd;
+}
+
+.breweryList a {
+  color: #dba3d4;
+  -webkit-animation: flicker 7s infinite alternate;
+          animation: flicker 7s infinite alternate;
+}
+
+.errorBox {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  padding: 20px;
+  max-width: 800px;
+}
+
+footer {
+  background-color: black;
+  margin-bottom: 0;
+}
+footer p {
+  color: white;
+  text-align: center;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+}
+footer p a {
+  color: #f755f7;
+  text-decoration: none;
+}
+
+@media (max-width: 950px) {
+  .headWrapper form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .headWrapper form select {
+    margin-top: 5%;
+  }
+}
+@media (max-width: 730px) {
+  .headWrapper form input,
+.headWrapper form select {
+    width: 100%;
+    padding: 10px;
+  }
+}
+@media (max-width: 650px) {
+  .headWrapper form button {
+    padding: 6px 20px;
+  }
+
+  .breweryList {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .breweryList li.fade {
+    width: 100%;
+  }
+}
+@media (max-width: 500px) {
+  h1 {
+    font-size: 3rem;
+  }
+
+  .headWrapper {
+    width: 90%;
+  }
+}
+@media (max-width: 450px) {
+  .headWrapper {
+    width: 95%;
+  }
+}
+html {
+  font-size: 125%;
+}
+
+body {
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), 100%, rgba(0, 0, 0, 0)), url(../media/brickWall.jpg);
+  background-size: cover;
+  font-family: "Chathura", sans-serif;
+  font-size: 1.5rem;
+}/*# sourceMappingURL=style.css.map */

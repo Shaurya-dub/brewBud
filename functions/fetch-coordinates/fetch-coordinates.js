@@ -5,7 +5,7 @@ const handler = async (event) => {
   // const API_SECRET = "674b218a61a2496bcad8f5d789a636c1";
   // const url = `http://api.weatherstack.com/current?access_key=${API_SECRET}&query=${lat},${long}&forcast_days=4`;
   const { postal_code } = event.queryStringParameters;
-  const api_key = process.env.API_KEY;
+  const api_key = process.env.GEO_KEY;
   const url = `https://api.geocod.io/v1.6/geocode?postal_code=${postal_code}&api_key=${api_key}`;
 
   try {

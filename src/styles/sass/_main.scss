@@ -5,8 +5,8 @@
 }
 
 .breweryList li {
-  visibility: none;
-  opacity: 0%;
+  // visibility: none;
+  opacity: 100%;
   color: rgb(253, 253, 253);
   background-color: black;
   width: calc((100% / 2) - 20px);
@@ -16,6 +16,8 @@
   padding: 10px 30px;
   text-align: center;
   transition: all 0.5s linear;
+  // max-height: 370px;
+  // overflow: scroll;
 }
 
 .breweryList li.fade {
