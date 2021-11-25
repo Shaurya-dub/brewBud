@@ -49,3 +49,24 @@
   padding: 20px;
   max-width: 800px;
 }
+
+// Restaurant Finder Styling
+
+.restaurantCard {
+  width: 100vw;
+  height: 100vh;
+  background-color: #0c0b0b54;
+  position: absolute;
+}
+
+.restaurantList {
+  width: 20%;
+  padding: 10px;
+  // margin: auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  // width: 400px;
+}

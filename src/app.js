@@ -57,7 +57,7 @@ app.getCity = (selectInput, userInput) => {
           const breweryAddress = this.parentElement.children[1].innerText;
           const brewInfo = this.parentElement;
 
-          app.getMenu(breweryAddress, body);
+          app.getMenu(breweryAddress, app.body);
         });
       });
     })
@@ -140,12 +140,10 @@ app.getMenu = async (name, parent) => {
       return res.json();
     })
     .then(async (dataSet) => {
-      const restaurantCard = document
-        .createElement("div")
-        .classList.add("restaurantDisplay");
-      const restaurantList = document
-        .createElement("ul")
-        .classList.add("restaurantIndex");
+      const restaurantCard = document.createElement("div");
+      restaurantCard.classList.add("restaurantDisplay");
+      const restaurantList = document.createElement("ul");
+      restaurantList.classList.add("restaurantIndex");
       await restaurantCard.append(restaurantList);
       for (let data of dataSet.data) {
         showRestaurants(data, restaurantList);
