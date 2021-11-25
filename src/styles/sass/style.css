@@ -2,7 +2,6 @@ html {
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  height: 100%;
 }
 
 body {
@@ -55,7 +54,7 @@ abbr[title] {
   border-bottom: none;
   text-decoration: underline;
   -webkit-text-decoration: underline dotted;
-  text-decoration: underline dotted;
+          text-decoration: underline dotted;
 }
 
 b,
@@ -144,24 +143,24 @@ select {
 }
 
 button,
-html [type="button"],
-[type="reset"],
-[type="submit"] {
+html [type=button],
+[type=reset],
+[type=submit] {
   -webkit-appearance: button;
 }
 
 button::-moz-focus-inner,
-[type="button"]::-moz-focus-inner,
-[type="reset"]::-moz-focus-inner,
-[type="submit"]::-moz-focus-inner {
+[type=button]::-moz-focus-inner,
+[type=reset]::-moz-focus-inner,
+[type=submit]::-moz-focus-inner {
   border-style: none;
   padding: 0;
 }
 
 button:-moz-focusring,
-[type="button"]:-moz-focusring,
-[type="reset"]:-moz-focusring,
-[type="submit"]:-moz-focusring {
+[type=button]:-moz-focusring,
+[type=reset]:-moz-focusring,
+[type=submit]:-moz-focusring {
   outline: 1px dotted ButtonText;
 }
 
@@ -187,24 +186,24 @@ textarea {
   overflow: auto;
 }
 
-[type="checkbox"],
-[type="radio"] {
+[type=checkbox],
+[type=radio] {
   box-sizing: border-box;
   padding: 0;
 }
 
-[type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
+[type=number]::-webkit-inner-spin-button,
+[type=number]::-webkit-outer-spin-button {
   height: auto;
 }
 
-[type="search"] {
+[type=search] {
   -webkit-appearance: textfield;
   outline-offset: -2px;
 }
 
-[type="search"]::-webkit-search-cancel-button,
-[type="search"]::-webkit-search-decoration {
+[type=search]::-webkit-search-cancel-button,
+[type=search]::-webkit-search-decoration {
   -webkit-appearance: none;
 }
 
@@ -262,7 +261,7 @@ html {
   padding: 0;
   white-space: nowrap;
   -webkit-clip-path: inset(100%);
-  clip-path: inset(100%);
+          clip-path: inset(100%);
   clip: rect(0 0 0 0);
   overflow: hidden;
 }
@@ -276,7 +275,7 @@ h1 {
   font-size: 4rem;
   padding-bottom: 100px;
   -webkit-animation: flicker 7s infinite alternate;
-  animation: flicker 7s infinite alternate;
+          animation: flicker 7s infinite alternate;
 }
 
 .headWrapper {
@@ -290,7 +289,7 @@ h1 {
   background-color: black;
   color: white;
   -webkit-animation: flickerborder 7s infinite alternate;
-  animation: flickerborder 7s infinite alternate;
+          animation: flickerborder 7s infinite alternate;
 }
 
 .breweryList {
@@ -312,9 +311,7 @@ h1 {
   margin-right: 3%;
   display: inline-block;
 }
-.headWrapper input:focus,
-.headWrapper input:hover,
-.headWrapper input:active {
+.headWrapper input:focus, .headWrapper input:hover, .headWrapper input:active {
   outline: 1px solid white;
   box-shadow: 5px 5px 20px 10px white;
 }
@@ -330,92 +327,45 @@ h1 {
   color: white;
   border-radius: 100rem;
   border: solid 3px transparent;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0),
-      rgba(255, 255, 255, 0)
-    ),
-    linear-gradient(101deg, #08f, #ff00de);
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), linear-gradient(101deg, #08f, #ff00de);
   background-origin: border-box;
   background-clip: border-box;
   box-shadow: 2px 1000px 1px black inset;
 }
-.headWrapper form button:hover,
-.headWrapper form button:focus {
+.headWrapper form button:hover, .headWrapper form button:focus {
   box-shadow: none;
 }
 
 /* Animate neon flicker */
 @-webkit-keyframes flicker {
-  0%,
-  19%,
-  21%,
-  23%,
-  25%,
-  54%,
-  56%,
-  100% {
-    text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff,
-      0 0 2rem #ff00de, 0 0 4rem #ff00de, 0 0 6rem #ff00de, 0 0 8rem #ff00de,
-      0 0 10rem #ff00de;
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem #ff00de, 0 0 4rem #ff00de, 0 0 6rem #ff00de, 0 0 8rem #ff00de, 0 0 10rem #ff00de;
   }
-  20%,
-  24%,
-  55% {
+  20%, 24%, 55% {
     text-shadow: none;
   }
 }
 @keyframes flicker {
-  0%,
-  19%,
-  21%,
-  23%,
-  25%,
-  54%,
-  56%,
-  100% {
-    text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff,
-      0 0 2rem #ff00de, 0 0 4rem #ff00de, 0 0 6rem #ff00de, 0 0 8rem #ff00de,
-      0 0 10rem #ff00de;
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff, 0 0 2rem #ff00de, 0 0 4rem #ff00de, 0 0 6rem #ff00de, 0 0 8rem #ff00de, 0 0 10rem #ff00de;
   }
-  20%,
-  24%,
-  55% {
+  20%, 24%, 55% {
     text-shadow: none;
   }
 }
 @-webkit-keyframes flickerborder {
-  0%,
-  19%,
-  21%,
-  23%,
-  25%,
-  54%,
-  56%,
-  100% {
-    box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 2rem #08f,
-      inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
   }
-  20%,
-  24%,
-  55% {
+  20%, 24%, 55% {
     box-shadow: none;
   }
 }
 @keyframes flickerborder {
-  0%,
-  19%,
-  21%,
-  23%,
-  25%,
-  54%,
-  56%,
-  100% {
-    box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 2rem #08f,
-      inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    box-shadow: 0 0 0.5rem #fff, inset 0 0 0.5rem #fff, 0 0 2rem #08f, inset 0 0 2rem #08f, 0 0 4rem #08f, inset 0 0 4rem #08f;
   }
-  20%,
-  24%,
-  55% {
+  20%, 24%, 55% {
     box-shadow: none;
   }
 }
@@ -446,14 +396,14 @@ h1 {
 .breweryList li.fade:hover,
 .breweryList li.fade:focus {
   -webkit-animation: flickerborder 7s infinite alternate;
-  animation: flickerborder 7s infinite alternate;
+          animation: flickerborder 7s infinite alternate;
   border: 2px solid #fdfdfd;
 }
 
 .breweryList a {
   color: #dba3d4;
   -webkit-animation: flicker 7s infinite alternate;
-  animation: flicker 7s infinite alternate;
+          animation: flicker 7s infinite alternate;
 }
 
 .errorBox {
@@ -468,28 +418,29 @@ h1 {
 
 .restaurantDisplay {
   width: 100vw;
-  height: 100%;
+  min-height: 100%;
   background-color: #0c0b0b54;
   position: absolute;
   top: 0%;
 }
 
 .restaurantIndex {
-  width: 50%;
+  width: 40%;
   padding: 10px;
-  /* position: absolute;
+  position: absolute;
   left: 0;
   right: 0;
-  margin-left: auto;
-  margin-right: auto; */
-  margin: auto;
-  display: flex;
-  color: white;
-  height: 300px;
-  overflow: scroll;
-  position: relative;
   top: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 400px;
+  overflow: scroll;
+}
+
+.restaurantListing {
+  width: 80%;
   border: 2px solid white;
+  padding: 10px;
 }
 
 footer {
@@ -519,7 +470,7 @@ footer p a {
 }
 @media (max-width: 730px) {
   .headWrapper form input,
-  .headWrapper form select {
+.headWrapper form select {
     width: 100%;
     padding: 10px;
   }
@@ -558,14 +509,8 @@ html {
 }
 
 body {
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.5),
-      100%,
-      rgba(0, 0, 0, 0)
-    ),
-    url(../media/brickWall.jpg);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), 100%, rgba(0, 0, 0, 0)), url(../media/brickWall.jpg);
   background-size: cover;
   font-family: "Chathura", sans-serif;
   font-size: 1.5rem;
-} /*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

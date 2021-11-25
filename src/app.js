@@ -139,12 +139,12 @@ app.getMenu = async (name, parent) => {
     .then((res) => {
       return res.json();
     })
-    .then(async (dataSet) => {
+    .then((dataSet) => {
       const restaurantCard = document.createElement("div");
       restaurantCard.classList.add("restaurantDisplay");
       const restaurantList = document.createElement("ul");
       restaurantList.classList.add("restaurantIndex");
-      await restaurantCard.append(restaurantList);
+      restaurantCard.append(restaurantList);
       for (let data of dataSet.data) {
         showRestaurants(data, restaurantList);
       }
@@ -155,7 +155,7 @@ app.getMenu = async (name, parent) => {
 
 const showRestaurants = (dataSet, ul) => {
   const restaurantInfo = document.createElement("li");
-  // .classList.add("restaurantIndex");
+  restaurantInfo.classList.add("restaurantListing");
   const restaurantName = app.nullChecker(
     dataSet.restaurant_name,
     "Restaurant Name"

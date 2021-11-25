@@ -52,21 +52,30 @@
 
 // Restaurant Finder Styling
 
-.restaurantCard {
+.restaurantDisplay {
   width: 100vw;
-  height: 100vh;
+  min-height: 100%;
   background-color: #0c0b0b54;
   position: absolute;
+  top: 0%;
 }
 
-.restaurantList {
-  width: 20%;
+.restaurantIndex {
+  width: 40%;
   padding: 10px;
   // margin: auto;
   position: absolute;
   left: 0;
   right: 0;
+  top: 50%;
   margin-left: auto;
   margin-right: auto;
-  // width: 400px;
+  height: 400px;
+  overflow: scroll;
+}
+
+.restaurantListing {
+  width: 80%;
+  border: 2px solid white;
+  padding: 10px;
 }
