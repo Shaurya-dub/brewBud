@@ -6,7 +6,13 @@
 // Append li to ul on page
 // import { config } from "dotenv";
 // namespace
+// import { library, icon } from "@fortawesome/fontawesome-free";
+// import { library, icon } from "@fortawesome/fontawesome-svg-core";
+// import { faCat } from "@fortawesome/free-solid-svg-icons";
+
 const app = {};
+// library.add(faCat);
+
 // namespace variable
 app.form = document.querySelector("form");
 app.button = document.querySelector("button");
@@ -144,7 +150,15 @@ app.getMenu = async (name, parent) => {
       restaurantCard.classList.add("restaurantDisplay");
       const restaurantList = document.createElement("ul");
       restaurantList.classList.add("restaurantIndex");
+      const closeButton = document.createElement("span");
+      // closeButton.innerHTML = icon({ prefix: "fas", iconName: "cat" }).html;
+      closeButton.innerHTML = "<i class='fas fa-times'></i>";
+      closeButton.addEventListener("click", () => {
+        restaurantCard.remove();
+      });
+      restaurantList.append(closeButton);
       restaurantCard.append(restaurantList);
+
       for (let data of dataSet.data) {
         showRestaurants(data, restaurantList);
       }

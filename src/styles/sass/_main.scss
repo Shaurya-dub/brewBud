@@ -64,14 +64,15 @@
   width: 40%;
   padding: 10px;
   // margin: auto;
-  position: absolute;
+  position: fixed;
   left: 0;
   right: 0;
-  top: 50%;
+  top: 25%;
   margin-left: auto;
   margin-right: auto;
   height: 400px;
   overflow: scroll;
+  color: white;
 }
 
 .restaurantListing {
