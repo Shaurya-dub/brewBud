@@ -446,7 +446,10 @@ h1 {
 .restaurantDisplay {
   width: 100vw;
   min-height: 100%;
-  background-color: #0c0b0b54;
+  background-color: #000000d2;
+  box-shadow: inset 0 0 2000px rgba(27, 27, 27, 0.61);
+  -webkit-backdrop-filter: blur(120px);
+          backdrop-filter: blur(120px);
   position: absolute;
   top: 0%;
 }
@@ -467,6 +470,7 @@ h1 {
 
 .restaurantListing {
   width: 80%;
+  background-color: #141313d7;
   border: 2px solid white;
   padding: 10px;
 }

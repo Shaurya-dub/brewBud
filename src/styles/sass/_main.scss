@@ -68,7 +68,11 @@
 .restaurantDisplay {
   width: 100vw;
   min-height: 100%;
-  background-color: #0c0b0b54;
+  background-color: #000000d2;
+  // background: inherit;
+  box-shadow: inset 0 0 2000px rgba(27, 27, 27, 0.61);
+  backdrop-filter: blur(120px);
+  // -webkit-backdrop-filter: blur(12px);
   position: absolute;
   top: 0%;
 }
@@ -90,6 +94,7 @@
 
 .restaurantListing {
   width: 80%;
+  background-color: #141313d7;
   border: 2px solid white;
   padding: 10px;
 }
