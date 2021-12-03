@@ -444,6 +444,12 @@ h1 {
   padding: 10px;
 }
 
+.restaurantListing a {
+  color: #88aaff;
+  -webkit-animation: flickerborder 3s infinite alternate;
+          animation: flickerborder 3s infinite alternate;
+}
+
 footer {
   background-color: black;
   margin-bottom: 0;
@@ -510,7 +516,7 @@ html {
 }
 
 body {
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), 100%, rgba(0, 0, 0, 0)), url(../media/brickWall.jpg);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), 100%, rgba(0, 0, 0, 0)), url(../../media/brickWall.jpg);
   background-size: cover;
   font-family: "Chathura", sans-serif;
   font-size: 1.5rem;

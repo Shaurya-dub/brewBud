@@ -6,9 +6,6 @@
 // Append li to ul on page
 // import { config } from "dotenv";
 // namespace
-// import { library, icon } from "@fortawesome/fontawesome-free";
-// import { library, icon } from "@fortawesome/fontawesome-svg-core";
-// import { faCat } from "@fortawesome/free-solid-svg-icons";
 
 const app = {};
 // library.add(faCat);
@@ -27,9 +24,22 @@ const ul = document.querySelector(".breweryList");
 // Check for values from API call return null
 app.nullChecker = (val, term) => {
   if (!val) {
-    return `${term} is unavailable`;
+    return `null${term} is unavailable`;
   } else {
     return `${val}`;
+  }
+};
+
+app.nullCheckerSite = (site, parent) => {
+  if (!site) {
+    let noSite = document.createElement("p");
+    noSite.append("Website Unavailable");
+    parent.appendChild(noSite);
+  } else {
+    let yesSite = document.createElement("a");
+    yesSite.setAttribute("href", site);
+    yesSite.innerText = site;
+    parent.appendChild(yesSite);
   }
 };
 
@@ -61,7 +71,7 @@ app.getCity = (selectInput, userInput) => {
         button.addEventListener("click", function (e) {
           e.preventDefault();
           const breweryAddress = this.parentElement.children[1].innerText;
-          const brewInfo = this.parentElement;
+          // const brewInfo = this.parentElement;
 
           app.getMenu(breweryAddress, app.body);
         });
@@ -88,14 +98,18 @@ app.displayFunction = (str) => {
   const state = app.nullChecker(str.state, "State info");
   const postalCode = app.nullChecker(str.postal_code, "Postal Code");
   const phone = app.nullChecker(str.phone, "Phone Number");
-  const site = app.nullChecker(str.website_url, "Website");
+  // const site = app.nullChecker(str.website_url, "Website");
 
   li.innerHTML = `<h2>${str.name}</h2>
     <p>${street}, ${city} ${postalCode}, ${state}</p>
-    <p class="phone"> ${phone}</p> <a href="${site}">${site}</a>
-    <button class="seeMenu"> See Menu </button>
+    <p class="phone"> ${phone}</p> 
+   
     `;
-
+  app.nullCheckerSite(str.website_url, li);
+  const restaurantButton = document.createElement("button");
+  restaurantButton.innerText = "See Nearby Restaurants";
+  restaurantButton.classList.add("seeMenu");
+  li.appendChild(restaurantButton);
   ul.appendChild(li);
 };
 
@@ -187,7 +201,7 @@ const showRestaurants = (dataSet, ul) => {
 
   restaurantInfo.innerHTML = `<h3> ${restaurantName}</h3>
     <p>${restaurantAddress}</p>
-    <p class="phone"> ${restaurantPhone}</p> <a href="${restaurantSite}">${restaurantSite}</a>
+    <p class="phone"> ${restaurantPhone}</p> <a href="${restaurantSite}"></a>
     <p>${restaurantPrice}</p>`;
   ul.append(restaurantInfo);
 };

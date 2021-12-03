@@ -40,6 +40,10 @@
   animation: flicker 7s infinite alternate;
 }
 
+// .restaurantListing a {
+//  color: rgb(219, 163, 212)
+// }
+
 .errorBox {
   background-color: #fff;
   display: flex;
@@ -80,3 +84,14 @@
   border: 2px solid white;
   padding: 10px;
 }
+.restaurantListing a {
+  color: rgb(136, 170, 255);
+  animation: flickerborder 3s infinite alternate;
+}
+
+// span.unavailable {
+//   color: rgb(253, 253, 253);
+//   animation: none;
+//   text-shadow: none;
+//   box-shadow: none;
+// }
