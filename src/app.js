@@ -24,7 +24,7 @@ const ul = document.querySelector(".breweryList");
 // Check for values from API call return null
 app.nullChecker = (val, term) => {
   if (!val) {
-    return `null${term} is unavailable`;
+    return `${term} is unavailable`;
   } else {
     return `${val}`;
   }
