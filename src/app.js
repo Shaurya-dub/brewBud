@@ -72,8 +72,9 @@ app.getCity = (selectInput, userInput) => {
           e.preventDefault();
           const breweryAddress = this.parentElement.children[1].innerText;
           // const brewInfo = this.parentElement;
-
-          app.getMenu(breweryAddress, app.body);
+          console.log(this.parentElement.children);
+          // app.getMenu(breweryAddress, app.body);
+          app.getMenu("q", breweryAddress, ul);
         });
       });
     })
@@ -113,21 +114,33 @@ app.displayFunction = (str) => {
   ul.appendChild(li);
 };
 
+// function to parse through GeoCode data and retrieve coordinates
+app.parseCoord = (receivedData) => {
+  console.log(receivedData);
+  const coordinates = receivedData.results[0].location;
+  const { lat, lng } = coordinates;
+  // const latAndLng = `${lat.toFixed(4)},${lng.toFixed(4)}`;
+  const latAndLng = { lat: `${lat.toFixed(4)}`, lng: `${lng.toFixed(4)}` };
+  console.log(latAndLng);
+  return latAndLng;
+};
+
 // Netlify function to hide API Key
 // Function sends zipcode entered by user to a geocoding API to turn into lat/long coordinates
 //Originally, brewery API would only return breweries AT a zip code (as opposed to near a zipcode)
 // Using Geocoding bypasses this issue
-const geoCodeUrl = (zip) => {
-  fetch(`/.netlify/functions/fetch-coordinates?postal_code=${zip}`)
+const geoCodeUrl = (parameter, zip) => {
+  fetch(
+    `/.netlify/functions/fetch-coordinates?parameter=${parameter}&postal_code=${zip}`
+  )
     .then((res) => {
       return res.json();
     })
     .then((data) => {
-      const coordinates = data.results[0].location;
-      const { lat, lng } = coordinates;
-      const latAndLng = `${lat.toFixed(4)},${lng.toFixed(4)}`;
-      console.log(latAndLng);
-      app.getCity("by_dist", latAndLng);
+      const { lat, lng } = app.parseCoord(data);
+      const parsedLatAndLong = `${lat},${lng}`;
+      console.log(parsedLatAndLong, "This is parsed");
+      app.getCity("by_dist", parsedLatAndLong);
     })
     .catch((err) => {
       app.errorHandlingFunc(err);
@@ -144,40 +157,50 @@ app.form.addEventListener("submit", function (e) {
   // instead of showing brewery nearby so zipcode must be converted to coordinate by making additinal API call
   // when user search by zipcode
   if (selectValue === "by_postal") {
-    geoCodeUrl(inputValue);
+    geoCodeUrl("postal_code", inputValue);
   } else {
     app.getCity(selectValue, inputValue);
   }
 });
 
-app.getMenu = async (name, parent) => {
-  const menuUrl = new URL(
-    `https://api.documenu.com/v2/restaurants/search/fields?key=a053ac434fb058d22c3615a5990b829b&address=${name}`
-    // `https://api.documenu.com/v2/restaurant/4072702673999819?X-API-KEY="a053ac434fb058d22c3615a5990b829b"`
-  );
-  await fetch(menuUrl)
+app.getMenu = async (parameter, zip, parent) => {
+  await fetch(
+    `/.netlify/functions/fetch-coordinates?parameter=${parameter}&postal_code=${zip}`
+  )
     .then((res) => {
       return res.json();
+      // console.log(res.json());
     })
-    .then((dataSet) => {
-      const restaurantCard = document.createElement("div");
-      restaurantCard.classList.add("restaurantDisplay");
-      const restaurantList = document.createElement("ul");
-      restaurantList.classList.add("restaurantIndex");
-      const closeButton = document.createElement("span");
-      // closeButton.innerHTML = icon({ prefix: "fas", iconName: "cat" }).html;
-      closeButton.innerHTML = "<i class='fas fa-times'></i>";
-      closeButton.addEventListener("click", () => {
-        restaurantCard.remove();
-      });
-      restaurantList.append(closeButton);
-      restaurantCard.append(restaurantList);
+    .then((data) => {
+      const { lat, lng } = app.parseCoord(data);
+      const menuUrl = new URL(
+        `https://api.documenu.com/v2/restaurants/distance?key=a053ac434fb058d22c3615a5990b829b&lat=${lat}&lon=${lng}&minutes=10&mode=walking`
+        // `https://api.documenu.com/v2/restaurant/4072702673999819?X-API-KEY="a053ac434fb058d22c3615a5990b829b"`
+      );
+      fetch(menuUrl)
+        .then((res) => {
+          return res.json();
+        })
+        .then((dataSet) => {
+          const restaurantCard = document.createElement("div");
+          restaurantCard.classList.add("restaurantDisplay");
+          const restaurantList = document.createElement("ul");
+          restaurantList.classList.add("restaurantIndex");
+          const closeButton = document.createElement("span");
+          // closeButton.innerHTML = icon({ prefix: "fas", iconName: "cat" }).html;
+          closeButton.innerHTML = "<i class='fas fa-times'></i>";
+          closeButton.addEventListener("click", () => {
+            restaurantCard.remove();
+          });
+          restaurantList.append(closeButton);
+          restaurantCard.append(restaurantList);
 
-      for (let data of dataSet.data) {
-        showRestaurants(data, restaurantList);
-      }
-      parent.append(restaurantCard);
-      // console.log(dataSet);
+          for (let data of dataSet.data) {
+            showRestaurants(data, restaurantList);
+          }
+          parent.append(restaurantCard);
+          // console.log(dataSet);
+        });
     });
 };
 
