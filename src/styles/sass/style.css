@@ -393,7 +393,7 @@ h1 {
   margin: 0 auto;
 }
 
-.breweryList li {
+.breweryCard {
   opacity: 100%;
   color: #fdfdfd;
   background-color: black;
@@ -469,7 +469,6 @@ h1 {
 }
 
 .restaurantListing {
-  width: 80%;
   background-color: #141313d7;
   border: 2px solid white;
   padding: 10px;
