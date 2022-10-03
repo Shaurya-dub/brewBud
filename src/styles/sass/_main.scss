@@ -4,10 +4,32 @@
   margin: 0 auto;
 }
 
+.loadingScreen {
+  background-color: rgba(94, 90, 90, 0.569);
+  width:100vw;
+  height:100vh;
+  position: absolute;
+  z-index: 99;
+  display:none;
+  top:0;
+}
+
+.imgHolder {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.imgHolder img {
+ align-self: center;
+}
+
 .breweryList li {
   // visibility: none;
   opacity: 100%;
-  color: rgb(253, 253, 253);
+  color: #fdfdfd;
   background-color: black;
   width: calc((100% / 2) - 20px);
   list-style: none;
@@ -27,17 +49,15 @@
 
 .breweryList li.fade:hover,
 .breweryList li.fade:focus {
-  animation: flickerborder 7s infinite alternate;
-  border: 2px solid rgb(253, 253, 253);
+  animation: borderFlicker 7s infinite alternate;
+  border: 2px solid #fdfdfd;
 }
 
 .breweryList a {
-  // text-decoration: none;
-  color: rgb(219, 163, 212);
-  // text-shadow: -0.2rem -0.2rem 1rem #fff, 0.2rem 0.2rem 1rem #fff,
-  //   0 0 2rem #ff00de, 0 0 4rem #ff00de, 0 0 6rem #ff00de, 0 0 8rem #ff00de,
-  //   0 0 10rem #ff00de;
-  animation: flicker 7s infinite alternate;
+  color: #dba3d4;
+    -webkit-animation: flicker 7s infinite alternate;
+    animation: flicker 7s infinite alternate;
+    text-decoration: none;
 }
 
 .errorBox {

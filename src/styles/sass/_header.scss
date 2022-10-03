@@ -19,7 +19,7 @@ h1 {
   flex-wrap: wrap;
   background-color: black;
   color: white;
-  animation: flickerborder 7s infinite alternate;
+  animation: borderFlicker 7s infinite alternate;
 }
 
 .breweryList {
@@ -91,7 +91,7 @@ h1 {
   }
 } 
 
-@keyframes flickerborder {
+@keyframes borderFlicker {
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
       box-shadow:
           0 0 .5rem #fff,

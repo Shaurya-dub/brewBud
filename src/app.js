@@ -34,6 +34,8 @@ app.errorHandlingFunc = (e) => {
 
 // Make API call get brewery result based on parameters provided by user
 app.getCity = (selectInput, userInput) => {
+  const body = document.body;
+  document.querySelector(".loadingScreen").style.display = "block";
   const url = new URL(
     `https://api.openbrewerydb.org/breweries?${selectInput}=${userInput}`
   );
@@ -50,19 +52,23 @@ app.getCity = (selectInput, userInput) => {
       brewery.forEach((result) => {
         app.displayFunction(result);
       });
-      const menuButtons = document.querySelectorAll(".seeMenu");
-      menuButtons.forEach((button) => {
-        button.addEventListener("click", function (e) {
-          e.preventDefault();
-          const breweryAddress = this.parentElement.children[1].innerText;
-          const brewInfo = this.parentElement;
+      // Functionality to display Menu of brewery. Complete later*********************************
+      // const menuButtons = document.querySelectorAll(".seeMenu");
+      // menuButtons.forEach((button) => {
+      //   button.addEventListener("click", function (e) {
+      //     e.preventDefault();
+      //     const breweryAddress = this.parentElement.children[1].innerText;
+      //     const brewInfo = this.parentElement;
 
-          app.getMenu(breweryAddress, body);
-        });
-      });
+      //     app.getMenu(breweryAddress, body);
+      //   });
+      // });
+      console.log("before loading screen");
+      document.querySelector(".loadingScreen").style.display = "none";
     })
     .catch((err) => {
       app.errorHandlingFunc(err);
+      document.querySelector(".loadingScreen").style.display = "none";
     });
 };
 
@@ -74,9 +80,9 @@ app.displayFunction = (str) => {
   const h2 = document.createElement("h2");
   h2.append(str.name);
   li.appendChild(h2);
-  // setTimeout((e) => {
-  //   li.classList.add("fade");
-  // }, 50);
+  setTimeout((e) => {
+    li.classList.add("fade");
+  }, 50);
   const street = app.nullChecker(str.street, "Street address");
   const city = app.nullChecker(str.city, "City info");
   const state = app.nullChecker(str.state, "State info");
@@ -86,9 +92,7 @@ app.displayFunction = (str) => {
 
   li.innerHTML = `<h2>${str.name}</h2>
     <p>${street}, ${city} ${postalCode}, ${state}</p>
-    <p class="phone"> ${phone}</p> <a href="${site}">${site}</a>
-    <button class="seeMenu"> See Menu </button>
-    `;
+    <p class="phone"> ${phone}</p> <a href="${site}">${site}</a>`;
 
   ul.appendChild(li);
 };
@@ -129,31 +133,32 @@ app.form.addEventListener("submit", function (e) {
     app.getCity(selectValue, inputValue);
   }
 });
+// Functionality to display Menu of brewery. Complete later*********************************
 
-app.getMenu = async (name, parent) => {
-  const menuUrl = new URL(
-    `https://api.documenu.com/v2/restaurants/search/fields?key=a053ac434fb058d22c3615a5990b829b&address=${name}`
-    // `https://api.documenu.com/v2/restaurant/4072702673999819?X-API-KEY="a053ac434fb058d22c3615a5990b829b"`
-  );
-  await fetch(menuUrl)
-    .then((res) => {
-      return res.json();
-    })
-    .then(async (dataSet) => {
-      const restaurantCard = document
-        .createElement("div")
-        .classList.add("restaurantDisplay");
-      const restaurantList = document
-        .createElement("ul")
-        .classList.add("restaurantIndex");
-      await restaurantCard.append(restaurantList);
-      for (let data of dataSet.data) {
-        showRestaurants(data, restaurantList);
-      }
-      parent.append(restaurantCard);
-      // console.log(dataSet);
-    });
-};
+// app.getMenu = async (name, parent) => {
+//   const menuUrl = new URL(
+//     `https://api.documenu.com/v2/restaurants/search/fields?key=a053ac434fb058d22c3615a5990b829b&address=${name}`
+//     // `https://api.documenu.com/v2/restaurant/4072702673999819?X-API-KEY="a053ac434fb058d22c3615a5990b829b"`
+//   );
+//   await fetch(menuUrl)
+//     .then((res) => {
+//       return res.json();
+//     })
+//     .then(async (dataSet) => {
+//       const restaurantCard = document
+//         .createElement("div")
+//         .classList.add("restaurantDisplay");
+//       const restaurantList = document
+//         .createElement("ul")
+//         .classList.add("restaurantIndex");
+//       await restaurantCard.append(restaurantList);
+//       for (let data of dataSet.data) {
+//         showRestaurants(data, restaurantList);
+//       }
+//       parent.append(restaurantCard);
+//       // console.log(dataSet);
+//     });
+// };
 
 const showRestaurants = (dataSet, ul) => {
   const restaurantInfo = document.createElement("li");
