@@ -118,6 +118,7 @@ const geoCodeUrl = (zip) => {
     });
 };
 
+
 // eventLister that calls function that make API call
 app.form.addEventListener("submit", function (e) {
   e.preventDefault();
