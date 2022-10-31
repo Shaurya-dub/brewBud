@@ -437,6 +437,11 @@ h1 {
   max-width: 800px;
 }
 
+.listButton {
+  background-color: none;
+  border: none;
+}
+
 footer {
   background-color: black;
   margin-bottom: 0;

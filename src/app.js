@@ -63,7 +63,6 @@ app.getCity = (selectInput, userInput) => {
       //     app.getMenu(breweryAddress, body);
       //   });
       // });
-      console.log("before loading screen");
       document.querySelector(".loadingScreen").style.display = "none";
     })
     .catch((err) => {
@@ -92,7 +91,7 @@ app.displayFunction = (str) => {
 
   li.innerHTML = `<h2>${str.name}</h2>
     <p>${street}, ${city} ${postalCode}, ${state}</p>
-    <p class="phone"> ${phone}</p> <a href="${site}">${site}</a>`;
+    <p class="phone"> ${phone}</p> <a href="${site}">${site}</a> <button class='listButton'><i class="fa-thin fa-plus"></i></button>`;
 
   ul.appendChild(li);
 };
@@ -182,6 +181,6 @@ const showRestaurants = (dataSet, ul) => {
   restaurantInfo.innerHTML = `<h3> ${restaurantName}</h3>
     <p>${restaurantAddress}</p>
     <p class="phone"> ${restaurantPhone}</p> <a href="${restaurantSite}">${restaurantSite}</a>
-    <p>${restaurantPrice}</p>`;
+    <p>${restaurantPrice}</p>;`
   ul.append(restaurantInfo);
 };
