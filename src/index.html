@@ -18,19 +18,25 @@
       <div class="headWrapper">
         <h1>Brewery Finder</h1>
         <form action="#">
-          <label for="location" class="sr-only"
+          <!-- <label for="location" class="sr-only"
             >Please enter the location you want to search</label
-          >
+          > -->
           <input
             type="text"
             id="location"
             placeholder="Enter location to search"
+            aria-label="Please enter the location you want to search"
             required
           />
-          <label for="select" class="sr-only"
+          <!-- <label for="select" class="sr-only"
             >Please pick how you want your search results filtered</label
+          > -->
+          <select
+            name="select"
+            id="select"
+            aria-label="Please pick how you want your search results filtered"
+            required
           >
-          <select name="select" id="select" required>
             <option value="by_city">City</option>
             <option value="by_state">State</option>
             <option value="by_postal">Zip-Code</option>
