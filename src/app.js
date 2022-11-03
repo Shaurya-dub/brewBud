@@ -7,6 +7,10 @@
 // import { config } from "dotenv";
 // namespace
 const app = {};
+// import { getDatabase, ref, set } from "firebase/database";
+// const database = getDatabase();
+// let database = firebase.database();
+
 // namespace variable
 app.form = document.querySelector("form");
 app.button = document.querySelector("button");
@@ -71,6 +75,7 @@ app.getCity = (selectInput, userInput) => {
     });
 };
 
+
 // append result from API to the page
 app.displayFunction = (str) => {
   const li = document.createElement("li");
@@ -91,10 +96,25 @@ app.displayFunction = (str) => {
 
   li.innerHTML = `<h2>${str.name}</h2>
     <p>${street}, ${city} ${postalCode}, ${state}</p>
-    <p class="phone"> ${phone}</p> <a href="${site}">${site}</a> <button class='listButton'><i class="fa-thin fa-plus"></i></button>`;
+    <p class="phone"> ${phone}</p> <a href="${site}">${site}</a> <button class='listButton'>Button</button>`;
 
   ul.appendChild(li);
 };
+
+app.addBreweryToList = (brewCard) => {
+  //   const db = getDatabase();
+  //  set(ref(db, "users/" + userId), {
+  //    brewery: brewCard
+  //  });
+  console.log("brew", e);
+};
+let breweryButtons = document.querySelectorAll(".listButton");
+breweryButtons.forEach((btn) => {
+  btn.addEventListener("click", function() {
+    e.preventDefault();
+    console.log("click");
+  });
+});
 
 // Netlify function to hide API Key
 // Function sends zipcode entered by user to a geocoding API to turn into lat/long coordinates
