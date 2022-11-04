@@ -101,19 +101,17 @@ app.displayFunction = (str) => {
   ul.appendChild(li);
 };
 
-app.addBreweryToList = (brewCard) => {
+app.addBreweryToList = () => {
   //   const db = getDatabase();
   //  set(ref(db, "users/" + userId), {
   //    brewery: brewCard
   //  });
-  console.log("brew", e);
+  console.log("brew");
 };
-let breweryButtons = document.querySelectorAll(".listButton");
+let buttonList = document.querySelectorAll(".listButton");
+const breweryButtons = [...buttonList]
 breweryButtons.forEach((btn) => {
-  btn.addEventListener("click", function() {
-    e.preventDefault();
-    console.log("click");
-  });
+  btn.addEventListener("click", app.addBreweryToList());
 });
 
 // Netlify function to hide API Key
