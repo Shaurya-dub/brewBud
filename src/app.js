@@ -134,12 +134,12 @@ app.displayFunction = (str) => {
 
 };
 
-app.addBreweryToList = () => {
+app.addBreweryToList = (e) => {
     const db = getDatabase();
    set(ref(db), {
      brewery: 'brewCard'
    });
-  // console.log("brew");
+  console.log("brew",e.target.parentNode.h2);
 };
 // let buttonList = document.querySelectorAll(".listButton");
 // const breweryButtons = [...buttonList]
