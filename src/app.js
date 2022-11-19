@@ -135,11 +135,18 @@ app.displayFunction = (str) => {
 };
 
 app.addBreweryToList = (e) => {
+  let arrayToSend = []
+  const brewCard = [...e.target.parentNode.childNodes];
+// let newArr =brewCard.filter((el) => el)
+brewCard.map((info) => {
+  const innerText = info.innerText;
+  return arrayToSend.push(innerText)});
+  const filteredArr = arrayToSend.filter((el) => el && el !== 'Button')
     const db = getDatabase();
    set(ref(db), {
-     brewery: 'brewCard'
+     brewery: filteredArr
    });
-  console.log("brew",e.target.parentNode.h2);
+  // console.log("brew",filteredArr);
 };
 // let buttonList = document.querySelectorAll(".listButton");
 // const breweryButtons = [...buttonList]
