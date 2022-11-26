@@ -38,13 +38,16 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const fireBaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(fireBaseApp);
+// const analytics = getAnalytics(fireBaseApp);
 const db = getDatabase();
+let refObj = {}
+async function initSnapshot() {
+  await onValue(ref(db),(snapshot) => {
+      const data = snapshot.val();
+      console.log('snapshot', data)
 
-onValue(ref(db),(snapshot) => {
-    const data = snapshot.val();
-    console.log('snapshot', data)
-})
+  })
+}
 
 // namespace variable
 app.form = document.querySelector("form");
@@ -88,6 +91,7 @@ app.getCity = (selectInput, userInput) => {
       if (brewery.length < 1) {
         throw new Error();
       }
+      console.log('brewery', brewery)
       brewery.forEach((result) => {
         app.displayFunction(result);
         let buttonList = document.querySelectorAll(".listButton");
@@ -141,21 +145,32 @@ app.displayFunction = (str) => {
 };
 
 app.addBreweryToList = (e) => {
-  let arrayToSend = [];
+  let objToSend = {};
+  const keyArray = ['Name', 'Address', 'Phone', 'Website']
   const brewCard = [...e.target.parentNode.childNodes];
   // let newArr =brewCard.filter((el) => el)
-  brewCard.map((info) => {
-    const innerText = info.innerText;
-    return arrayToSend.push(innerText);
-  });
-  const filteredArr = arrayToSend.filter((el) => el && el !== "Button");
-  // const db = getDatabase();
+  const newArr = brewCard
+    .map((info) => {
+      return info.innerText;
+      // return objToSend.push(innerText);
+    })
+    .filter((el) => el && el !== "Button");
+    for (let i=0; i < keyArray.length; i++) {
+      let objKey = keyArray[i]
+      objToSend[objKey] = newArr[i]
+    }
+  // const filteredArr = objToSend.filter((el) => el && el !== "Button");
+  const db = getDatabase();
   const postListRef = ref(db);
   const newPostRef = push(postListRef);
-  set(newPostRef, {
-     filteredArr
+  set(newPostRef, { 
+    Address:newArr[0],
+    Name:newArr[1],
+    Phone:newArr[2],
+    Website:newArr[3]
+    //  objToSend
   });
-  // console.log("brew",filteredArr);
+  // console.log("brew",objToSend);
 };
 // let buttonList = document.querySelectorAll(".listButton");
 // const breweryButtons = [...buttonList]
