@@ -7,39 +7,40 @@
 // import { config } from "dotenv";
 // namespace
 const app = {};
-// import firebaseApp from "./firebase";
+import firebaseApp from "./firebase.js";
 
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
-import {
-  getDatabase,
-  ref,
-  set,
-  push,
-  onValue,
-} from "https://www.gstatic.com/firebasejs/9.14.0/firebase-database.js";
+// import { initializeApp } from "./node_modules/firebase/app";
+// import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
+// import {
+//   getDatabase,
+//   ref,
+//   set,
+//   push,
+//   onValue,
+// } from "./node_modules/firebase/database";
+// import firebaseApp from "./firebase";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBOTN-ktAaGhBMYKy67ANjNF9MFPRLQeIY",
-  authDomain: "brewbud-80fd3.firebaseapp.com",
-  databaseURL: "https://brewbud-80fd3-default-rtdb.firebaseio.com",
-  projectId: "brewbud-80fd3",
-  storageBucket: "brewbud-80fd3.appspot.com",
-  messagingSenderId: "303106774801",
-  appId: "1:303106774801:web:6da98e2516b0eedb7a9eb0",
-  measurementId: "G-QBZKLD2Z1K",
-};
+// const firebaseConfig = {
+//   apiKey: "AIzaSyBOTN-ktAaGhBMYKy67ANjNF9MFPRLQeIY",
+//   authDomain: "brewbud-80fd3.firebaseapp.com",
+//   databaseURL: "https://brewbud-80fd3-default-rtdb.firebaseio.com",
+//   projectId: "brewbud-80fd3",
+//   storageBucket: "brewbud-80fd3.appspot.com",
+//   messagingSenderId: "303106774801",
+//   appId: "1:303106774801:web:6da98e2516b0eedb7a9eb0",
+//   measurementId: "G-QBZKLD2Z1K",
+// };
 
 // Initialize Firebase
 const fireBaseApp = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(fireBaseApp);
-const db = getDatabase();
+const db = getDatabase(fireBaseApp);
 let refObj = {}
 async function initSnapshot() {
   await onValue(ref(db),(snapshot) => {

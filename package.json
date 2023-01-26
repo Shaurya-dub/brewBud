@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "netlify": "./node_modules/.bin/netlify",
-    "debug": "netlify dev --inspect"
+    "debug": "netlify dev --inspect",
+    "build": "webpack --mode=development"
   },
   "repository": {
     "type": "git",
@@ -18,9 +19,12 @@
   },
   "homepage": "https://github.com/Shaurya-dub/brewBud#readme",
   "devDependencies": {
-    "netlify-cli": "^6.14.19"
+    "netlify-cli": "^6.14.19",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "axios": "^0.24.0"
+    "axios": "^0.24.0",
+    "firebase": "^9.16.0"
   }
 }
