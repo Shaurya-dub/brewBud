@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, push, onValue } from "firebase/database";
 import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -21,8 +21,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
+const fireBaseApp = initializeApp(firebaseConfig);
 const db = getDatabase(fireBaseApp);
 
-export default  { firebaseApp, db }
+export { fireBaseApp, db, ref, set, push, onValue }
 // const analytics = getAnalytics(app);

@@ -7,7 +7,7 @@
 // import { config } from "dotenv";
 // namespace
 const app = {};
-import firebaseApp from "./firebase.js";
+import { fireBaseApp, db, ref, set, onValue } from "./firebase.js";
 
 // Import the functions you need from the SDKs you need
 // import { initializeApp } from "./node_modules/firebase/app";
@@ -38,28 +38,43 @@ import firebaseApp from "./firebase.js";
 // };
 
 // Initialize Firebase
-const fireBaseApp = initializeApp(firebaseConfig);
+// const fireBaseApp = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(fireBaseApp);
-const db = getDatabase(fireBaseApp);
-let refObj = {}
-async function initSnapshot() {
-  await onValue(ref(db),(snapshot) => {
-      const data = snapshot.val();
-      console.log('snapshot', data)
+// const db = getDatabase(fireBaseApp);
+// let refObj = {}
 
-  })
-}
-
-// namespace variable
+// namespace variables
 app.form = document.querySelector("form");
 app.button = document.querySelector("button");
 app.body = document.querySelector("body");
 // app.menuButton = document.querySelector(".seeMenu");
 
 const ul = document.querySelector(".breweryList");
+const savedBreweries = document.querySelector(".savedBreweries");
+
+let setofBreweries = new Set();
 // select the select element on html
 // capture the value
 // add the value to the endpoint
+app.initSnapshot = async () => {
+  await onValue(ref(db), (snapshot) => {
+    const data = snapshot.val();
+    console.log("snapshot", data);
+    savedBreweries.innerHTML = "";
+    for (let brewery in data.setofBreweries) {
+      let savedBreweryCard = document.createElement("li");
+      savedBreweryCard.innerHTML = `<h3>${data.setofBreweries[brewery].Name}</h3>`;
+      console.log("saved", savedBreweryCard);
+      savedBreweries.append(savedBreweryCard);
+      let objectForSet = {};
+      objectForSet[data[brewery].Name] = data[brewery];
+      setofBreweries.add(objectForSet);
+    }
+    console.log("snap", setofBreweries);
+  });
+};
+
+app.initSnapshot();
 
 // Check for values from API call return null
 app.nullChecker = (val, term) => {
@@ -92,7 +107,7 @@ app.getCity = (selectInput, userInput) => {
       if (brewery.length < 1) {
         throw new Error();
       }
-      console.log('brewery', brewery)
+      console.log("brewery", brewery);
       brewery.forEach((result) => {
         app.displayFunction(result);
         let buttonList = document.querySelectorAll(".listButton");
@@ -146,8 +161,9 @@ app.displayFunction = (str) => {
 };
 
 app.addBreweryToList = (e) => {
+  console.log("running");
   let objToSend = {};
-  const keyArray = ['Name', 'Address', 'Phone', 'Website']
+  const keyArray = ["Name", "Address", "Phone", "Website"];
   const brewCard = [...e.target.parentNode.childNodes];
   // let newArr =brewCard.filter((el) => el)
   const newArr = brewCard
@@ -156,28 +172,31 @@ app.addBreweryToList = (e) => {
       // return objToSend.push(innerText);
     })
     .filter((el) => el && el !== "Button");
-    for (let i=0; i < keyArray.length; i++) {
-      let objKey = keyArray[i]
-      objToSend[objKey] = newArr[i]
-    }
+
+  for (let i = 0; i < keyArray.length; i++) {
+    let objKey = keyArray[i];
+    objToSend[objKey] = newArr[i];
+  }
+  // setofBreweries.add(objToSend)
+  setofBreweries[objToSend.Name] = objToSend;
+  console.log("set", setofBreweries);
+
   // const filteredArr = objToSend.filter((el) => el && el !== "Button");
-  const db = getDatabase();
+  // const db = getDatabase();
+
   const postListRef = ref(db);
-  const newPostRef = push(postListRef);
-  set(newPostRef, { 
-    Address:newArr[0],
-    Name:newArr[1],
-    Phone:newArr[2],
-    Website:newArr[3]
+  // // const newPostRef = push(postListRef);
+  set(postListRef, {
+    setofBreweries,
+    // Name: newArr[0],
+    // Address: newArr[1],
+    // Phone: newArr[2],
+    // Website: newArr[3],
     //  objToSend
   });
-  // console.log("brew",objToSend);
 };
-// let buttonList = document.querySelectorAll(".listButton");
-// const breweryButtons = [...buttonList]
-// breweryButtons.forEach((btn) => {
-//   btn.addEventListener("click", app.addBreweryToList());
-// });
+
+app.breweryListDisplay = () => {};
 
 // Netlify function to hide API Key
 // Function sends zipcode entered by user to a geocoding API to turn into lat/long coordinates

@@ -442,6 +442,11 @@ h1 {
   border: none;
 }
 
+.savedBreweries {
+  position: fixed;
+  right: 5px;
+}
+
 footer {
   background-color: black;
   margin-bottom: 0;
