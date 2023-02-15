@@ -24,6 +24,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.15.1",
     "axios": "^0.24.0",
     "firebase": "^9.16.0"
   }

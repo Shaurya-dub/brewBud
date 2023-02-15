@@ -8,6 +8,7 @@
 // namespace
 const app = {};
 import { fireBaseApp, db, ref, set, onValue } from "./firebase.js";
+import { initMap, calcRoute } from "./maps.js";
 
 // Import the functions you need from the SDKs you need
 // import { initializeApp } from "./node_modules/firebase/app";
@@ -52,26 +53,72 @@ app.body = document.querySelector("body");
 const ul = document.querySelector(".breweryList");
 const savedBreweries = document.querySelector(".savedBreweries");
 
+// const calcRoute = (waypointArr) => {
+//   let map = new google.maps.Map(document.getElementById("map"), mapOptions);
+//   let directionsService = new google.maps.DirectionsService();
+//   let directionsRenderer = new google.maps.DirectionsRenderer();
+//   let start = "9114 Oak Pride Court, Tampa, FL";
+//   let end = "9114 Oak Pride Court, Tampa, FL";
+//   let request = {
+//     origin: start,
+//     destination: end,
+//     travelMode: "DRIVING",
+//     waypoints: waypointArr,
+//   };
+//   directionsService.route(request, function (result, status) {
+//     if (status == "OK") {
+//       directionsRenderer.setDirections(result);
+//     }
+//   });
+// };
+
 let setofBreweries = new Set();
 // select the select element on html
 // capture the value
 // add the value to the endpoint
 app.initSnapshot = async () => {
+  // console.log("initSnap");
+  let brewDirectionArray = [];
   await onValue(ref(db), (snapshot) => {
+    brewDirectionArray = [];
     const data = snapshot.val();
     console.log("snapshot", data);
     savedBreweries.innerHTML = "";
+    if (data.setofBreweries) {
+      document.querySelector(".roadTripList").classList.remove("roadTripEmpty");
+    } else if(!data){
+      document.querySelector(".roadTripList").classList.add("roadTripEmpty");
+    }
     for (let brewery in data.setofBreweries) {
       let savedBreweryCard = document.createElement("li");
-      savedBreweryCard.innerHTML = `<h3>${data.setofBreweries[brewery].Name}</h3>`;
-      console.log("saved", savedBreweryCard);
+      savedBreweryCard.innerHTML = `<h3 class="savedBrewCard">${data.setofBreweries[brewery].Name}</h3>`;
+      // console.log("saved", savedBreweryCard);
       savedBreweries.append(savedBreweryCard);
-      let objectForSet = {};
-      objectForSet[data[brewery].Name] = data[brewery];
-      setofBreweries.add(objectForSet);
+      // let objectForSet = {};
+      // objectForSet[data.setofBreweries[brewery].Name] = data.setofBreweries[brewery];
+      // setofBreweries.add(objectForSet);
+      setofBreweries[data.setofBreweries[brewery].Name] =
+        data.setofBreweries[brewery];
+      let directionObj = {
+        location: data.setofBreweries[brewery].Address,
+        stopover: true,
+      };
+
+      brewDirectionArray.push(directionObj);
     }
-    console.log("snap", setofBreweries);
+    // console.log("snap", brewDirectionArray);
+    calcRoute(brewDirectionArray);
   });
+
+  // calcRoute(brewDirectionArray);
+  // loader.load().then(() => {
+  //   let map = new google.maps.Map(document.getElementById("map"), {
+  //     center: { lat: -34.397, lng: 150.644 },
+  //     zoom: 8,
+  //   });
+  //   calcRoute(brewDirectionArray);
+  // })
+  // await initMap();
 };
 
 app.initSnapshot();
@@ -107,7 +154,7 @@ app.getCity = (selectInput, userInput) => {
       if (brewery.length < 1) {
         throw new Error();
       }
-      console.log("brewery", brewery);
+      // console.log("brewery", brewery);
       brewery.forEach((result) => {
         app.displayFunction(result);
         let buttonList = document.querySelectorAll(".listButton");
@@ -194,6 +241,12 @@ app.addBreweryToList = (e) => {
     // Website: newArr[3],
     //  objToSend
   });
+  // loader.load().then(() => {
+  //   let map = new google.maps.Map(document.getElementById("map"), {
+  //     center: { lat: -34.397, lng: 150.644 },
+  //     zoom: 8,
+  //   });
+  // });
 };
 
 app.breweryListDisplay = () => {};
@@ -261,27 +314,27 @@ app.form.addEventListener("submit", function (e) {
 //     });
 // };
 
-const showRestaurants = (dataSet, ul) => {
-  const restaurantInfo = document.createElement("li");
-  // .classList.add("restaurantIndex");
-  const restaurantName = app.nullChecker(
-    dataSet.restaurant_name,
-    "Restaurant Name"
-  );
-  const restaurantAddress = app.nullChecker(
-    dataSet.address.formatted,
-    "Address"
-  );
-  const restaurantPhone = app.nullChecker(
-    dataSet.restaurant_phone,
-    "Phone Number"
-  );
-  const restaurantSite = app.nullChecker(dataSet.restaurant_website, "Website");
-  const restaurantPrice = app.nullChecker(dataSet.price_range, "Price Range");
+// const showRestaurants = (dataSet, ul) => {
+//   const restaurantInfo = document.createElement("li");
+//   // .classList.add("restaurantIndex");
+//   const restaurantName = app.nullChecker(
+//     dataSet.restaurant_name,
+//     "Restaurant Name"
+//   );
+//   const restaurantAddress = app.nullChecker(
+//     dataSet.address.formatted,
+//     "Address"
+//   );
+//   const restaurantPhone = app.nullChecker(
+//     dataSet.restaurant_phone,
+//     "Phone Number"
+//   );
+//   const restaurantSite = app.nullChecker(dataSet.restaurant_website, "Website");
+//   const restaurantPrice = app.nullChecker(dataSet.price_range, "Price Range");
 
-  restaurantInfo.innerHTML = `<h3> ${restaurantName}</h3>
-    <p>${restaurantAddress}</p>
-    <p class="phone"> ${restaurantPhone}</p> <a href="${restaurantSite}">${restaurantSite}</a>
-    <p>${restaurantPrice}</p>;`;
-  ul.append(restaurantInfo);
-};
+//   restaurantInfo.innerHTML = `<h3> ${restaurantName}</h3>
+//     <p>${restaurantAddress}</p>
+//     <p class="phone"> ${restaurantPhone}</p> <a href="${restaurantSite}">${restaurantSite}</a>
+//     <p>${restaurantPrice}</p>;`;
+//   ul.append(restaurantInfo);
+// };

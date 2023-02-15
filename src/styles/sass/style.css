@@ -442,9 +442,28 @@ h1 {
   border: none;
 }
 
-.savedBreweries {
+.roadTripList {
   position: fixed;
   right: 5px;
+  top: 5px;
+  background-color: rgba(94, 90, 90, 0.569);
+  color: #dba3d4;
+  border: #fdfdfd;
+  border-radius: 15px;
+}
+
+.roadTripList ul {
+  list-style: none;
+}
+
+.roadTripList.roadTripEmpty {
+  display: none;
+}
+
+#map {
+  height: 60%;
+  width: 60%;
+  position: static;
 }
 
 footer {
