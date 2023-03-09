@@ -7,7 +7,7 @@
 // import { config } from "dotenv";
 // namespace
 const app = {};
-import { fireBaseApp, db, ref, set, onValue } from "./firebase.js";
+import { fireBaseApp, db, ref, set, remove, onValue } from "./firebase.js";
 import { initMap, calcRoute } from "./maps.js";
 
 // Import the functions you need from the SDKs you need
@@ -48,6 +48,8 @@ import { initMap, calcRoute } from "./maps.js";
 app.form = document.querySelector("form");
 app.button = document.querySelector("button");
 app.body = document.querySelector("body");
+app.roadTripBtn = document.querySelector(".roadTripBtn");
+app.clearListBtn = document.querySelector(".clearListBtn");
 // app.menuButton = document.querySelector(".seeMenu");
 
 const ul = document.querySelector(".breweryList");
@@ -71,52 +73,106 @@ const savedBreweries = document.querySelector(".savedBreweries");
 //     }
 //   });
 // };
+const removeBreweryFromDatabase = async (e) => {
+  // let postListRef;
+  // let brewName;
+  if (e) {
+    const brewName = e.target.attributes[0].value;
+    console.log("e", e.target.attributes);
+    const postListRef = ref(db, `setofBreweries/${brewName}`);
+    // .then(() => {
+    //   app.addedBreweryChecker
+    // })
+    await remove(postListRef).catch((err) => {
+      console.error("something went wrong", err);
+    });
+    console.log("remove response", setofBreweries);
+    app.addedBreweryChecker(brewName);
+  }
+  // else {
+  //   postListRef = ref(db, `setofBreweries`);
+  // }
+};
 
-let setofBreweries = new Set();
+let setofBreweries = {};
+app.brewDirectionArray = [];
+// look at later (do we really need this refObj?)
+app.breweryRefObj = {};
 // select the select element on html
 // capture the value
 // add the value to the endpoint
 app.initSnapshot = async () => {
-  // console.log("initSnap");
-  let brewDirectionArray = [];
+  console.log("initSnap");
   await onValue(ref(db), (snapshot) => {
-    brewDirectionArray = [];
+    setofBreweries = {};
+    app.brewDirectionArray = [];
+    app.breweryRefObj = {};
     const data = snapshot.val();
     console.log("snapshot", data);
+    console.log("set after snapshot", setofBreweries);
+    // look at later (maybe make more efficient)
     savedBreweries.innerHTML = "";
-    if (data.setofBreweries) {
-      document.querySelector(".roadTripList").classList.remove("roadTripEmpty");
-    } else if(!data){
-      document.querySelector(".roadTripList").classList.add("roadTripEmpty");
+    if (data) {
+      document.querySelector(".roadTripList").style.display = "block";
+    } else {
+      // console.log("none");
+      document.querySelector(".roadTripList").style.display = "none";
     }
-    for (let brewery in data.setofBreweries) {
-      let savedBreweryCard = document.createElement("li");
-      savedBreweryCard.innerHTML = `<h3 class="savedBrewCard">${data.setofBreweries[brewery].Name}</h3>`;
-      // console.log("saved", savedBreweryCard);
-      savedBreweries.append(savedBreweryCard);
-      // let objectForSet = {};
-      // objectForSet[data.setofBreweries[brewery].Name] = data.setofBreweries[brewery];
-      // setofBreweries.add(objectForSet);
-      setofBreweries[data.setofBreweries[brewery].Name] =
-        data.setofBreweries[brewery];
-      let directionObj = {
-        location: data.setofBreweries[brewery].Address,
-        stopover: true,
-      };
+    if (data) {
+      for (let brewery in data.setofBreweries) {
+        let savedBreweryCard = document.createElement("li");
+        savedBreweryCard.innerHTML = `<h3 class="savedBrewCard">${data.setofBreweries[brewery].Name}</h3>`;
+        let removeButton = document.createElement("button");
+        removeButton.innerText = "X";
+        removeButton.setAttribute(
+          "data-reference",
+          data.setofBreweries[brewery].id
+        );
+        removeButton.addEventListener("click", removeBreweryFromDatabase);
 
-      brewDirectionArray.push(directionObj);
+        savedBreweryCard.append(removeButton);
+        app.breweryRefObj[data.setofBreweries[brewery].id] =
+          data.setofBreweries[brewery].Name;
+        // console.log("saved", savedBreweryCard);
+
+        savedBreweries.append(savedBreweryCard);
+        // let objectForSet = {};
+        // objectForSet[data.setofBreweries[brewery].Name] = data.setofBreweries[brewery];
+        // setofBreweries.add(objectForSet);
+        // look at later (readability)
+        setofBreweries[data.setofBreweries[brewery].id] =
+          data.setofBreweries[brewery];
+        let directionObj = {
+          location: data.setofBreweries[brewery].Address,
+          stopover: true,
+        };
+        console.log("set of breweries after adding", setofBreweries);
+
+        app.brewDirectionArray.push(directionObj);
+        if (
+          document.querySelector(
+            `[data-brewery="${data.setofBreweries[brewery].id}"]`
+          )
+        ) {
+          app.addedBreweryChecker(data.setofBreweries[brewery].id);
+        }
+      }
+    } else {
+      document.querySelectorAll(".listButton").forEach((btn) => {
+        btn.innerHTML = `+`;
+      });
     }
-    // console.log("snap", brewDirectionArray);
-    calcRoute(brewDirectionArray);
+    // console.log("snap", app.breweryRefObj);
+    // calcRoute(app.brewDirectionArray);
   });
 
-  // calcRoute(brewDirectionArray);
+  // calcRoute(app.brewDirectionArray);
   // loader.load().then(() => {
   //   let map = new google.maps.Map(document.getElementById("map"), {
   //     center: { lat: -34.397, lng: 150.644 },
   //     zoom: 8,
   //   });
-  //   calcRoute(brewDirectionArray);
+  //   calcRoute(app.brewDirectionArray);
   // })
   // await initMap();
 };
@@ -129,6 +185,29 @@ app.nullChecker = (val, term) => {
     return `${term} is unavailable`;
   } else {
     return `${val}`;
+  }
+};
+
+// Disable "add" button for breweries already in database
+
+app.addedBreweryChecker = (breweryId, inDisplayFunc) => {
+  const i = breweryId;
+  if (app.breweryRefObj[breweryId]) {
+    if (inDisplayFunc) {
+      return true;
+    }
+    try {
+      document.querySelector(
+        `[data-brewery="${i}"]`
+      ).innerHTML = `<img class="addedCheck" src="./media/whiteCheck.png" alt="brewery added to list">`;
+    } catch {
+      console.error("something went wrong");
+    }
+  } else {
+    if (inDisplayFunc) {
+      return false;
+    }
+    document.querySelector(`[data-brewery="${i}"]`).innerHTML = `+`;
   }
 };
 
@@ -157,12 +236,16 @@ app.getCity = (selectInput, userInput) => {
       // console.log("brewery", brewery);
       brewery.forEach((result) => {
         app.displayFunction(result);
+        // Look at later (do we need to spread this list?)
         let buttonList = document.querySelectorAll(".listButton");
         const breweryButtons = [...buttonList];
         breweryButtons.forEach((btn) => {
           btn.addEventListener("click", app.addBreweryToList);
+          // console.log("button", btn);
+          // console.log("list of set", setofBreweries);
         });
       });
+      // app.addedBreweryChecker();
       // Functionality to display Menu of brewery. Complete later*********************************
       // const menuButtons = document.querySelectorAll(".seeMenu");
       // menuButtons.forEach((button) => {
@@ -187,45 +270,55 @@ app.displayFunction = (str) => {
   const li = document.createElement("li");
   li.setAttribute("tabindex", 0);
   li.classList.add("breweryCard");
+  // look at later (redundant h2)
   const h2 = document.createElement("h2");
   h2.append(str.name);
   li.appendChild(h2);
   setTimeout((e) => {
     li.classList.add("fade");
   }, 50);
+  const name = str.name.replace(/[^a-zA-Z0-9 ]/g, "");
   const street = app.nullChecker(str.street, "Street address");
   const city = app.nullChecker(str.city, "City info");
   const state = app.nullChecker(str.state, "State info");
   const postalCode = app.nullChecker(str.postal_code, "Postal Code");
   const phone = app.nullChecker(str.phone, "Phone Number");
   const site = app.nullChecker(str.website_url, "Website");
-
-  li.innerHTML = `<h2>${str.name}</h2>
+  const buttonChecker = app.addedBreweryChecker(str.id, true)
+    ? `<img class="addedCheck" src="./media/whiteCheck.png" alt="brewery added to list">`
+    : `+`;
+  li.innerHTML = `<h2>${name}</h2>
     <p>${street}, ${city} ${postalCode}, ${state}</p>
-    <p class="phone"> ${phone}</p> <a href="${site}">${site}</a> <button class='listButton'>Button</button>`;
+    <p class="phone"> ${phone}</p> <div class='buttonLinkHolder'><a href="${site}">${site}</a> <button class='listButton' data-brewery="${str.id}">${buttonChecker}</button> </div> `;
 
   ul.appendChild(li);
+  // app.addedBreweryChecker(str.id);
+  // console.log('id is',str.id )
 };
 
-app.addBreweryToList = (e) => {
-  console.log("running");
+app.addBreweryToList = function (e) {
+  // console.log("running", e.target.data);
   let objToSend = {};
-  const keyArray = ["Name", "Address", "Phone", "Website"];
-  const brewCard = [...e.target.parentNode.childNodes];
+  const keyArray = ["Name", "Address", "Phone", "Website", "id"];
+  const brewCard = [...e.target.parentNode.parentNode.childNodes];
+  // console.log("brewCard", this.getAttribute('data-brewery'));
   // let newArr =brewCard.filter((el) => el)
+  const buttonAttribute = this.getAttribute("data-brewery");
+  // app.addBreweryToList(buttonAttribute);
   const newArr = brewCard
     .map((info) => {
       return info.innerText;
       // return objToSend.push(innerText);
     })
-    .filter((el) => el && el !== "Button");
-
+    .filter((el) => el && el !== "+");
+  newArr.push(buttonAttribute);
+  // console.log('newArr is', newArr);
+  // look at later (can we make this more efficient in regards to looping?)
   for (let i = 0; i < keyArray.length; i++) {
     let objKey = keyArray[i];
     objToSend[objKey] = newArr[i];
   }
-  // setofBreweries.add(objToSend)
-  setofBreweries[objToSend.Name] = objToSend;
+  setofBreweries[objToSend.id] = objToSend;
   console.log("set", setofBreweries);
 
   // const filteredArr = objToSend.filter((el) => el && el !== "Button");
@@ -240,6 +333,9 @@ app.addBreweryToList = (e) => {
     // Phone: newArr[2],
     // Website: newArr[3],
     //  objToSend
+  }).then(() => {
+    // console.log("siccess");
+    // app.addedBreweryChecker(buttonAttribute);
   });
   // loader.load().then(() => {
   //   let map = new google.maps.Map(document.getElementById("map"), {
@@ -250,6 +346,15 @@ app.addBreweryToList = (e) => {
 };
 
 app.breweryListDisplay = () => {};
+
+// const removeBreweryFromDatabase = (brewName) => {
+//   //   const postListRef = ref(db);
+//   // remove(brewName).then((res)=>{
+//   //   console.log('removed')
+//   //   console.log(res)
+//   // })
+//   console.log('e is',brewName )
+// }
 
 // Netlify function to hide API Key
 // Function sends zipcode entered by user to a geocoding API to turn into lat/long coordinates
@@ -264,7 +369,7 @@ const geoCodeUrl = (zip) => {
       const coordinates = data.results[0].location;
       const { lat, lng } = coordinates;
       const latAndLng = `${lat.toFixed(4)},${lng.toFixed(4)}`;
-      console.log(latAndLng);
+      // console.log(latAndLng);
       app.getCity("by_dist", latAndLng);
     })
     .catch((err) => {
@@ -277,6 +382,7 @@ app.form.addEventListener("submit", function (e) {
   e.preventDefault();
   const selectValue = document.querySelector("select").value;
   const inputValue = document.querySelector('input[type="text"]').value;
+  // look at later (should probably be in display function)
   ul.innerHTML = "";
   // original API will only search brewery at the exact zipcode provided by user
   // instead of showing brewery nearby so zipcode must be converted to coordinate by making additinal API call
@@ -287,6 +393,29 @@ app.form.addEventListener("submit", function (e) {
     app.getCity(selectValue, inputValue);
   }
 });
+
+app.roadTripBtn.addEventListener("click", (e) => {
+  // e.preventDefault();
+  calcRoute(app.brewDirectionArray);
+});
+
+app.clearListBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+  // removeBreweryFromDatabase();
+  let postListRef = ref(db, `setofBreweries`);
+  await remove(postListRef).catch((e) => {
+    console.error(e);
+  });
+  // document.querySelectorAll('.listButton').forEach((btn) => {
+  //   btn.innerHTML = `+`
+  // })
+  // const keys = Object.keys(app.breweryRefObj);
+  // keys.forEach((key) => {
+  //   console.log('key',key)
+  //   app.addedBreweryChecker(key);
+  // });
+});
+
 // Functionality to display Menu of brewery. Complete later*********************************
 
 // app.getMenu = async (name, parent) => {

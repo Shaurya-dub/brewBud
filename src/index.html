@@ -10,6 +10,10 @@
       href="https://fonts.googleapis.com/css2?family=Chathura:wght@300&family=Source+Sans+Pro:wght@600&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
     <title>Brewery Finder</title>
   </head>
   <body>
@@ -55,13 +59,11 @@
     <!-- main starts here -->
     <main>
       <div class="wrapper">
-        <div id="map">
-          
-        </div>
+        <div id="map"></div>
         <div class="roadTripList roadTripEmpty">
           <ul class="savedBreweries"></ul>
-          <button>Clear List</button>
-          <button>Roadtrip</button>
+          <button class="clearListBtn">Clear List</button>
+          <button class="roadTripBtn">Roadtrip</button>
         </div>
         <ul class="breweryList"></ul>
       </div>
@@ -71,6 +73,9 @@
     <script type="module" src="../dist/bundle.js"></script>
 
     <!-- <script type="module" src="firebase.js"></script> -->
-    <script src="https://kit.fontawesome.com/4129e3b163.js" crossorigin="anonymous"></script>
+    <script
+      src="https://kit.fontawesome.com/4129e3b163.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>

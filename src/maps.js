@@ -1,5 +1,49 @@
+// // import {
+// //   Loader,
+// //   DirectionsService,
+// //   DirectionsRenderer,
+// // } from "@googlemaps/js-api-loader";
+// // const loader = new Loader({
+// //   apiKey: "AIzaSyBGPjpP06ZNZkHuiVa5sC7nz6fwFrTGnvU",
+// //   version: "weekly",
+// // //   ...additionalOptions,
+// // });
 
+// // loader.load().then(() => {
+// //   map = new google.maps.Map(document.getElementById("map"), {
+// //     center: { lat: -34.397, lng: 150.644 },
+// //     zoom: 8,
+// //   });
+// //   map =
+// //   initMap()
+// //   calcRoute()
 
+// // });
+
+// // function initMap() {
+// //   let chicago = new google.maps.LatLng(41.850033, -87.6500523);
+// //   let mapOptions = {
+// //     zoom: 7,
+// //     center: chicago,
+// //   };
+// //   var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+// //   directionsRenderer.setMap(map);
+// // }
+
+// // export {loader,calcRoute, initMap}
+
+// var script = document.createElement("script");
+// script.src =
+//   "https://maps.googleapis.com/maps/api/js?libraries=places,visualization&key=AIzaSyBGPjpP06ZNZkHuiVa5sC7nz6fwFrTGnvU&v=weekly&callback=initMap";
+// script.async = true;
+
+// window.initMap = function () {
+//   // Google Maps JS API is loaded and available
+//   map = new google.maps.Map(document.getElementById("map"), {
+//     center: { lat: -34.397, lng: 150.644 },
+//     zoom: 8,
+//   });
+// };
 
 // function calcRoute(brewDirectionArray) {
 //   directionsService = new google.maps.DirectionsService();
@@ -56,7 +100,7 @@
     ? console.warn(p + " only loads once. Ignoring:", g)
     : (d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)));
 })({
-  key: "",
+  key: "AIzaSyBGPjpP06ZNZkHuiVa5sC7nz6fwFrTGnvU",
   v: "beta",
   // Add other bootstrap parameters as needed, using camel case.
 });

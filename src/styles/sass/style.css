@@ -438,8 +438,10 @@ h1 {
 }
 
 .listButton {
-  background-color: none;
+  background-color: transparent;
   border: none;
+  color: ivory;
+  max-width: 70px;
 }
 
 .roadTripList {
@@ -458,6 +460,10 @@ h1 {
 
 .roadTripList.roadTripEmpty {
   display: none;
+}
+
+.addedCheck {
+  width: 100%;
 }
 
 #map {
