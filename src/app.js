@@ -8,7 +8,7 @@
 // namespace
 const app = {};
 import { fireBaseApp, db, ref, set, remove, onValue } from "./firebase.js";
-import { initMap, calcRoute } from "./maps.js";
+import calcRoute from "./maps.js";
 
 // Import the functions you need from the SDKs you need
 // import { initializeApp } from "./node_modules/firebase/app";
@@ -50,6 +50,7 @@ app.button = document.querySelector("button");
 app.body = document.querySelector("body");
 app.roadTripBtn = document.querySelector(".roadTripBtn");
 app.clearListBtn = document.querySelector(".clearListBtn");
+app.mapHolder = document.querySelector(".mapHolder");
 // app.menuButton = document.querySelector(".seeMenu");
 
 const ul = document.querySelector(".breweryList");
@@ -394,9 +395,10 @@ app.form.addEventListener("submit", function (e) {
   }
 });
 
-app.roadTripBtn.addEventListener("click", (e) => {
+app.roadTripBtn.addEventListener("click", async (e) => {
   // e.preventDefault();
-  calcRoute(app.brewDirectionArray);
+  await calcRoute(app.brewDirectionArray);
+  app.mapHolder.classList.add("showMap");
 });
 
 app.clearListBtn.addEventListener("click", async (e) => {
