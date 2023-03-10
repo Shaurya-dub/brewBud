@@ -10,40 +10,6 @@ const app = {};
 import { fireBaseApp, db, ref, set, remove, onValue } from "./firebase.js";
 import calcRoute from "./maps.js";
 
-// Import the functions you need from the SDKs you need
-// import { initializeApp } from "./node_modules/firebase/app";
-// import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
-// import {
-//   getDatabase,
-//   ref,
-//   set,
-//   push,
-//   onValue,
-// } from "./node_modules/firebase/database";
-// import firebaseApp from "./firebase";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBOTN-ktAaGhBMYKy67ANjNF9MFPRLQeIY",
-//   authDomain: "brewbud-80fd3.firebaseapp.com",
-//   databaseURL: "https://brewbud-80fd3-default-rtdb.firebaseio.com",
-//   projectId: "brewbud-80fd3",
-//   storageBucket: "brewbud-80fd3.appspot.com",
-//   messagingSenderId: "303106774801",
-//   appId: "1:303106774801:web:6da98e2516b0eedb7a9eb0",
-//   measurementId: "G-QBZKLD2Z1K",
-// };
-
-// Initialize Firebase
-// const fireBaseApp = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(fireBaseApp);
-// const db = getDatabase(fireBaseApp);
-// let refObj = {}
-
 // namespace variables
 app.form = document.querySelector("form");
 app.button = document.querySelector("button");
@@ -51,29 +17,12 @@ app.body = document.querySelector("body");
 app.roadTripBtn = document.querySelector(".roadTripBtn");
 app.clearListBtn = document.querySelector(".clearListBtn");
 app.mapHolder = document.querySelector(".mapHolder");
+app.mapCloseBtn = document.querySelector(".mapCloseBtn");
 // app.menuButton = document.querySelector(".seeMenu");
 
 const ul = document.querySelector(".breweryList");
 const savedBreweries = document.querySelector(".savedBreweries");
 
-// const calcRoute = (waypointArr) => {
-//   let map = new google.maps.Map(document.getElementById("map"), mapOptions);
-//   let directionsService = new google.maps.DirectionsService();
-//   let directionsRenderer = new google.maps.DirectionsRenderer();
-//   let start = "9114 Oak Pride Court, Tampa, FL";
-//   let end = "9114 Oak Pride Court, Tampa, FL";
-//   let request = {
-//     origin: start,
-//     destination: end,
-//     travelMode: "DRIVING",
-//     waypoints: waypointArr,
-//   };
-//   directionsService.route(request, function (result, status) {
-//     if (status == "OK") {
-//       directionsRenderer.setDirections(result);
-//     }
-//   });
-// };
 const removeBreweryFromDatabase = async (e) => {
   // let postListRef;
   // let brewName;
@@ -113,16 +62,16 @@ app.initSnapshot = async () => {
     console.log("set after snapshot", setofBreweries);
     // look at later (maybe make more efficient)
     savedBreweries.innerHTML = "";
-    if (data) {
-      document.querySelector(".roadTripList").style.display = "block";
-    } else {
-      // console.log("none");
-      document.querySelector(".roadTripList").style.display = "none";
-    }
+    // if (data) {
+    // } else {
+    //   // console.log("none");
+    //   document.querySelector(".roadTripList").style.display = "none";
+    // }
     if (data) {
       for (let brewery in data.setofBreweries) {
         let savedBreweryCard = document.createElement("li");
         savedBreweryCard.innerHTML = `<h3 class="savedBrewCard">${data.setofBreweries[brewery].Name}</h3>`;
+        // look at later (maybe do this in literals instead of step by step?)
         let removeButton = document.createElement("button");
         removeButton.innerText = "X";
         removeButton.setAttribute(
@@ -158,24 +107,15 @@ app.initSnapshot = async () => {
           app.addedBreweryChecker(data.setofBreweries[brewery].id);
         }
       }
+      document.querySelector(".roadTripList").style.display = "block";
     } else {
+      document.querySelector(".roadTripList").style.display = "none";
       document.querySelectorAll(".listButton").forEach((btn) => {
         btn.innerHTML = `+`;
       });
     }
     // console.log("snap", app.breweryRefObj);
-    // calcRoute(app.brewDirectionArray);
   });
-
-  // calcRoute(app.brewDirectionArray);
-  // loader.load().then(() => {
-  //   let map = new google.maps.Map(document.getElementById("map"), {
-  //     center: { lat: -34.397, lng: 150.644 },
-  //     zoom: 8,
-  //   });
-  //   calcRoute(app.brewDirectionArray);
-  // })
-  // await initMap();
 };
 
 app.initSnapshot();
@@ -190,7 +130,7 @@ app.nullChecker = (val, term) => {
 };
 
 // Disable "add" button for breweries already in database
-
+// Look at later (optimize)
 app.addedBreweryChecker = (breweryId, inDisplayFunc) => {
   const i = breweryId;
   if (app.breweryRefObj[breweryId]) {
@@ -234,17 +174,20 @@ app.getCity = (selectInput, userInput) => {
       if (brewery.length < 1) {
         throw new Error();
       }
-      // console.log("brewery", brewery);
+      console.log("brewery", brewery);
       brewery.forEach((result) => {
-        app.displayFunction(result);
-        // Look at later (do we need to spread this list?)
-        let buttonList = document.querySelectorAll(".listButton");
-        const breweryButtons = [...buttonList];
-        breweryButtons.forEach((btn) => {
-          btn.addEventListener("click", app.addBreweryToList);
-          // console.log("button", btn);
-          // console.log("list of set", setofBreweries);
-        });
+        const breweryType = result.brewery_type;
+        if (breweryType !== "closed" && breweryType !== "planning") {
+          app.displayFunction(result);
+          // Look at later (do we need to spread this list? ALSO should avoid double loop with buttons)
+          let buttonList = document.querySelectorAll(".listButton");
+          const breweryButtons = [...buttonList];
+          breweryButtons.forEach((btn) => {
+            btn.addEventListener("click", app.addBreweryToList);
+            // console.log("button", btn);
+            // console.log("list of set", setofBreweries);
+          });
+        }
       });
       // app.addedBreweryChecker();
       // Functionality to display Menu of brewery. Complete later*********************************
@@ -278,6 +221,7 @@ app.displayFunction = (str) => {
   setTimeout((e) => {
     li.classList.add("fade");
   }, 50);
+  // Look at later (better way to do this?)
   const name = str.name.replace(/[^a-zA-Z0-9 ]/g, "");
   const street = app.nullChecker(str.street, "Street address");
   const city = app.nullChecker(str.city, "City info");
@@ -416,6 +360,10 @@ app.clearListBtn.addEventListener("click", async (e) => {
   //   console.log('key',key)
   //   app.addedBreweryChecker(key);
   // });
+});
+
+app.mapCloseBtn.addEventListener("click", () => {
+  app.mapHolder.classList.remove("showMap");
 });
 
 // Functionality to display Menu of brewery. Complete later*********************************

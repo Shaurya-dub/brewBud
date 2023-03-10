@@ -59,17 +59,41 @@
     <!-- main starts here -->
     <main>
       <div class="wrapper">
-        <div class="mapHolder">
+        <section class="mapHolder">
           <span class="mapCloseBtnHolder">
-            <button aria-label="close" class="mapHolderClose">X</button>
+            <button aria-label="close" class="mapCloseBtn">X</button>
           </span>
           <div id="map"></div>
-        </div>
-        <div class="roadTripList roadTripEmpty">
+        </section>
+        <section class="roadTripList roadTripEmpty">
+          <div class="startAndEndFormHolder">
+            <form action="#" class="startAndEndForm">
+              <label for="startingPoint">Enter Start Address </label>
+              <input
+                type="text"
+                id="startingPoint"
+                name="startingPoint"
+                placeholder="Starting Point"
+              />
+              <div>
+                <span class="endingPointInputHolder">
+                  <label for="endingPoint">Enter End Address </label>
+                  <input
+                    type="text"
+                    id="endingPoint"
+                    name="endingPoint"
+                    placeholder="Ending Point"
+                  />
+                </span>
+                <input type="checkbox" id="sameAsStart">
+                <label for="sameAsStart">Same as Start Address</label>
+              </div>
+            </form>
+          </div>
           <ul class="savedBreweries"></ul>
           <button class="clearListBtn">Clear List</button>
           <button class="roadTripBtn">Roadtrip</button>
-        </div>
+        </section>
         <ul class="breweryList"></ul>
       </div>
     </main>
