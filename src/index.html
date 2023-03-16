@@ -65,17 +65,20 @@
           </span>
           <div id="map"></div>
         </section>
-        <section class="roadTripList roadTripEmpty">
-          <div class="startAndEndFormHolder">
-            <form action="#" class="startAndEndForm">
-              <label for="startingPoint">Enter Start Address </label>
-              <input
-                type="text"
-                id="startingPoint"
-                name="startingPoint"
-                placeholder="Starting Point"
-              />
-              <div>
+        <section class="roadTripList roadTripHide">
+          <div class="startAndEndFormHolder startAndEndFormHolderHide">
+            <form action="#" class="startAndEndForm" onsubmit="">
+              <div class="inputHolder">
+                <label for="startingPoint">Enter Start Address </label>
+                <input
+                  type="text"
+                  id="startingPoint"
+                  name="startingPoint"
+                  placeholder="Starting Point"
+                  required
+                />
+              </div>
+              <div class="inputHolder">
                 <span class="endingPointInputHolder">
                   <label for="endingPoint">Enter End Address </label>
                   <input
@@ -88,11 +91,17 @@
                 <input type="checkbox" id="sameAsStart">
                 <label for="sameAsStart">Same as Start Address</label>
               </div>
+              <div class="buttonHolder">
+                <button type="submit" class="generateTripBtn">Lets Go</button>
+                <button class="cancelTripBtn">Cancel</button>
+              </div>
             </form>
           </div>
           <ul class="savedBreweries"></ul>
-          <button class="clearListBtn">Clear List</button>
-          <button class="roadTripBtn">Roadtrip</button>
+          <div class="buttonHolder">
+            <button class="clearListBtn">Clear List</button>
+            <button class="roadTripBtn">Roadtrip</button>
+          </div>
         </section>
         <ul class="breweryList"></ul>
       </div>

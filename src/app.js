@@ -8,7 +8,7 @@
 // namespace
 const app = {};
 import { fireBaseApp, db, ref, set, remove, onValue } from "./firebase.js";
-import calcRoute from "./maps.js";
+import {calcRoute, autoCompleteInput} from "./maps.js";
 
 // namespace variables
 app.form = document.querySelector("form");
@@ -18,8 +18,13 @@ app.roadTripBtn = document.querySelector(".roadTripBtn");
 app.clearListBtn = document.querySelector(".clearListBtn");
 app.mapHolder = document.querySelector(".mapHolder");
 app.mapCloseBtn = document.querySelector(".mapCloseBtn");
+app.startAndEndFormHolder = document.querySelector(".startAndEndFormHolder");
+const startAndEndForm = document.querySelector(".startAndEndForm");
+const cancelTripBtn = document.querySelector(".cancelTripBtn");
+const startingPoint = document.querySelector('#startingPoint')
+const endingPoint = document.querySelector('#endingPoint')
 // app.menuButton = document.querySelector(".seeMenu");
-
+autoCompleteInput(startingPoint)
 const ul = document.querySelector(".breweryList");
 const savedBreweries = document.querySelector(".savedBreweries");
 
@@ -107,9 +112,9 @@ app.initSnapshot = async () => {
           app.addedBreweryChecker(data.setofBreweries[brewery].id);
         }
       }
-      document.querySelector(".roadTripList").style.display = "block";
+      document.querySelector(".roadTripList").classList.remove("roadTripHide");
     } else {
-      document.querySelector(".roadTripList").style.display = "none";
+      document.querySelector(".roadTripList").classList.add("roadTripHide");
       document.querySelectorAll(".listButton").forEach((btn) => {
         btn.innerHTML = `+`;
       });
@@ -339,10 +344,27 @@ app.form.addEventListener("submit", function (e) {
   }
 });
 
-app.roadTripBtn.addEventListener("click", async (e) => {
+app.roadTripBtn.addEventListener("click", (e) => {
+  app.startAndEndFormHolder.classList.remove("startAndEndFormHolderHide");
+  app.startAndEndFormHolder.addEventListener(
+    "keydown",
+    function trapStartAndEndFormHolder(e) {
+      trapFocus(e, app.startAndEndFormHolder);
+    }
+  );
+  cancelTripBtn.addEventListener(
+    "click",
+    (e) => {
+      app.startAndEndFormHolder.removeEventListener(
+        "click",
+        trapStartAndEndFormHolder
+      );
+  app.startAndEndFormHolder.classList.add("startAndEndFormHolderHide");
+    }
+  );
   // e.preventDefault();
-  await calcRoute(app.brewDirectionArray);
-  app.mapHolder.classList.add("showMap");
+  // await calcRoute(app.brewDirectionArray);
+  // app.mapHolder.classList.add("showMap");
 });
 
 app.clearListBtn.addEventListener("click", async (e) => {
@@ -361,11 +383,47 @@ app.clearListBtn.addEventListener("click", async (e) => {
   //   app.addedBreweryChecker(key);
   // });
 });
+startAndEndForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const startingPointVal = startingPoint.value;
+  const endingPointVal = endingPoint.value;
+  await calcRoute(app.brewDirectionArray,startingPointVal,endingPointVal);
+})
+// cancelTripBtn.addEventListener('click', (e) => {
+//   app.startAndEndFormHolder.removeEventListener('click',trapStartAndEndFormHolder);
+// },{once:true})
 
 app.mapCloseBtn.addEventListener("click", () => {
   app.mapHolder.classList.remove("showMap");
 });
 
+const trapFocus = (e, element) => {
+  var focusableEls = element.querySelectorAll(
+    'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])'
+  );
+  var firstFocusableEl = focusableEls[0];
+  var lastFocusableEl = focusableEls[focusableEls.length - 1];
+  var KEYCODE_TAB = 9;
+
+  var isTabPressed = e.key === "Tab" || e.keyCode === KEYCODE_TAB;
+
+  if (!isTabPressed) {
+    return;
+  }
+
+  console.log("focus", firstFocusableEl);
+  if (e.shiftKey) {
+    /* shift + tab */ if (document.activeElement === firstFocusableEl) {
+      lastFocusableEl.focus();
+      e.preventDefault();
+    }
+  } /* tab */ else {
+    if (document.activeElement === lastFocusableEl) {
+      firstFocusableEl.focus();
+      e.preventDefault();
+    }
+  }
+};
 // Functionality to display Menu of brewery. Complete later*********************************
 
 // app.getMenu = async (name, parent) => {
