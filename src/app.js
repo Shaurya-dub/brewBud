@@ -24,7 +24,11 @@ const cancelTripBtn = document.querySelector(".cancelTripBtn");
 const startingPoint = document.querySelector('#startingPoint')
 const endingPoint = document.querySelector('#endingPoint')
 // app.menuButton = document.querySelector(".seeMenu");
-autoCompleteInput(startingPoint)
+// let google;
+// autoCompleteInput(startingPoint,google).then(() => {
+//   autoCompleteInput(endingPoint,google)
+// })
+autoCompleteInput(startingPoint,endingPoint)
 const ul = document.querySelector(".breweryList");
 const savedBreweries = document.querySelector(".savedBreweries");
 
