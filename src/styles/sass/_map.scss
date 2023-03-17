@@ -6,22 +6,29 @@
 
 .mapHolder.showMap{
     display:flex;
-    position:absolute;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    position:fixed;
     min-width:100vw;
     min-height:100vh;
     top:0;
     bottom:0;
     left:0;
     z-index:9999;
+    padding:20px;
     background-color: #0000008f;
 }
-
+.mapCloseBtnHolder {
+    align-self:flex-start;
+}
 #map {
-    display:block;
+    // display:block;
     width:70%;
-    margin-right:auto;
-    margin-left:auto;
-    align-self: center;
+    height:70%;
+    // margin-right:auto;
+    // margin-left:auto;
+    // align-self: center;
     // position:relative;
 
 }

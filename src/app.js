@@ -392,6 +392,9 @@ startAndEndForm.addEventListener('submit', async (e) => {
   const startingPointVal = startingPoint.value;
   const endingPointVal = endingPoint.value;
   await calcRoute(app.brewDirectionArray,startingPointVal,endingPointVal);
+  app.mapHolder.classList.add("showMap")
+  startAndEndForm.reset()
+  app.startAndEndFormHolder.classList.add("startAndEndFormHolderHide");
 })
 // cancelTripBtn.addEventListener('click', (e) => {
 //   app.startAndEndFormHolder.removeEventListener('click',trapStartAndEndFormHolder);
