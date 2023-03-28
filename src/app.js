@@ -8,7 +8,7 @@
 // namespace
 const app = {};
 import { fireBaseApp, db, ref, set, remove, onValue } from "./firebase.js";
-import {calcRoute, autoCompleteInput} from "./maps.js";
+import {calcRoute, autoCompleteInput, googleUrlGenerator} from "./maps.js";
 
 // namespace variables
 app.form = document.querySelector("form");
@@ -37,7 +37,7 @@ const removeBreweryFromDatabase = async (e) => {
   // let brewName;
   if (e) {
     const brewName = e.target.attributes[0].value;
-    console.log("e", e.target.attributes);
+    // console.log("e", e.target.attributes);
     const postListRef = ref(db, `setofBreweries/${brewName}`);
     // .then(() => {
     //   app.addedBreweryChecker
@@ -45,7 +45,7 @@ const removeBreweryFromDatabase = async (e) => {
     await remove(postListRef).catch((err) => {
       console.error("something went wrong", err);
     });
-    console.log("remove response", setofBreweries);
+    // console.log("remove response", setofBreweries);
     app.addedBreweryChecker(brewName);
   }
   // else {
@@ -55,20 +55,22 @@ const removeBreweryFromDatabase = async (e) => {
 
 let setofBreweries = {};
 app.brewDirectionArray = [];
-// look at later (do we really need this refObj?)
+// look at later (do we really need this refObj?, we could just use setofBreweries)
 app.breweryRefObj = {};
+let breweryAddressAndNameArr = []
 // select the select element on html
 // capture the value
 // add the value to the endpoint
 app.initSnapshot = async () => {
-  console.log("initSnap");
+  // console.log("initSnap");
   await onValue(ref(db), (snapshot) => {
     setofBreweries = {};
     app.brewDirectionArray = [];
     app.breweryRefObj = {};
+    breweryAddressAndNameArr = [];
     const data = snapshot.val();
-    console.log("snapshot", data);
-    console.log("set after snapshot", setofBreweries);
+    // console.log("snapshot", data);
+    // console.log("set after snapshot", setofBreweries);
     // look at later (maybe make more efficient)
     savedBreweries.innerHTML = "";
     // if (data) {
@@ -77,7 +79,10 @@ app.initSnapshot = async () => {
     //   document.querySelector(".roadTripList").style.display = "none";
     // }
     if (data) {
+      console.log('incoming data',data.setofBreweries)
+      setofBreweries = {...data.setofBreweries}
       for (let brewery in data.setofBreweries) {
+        // look at later (put this in separate function for reusability)
         let savedBreweryCard = document.createElement("li");
         savedBreweryCard.innerHTML = `<h3 class="savedBrewCard">${data.setofBreweries[brewery].Name}</h3>`;
         // look at later (maybe do this in literals instead of step by step?)
@@ -92,20 +97,24 @@ app.initSnapshot = async () => {
         savedBreweryCard.append(removeButton);
         app.breweryRefObj[data.setofBreweries[brewery].id] =
           data.setofBreweries[brewery].Name;
+
+          breweryAddressAndNameArr.push(data.setofBreweries[brewery].Name);
         // console.log("saved", savedBreweryCard);
 
         savedBreweries.append(savedBreweryCard);
         // let objectForSet = {};
         // objectForSet[data.setofBreweries[brewery].Name] = data.setofBreweries[brewery];
         // setofBreweries.add(objectForSet);
-        // look at later (readability)
-        setofBreweries[data.setofBreweries[brewery].id] =
-          data.setofBreweries[brewery];
+        // look at later (readability, and do we need to re-do all this when initially loading, can we just copy the object into local setofBreweries?)
+        
+        // setofBreweries[data.setofBreweries[brewery].id] =
+        //   data.setofBreweries[brewery];
         let directionObj = {
           location: data.setofBreweries[brewery].Address,
           stopover: true,
+          // name: data.setofBreweries[brewery].Name,
         };
-        console.log("set of breweries after adding", setofBreweries);
+        // console.log("set of breweries after adding", setofBreweries);
 
         app.brewDirectionArray.push(directionObj);
         if (
@@ -188,6 +197,7 @@ app.getCity = (selectInput, userInput) => {
         const breweryType = result.brewery_type;
         if (breweryType !== "closed" && breweryType !== "planning") {
           app.displayFunction(result);
+          console.log('breweries',result)
           // Look at later (do we need to spread this list? ALSO should avoid double loop with buttons)
           let buttonList = document.querySelectorAll(".listButton");
           const breweryButtons = [...buttonList];
@@ -273,7 +283,7 @@ app.addBreweryToList = function (e) {
     objToSend[objKey] = newArr[i];
   }
   setofBreweries[objToSend.id] = objToSend;
-  console.log("set", setofBreweries);
+  // console.log("set", setofBreweries);
 
   // const filteredArr = objToSend.filter((el) => el && el !== "Button");
   // const db = getDatabase();
@@ -391,7 +401,11 @@ startAndEndForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const startingPointVal = startingPoint.value;
   const endingPointVal = endingPoint.value;
-  await calcRoute(app.brewDirectionArray,startingPointVal,endingPointVal);
+  const calcRouteResult = await calcRoute(app.brewDirectionArray,startingPointVal,endingPointVal,breweryAddressAndNameArr);
+  console.log('calcRoute', calcRouteResult)
+  console.log("directionArr", app.brewDirectionArray);
+const link = googleUrlGenerator(calcRouteResult,app.brewDirectionArray,startingPointVal,endingPointVal);
+  console.log('link', link);
   app.mapHolder.classList.add("showMap")
   startAndEndForm.reset()
   app.startAndEndFormHolder.classList.add("startAndEndFormHolderHide");
@@ -418,7 +432,7 @@ const trapFocus = (e, element) => {
     return;
   }
 
-  console.log("focus", firstFocusableEl);
+  // console.log("focus", firstFocusableEl);
   if (e.shiftKey) {
     /* shift + tab */ if (document.activeElement === firstFocusableEl) {
       lastFocusableEl.focus();
@@ -431,54 +445,3 @@ const trapFocus = (e, element) => {
     }
   }
 };
-// Functionality to display Menu of brewery. Complete later*********************************
-
-// app.getMenu = async (name, parent) => {
-//   const menuUrl = new URL(
-//     `https://api.documenu.com/v2/restaurants/search/fields?key=a053ac434fb058d22c3615a5990b829b&address=${name}`
-//     // `https://api.documenu.com/v2/restaurant/4072702673999819?X-API-KEY="a053ac434fb058d22c3615a5990b829b"`
-//   );
-//   await fetch(menuUrl)
-//     .then((res) => {
-//       return res.json();
-//     })
-//     .then(async (dataSet) => {
-//       const restaurantCard = document
-//         .createElement("div")
-//         .classList.add("restaurantDisplay");
-//       const restaurantList = document
-//         .createElement("ul")
-//         .classList.add("restaurantIndex");
-//       await restaurantCard.append(restaurantList);
-//       for (let data of dataSet.data) {
-//         showRestaurants(data, restaurantList);
-//       }
-//       parent.append(restaurantCard);
-//       // console.log(dataSet);
-//     });
-// };
-
-// const showRestaurants = (dataSet, ul) => {
-//   const restaurantInfo = document.createElement("li");
-//   // .classList.add("restaurantIndex");
-//   const restaurantName = app.nullChecker(
-//     dataSet.restaurant_name,
-//     "Restaurant Name"
-//   );
-//   const restaurantAddress = app.nullChecker(
-//     dataSet.address.formatted,
-//     "Address"
-//   );
-//   const restaurantPhone = app.nullChecker(
-//     dataSet.restaurant_phone,
-//     "Phone Number"
-//   );
-//   const restaurantSite = app.nullChecker(dataSet.restaurant_website, "Website");
-//   const restaurantPrice = app.nullChecker(dataSet.price_range, "Price Range");
-
-//   restaurantInfo.innerHTML = `<h3> ${restaurantName}</h3>
-//     <p>${restaurantAddress}</p>
-//     <p class="phone"> ${restaurantPhone}</p> <a href="${restaurantSite}">${restaurantSite}</a>
-//     <p>${restaurantPrice}</p>;`;
-//   ul.append(restaurantInfo);
-// };
