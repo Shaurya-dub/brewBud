@@ -31,7 +31,7 @@ const endingPoint = document.querySelector('#endingPoint')
 autoCompleteInput(startingPoint,endingPoint)
 const ul = document.querySelector(".breweryList");
 const savedBreweries = document.querySelector(".savedBreweries");
-
+// authInit();
 const removeBreweryFromDatabase = async (e) => {
   // let postListRef;
   // let brewName;
