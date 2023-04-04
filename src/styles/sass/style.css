@@ -272,7 +272,6 @@ h1 {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 4rem;
   padding-bottom: 100px;
-  animation: flicker 7s infinite alternate;
 }
 
 .headWrapper {
@@ -285,7 +284,6 @@ h1 {
   flex-wrap: wrap;
   background-color: black;
   color: white;
-  animation: borderFlicker 7s infinite alternate;
 }
 
 .breweryList {
@@ -397,13 +395,11 @@ h1 {
 
 .breweryList li.fade:hover,
 .breweryList li.fade:focus {
-  animation: borderFlicker 7s infinite alternate;
   border: 2px solid #fdfdfd;
 }
 
 .breweryList a {
   color: #dba3d4;
-  animation: flicker 7s infinite alternate;
   text-decoration: none;
 }
 

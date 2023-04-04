@@ -49,14 +49,14 @@
 
 .breweryList li.fade:hover,
 .breweryList li.fade:focus {
-  animation: borderFlicker 7s infinite alternate;
+  // animation: borderFlicker 7s infinite alternate;
   border: 2px solid #fdfdfd;
 }
 
 .breweryList a {
   color: #dba3d4;
-    -webkit-animation: flicker 7s infinite alternate;
-    animation: flicker 7s infinite alternate;
+    // -webkit-animation: flicker 7s infinite alternate;
+    // animation: flicker 7s infinite alternate;
     text-decoration: none;
 }
 

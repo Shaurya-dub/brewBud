@@ -59,13 +59,15 @@
     <!-- main starts here -->
     <main>
       <div class="wrapper">
-        <section class="mapHolder">
+        <section id="mapHolder" class="mapHolder">
           <span class="mapCloseBtnHolder">
-            <button aria-label="close" class="mapCloseBtn">X</button>
+            <button aria-controls="mapHolder" aria-label="close" class="mapCloseBtn">X</button>
           </span>
           <div id="map"></div>
         </section>
-        <section class="roadTripList roadTripHide">
+        <section id="roadTripList" class="roadTripList">
+          <!-- look at later (add aria controls to buttons) -->
+          <button class="breweryListCloseBtn" aria-controls="roadTripList" aria-expanded="false" aria-label="open/close added brewery list"> <img src="./media/back.png" alt="open/close"> </button>
           <div class="startAndEndFormHolder startAndEndFormHolderHide">
             <form action="#" class="startAndEndForm" onsubmit="">
               <div class="inputHolder">

@@ -7,8 +7,16 @@
 // import { config } from "dotenv";
 // namespace
 const app = {};
-import { fireBaseApp, db, ref, set, remove, onValue } from "./firebase.js";
-import {calcRoute, autoCompleteInput, googleUrlGenerator} from "./maps.js";
+import {
+  fireBaseApp,
+  db,
+  authInit,
+  ref,
+  set,
+  remove,
+  onValue,
+} from "./firebase.js";
+import { calcRoute, autoCompleteInput, googleUrlGenerator } from "./maps.js";
 
 // namespace variables
 app.form = document.querySelector("form");
@@ -18,27 +26,30 @@ app.roadTripBtn = document.querySelector(".roadTripBtn");
 app.clearListBtn = document.querySelector(".clearListBtn");
 app.mapHolder = document.querySelector(".mapHolder");
 app.mapCloseBtn = document.querySelector(".mapCloseBtn");
+const breweryListCloseBtn = document.querySelector('.breweryListCloseBtn')
+const roadTripList = document.querySelector(".roadTripList");
 app.startAndEndFormHolder = document.querySelector(".startAndEndFormHolder");
 const startAndEndForm = document.querySelector(".startAndEndForm");
 const cancelTripBtn = document.querySelector(".cancelTripBtn");
-const startingPoint = document.querySelector('#startingPoint')
-const endingPoint = document.querySelector('#endingPoint')
+const startingPoint = document.querySelector("#startingPoint");
+const endingPoint = document.querySelector("#endingPoint");
 // app.menuButton = document.querySelector(".seeMenu");
 // let google;
 // autoCompleteInput(startingPoint,google).then(() => {
 //   autoCompleteInput(endingPoint,google)
 // })
-autoCompleteInput(startingPoint,endingPoint)
+autoCompleteInput(startingPoint, endingPoint);
 const ul = document.querySelector(".breweryList");
 const savedBreweries = document.querySelector(".savedBreweries");
-// authInit();
+let userUID;
 const removeBreweryFromDatabase = async (e) => {
   // let postListRef;
   // let brewName;
   if (e) {
     const brewName = e.target.attributes[0].value;
+    console.log("brewname", brewName);
     // console.log("e", e.target.attributes);
-    const postListRef = ref(db, `setofBreweries/${brewName}`);
+    const postListRef = ref(db, `${userUID}/setofBreweries/${brewName}`);
     // .then(() => {
     //   app.addedBreweryChecker
     // })
@@ -57,13 +68,15 @@ let setofBreweries = {};
 app.brewDirectionArray = [];
 // look at later (do we really need this refObj?, we could just use setofBreweries)
 app.breweryRefObj = {};
-let breweryAddressAndNameArr = []
+let breweryAddressAndNameArr = [];
 // select the select element on html
 // capture the value
 // add the value to the endpoint
 app.initSnapshot = async () => {
-  // console.log("initSnap");
-  await onValue(ref(db), (snapshot) => {
+  console.log("initSnap");
+  userUID = await authInit();
+  console.log("userId", userUID);
+  await onValue(ref(db, userUID), (snapshot) => {
     setofBreweries = {};
     app.brewDirectionArray = [];
     app.breweryRefObj = {};
@@ -79,8 +92,8 @@ app.initSnapshot = async () => {
     //   document.querySelector(".roadTripList").style.display = "none";
     // }
     if (data) {
-      console.log('incoming data',data.setofBreweries)
-      setofBreweries = {...data.setofBreweries}
+      console.log("incoming data", data.setofBreweries);
+      setofBreweries = { ...data.setofBreweries };
       for (let brewery in data.setofBreweries) {
         // look at later (put this in separate function for reusability)
         let savedBreweryCard = document.createElement("li");
@@ -98,7 +111,7 @@ app.initSnapshot = async () => {
         app.breweryRefObj[data.setofBreweries[brewery].id] =
           data.setofBreweries[brewery].Name;
 
-          breweryAddressAndNameArr.push(data.setofBreweries[brewery].Name);
+        breweryAddressAndNameArr.push(data.setofBreweries[brewery].Name);
         // console.log("saved", savedBreweryCard);
 
         savedBreweries.append(savedBreweryCard);
@@ -106,7 +119,7 @@ app.initSnapshot = async () => {
         // objectForSet[data.setofBreweries[brewery].Name] = data.setofBreweries[brewery];
         // setofBreweries.add(objectForSet);
         // look at later (readability, and do we need to re-do all this when initially loading, can we just copy the object into local setofBreweries?)
-        
+
         // setofBreweries[data.setofBreweries[brewery].id] =
         //   data.setofBreweries[brewery];
         let directionObj = {
@@ -121,13 +134,13 @@ app.initSnapshot = async () => {
           document.querySelector(
             `[data-brewery="${data.setofBreweries[brewery].id}"]`
           )
-        ) {
+        ) 
           app.addedBreweryChecker(data.setofBreweries[brewery].id);
-        }
+        
       }
-      document.querySelector(".roadTripList").classList.remove("roadTripHide");
+      // document.querySelector(".roadTripList").classList.remove("roadTripHide");
     } else {
-      document.querySelector(".roadTripList").classList.add("roadTripHide");
+      // document.querySelector(".roadTripList").classList.add("roadTripHide");
       document.querySelectorAll(".listButton").forEach((btn) => {
         btn.innerHTML = `+`;
       });
@@ -151,6 +164,7 @@ app.nullChecker = (val, term) => {
 // Look at later (optimize)
 app.addedBreweryChecker = (breweryId, inDisplayFunc) => {
   const i = breweryId;
+  console.log('refObj',app.breweryRefObj)
   if (app.breweryRefObj[breweryId]) {
     if (inDisplayFunc) {
       return true;
@@ -159,14 +173,16 @@ app.addedBreweryChecker = (breweryId, inDisplayFunc) => {
       document.querySelector(
         `[data-brewery="${i}"]`
       ).innerHTML = `<img class="addedCheck" src="./media/whiteCheck.png" alt="brewery added to list">`;
-    } catch {
-      console.error("something went wrong");
+    } catch (e) {
+      console.error("something went wrong", e);
     }
   } else {
     if (inDisplayFunc) {
       return false;
     }
-    document.querySelector(`[data-brewery="${i}"]`).innerHTML = `+`;
+    let addButton = document.querySelector(`[data-brewery="${i}"]`)
+    if(addButton) addButton.innerHTML = '+'
+    console.log('addButton', i, addButton)
   }
 };
 
@@ -197,7 +213,7 @@ app.getCity = (selectInput, userInput) => {
         const breweryType = result.brewery_type;
         if (breweryType !== "closed" && breweryType !== "planning") {
           app.displayFunction(result);
-          console.log('breweries',result)
+          console.log("breweries", result);
           // Look at later (do we need to spread this list? ALSO should avoid double loop with buttons)
           let buttonList = document.querySelectorAll(".listButton");
           const breweryButtons = [...buttonList];
@@ -261,6 +277,11 @@ app.displayFunction = (str) => {
 };
 
 app.addBreweryToList = function (e) {
+  console.log('num of breweries',breweryAddressAndNameArr)
+  if(breweryAddressAndNameArr.length >= 10) {
+    window.alert('You can only add 10 breweries per trip')
+    return
+  }
   // console.log("running", e.target.data);
   let objToSend = {};
   const keyArray = ["Name", "Address", "Phone", "Website", "id"];
@@ -288,8 +309,9 @@ app.addBreweryToList = function (e) {
   // const filteredArr = objToSend.filter((el) => el && el !== "Button");
   // const db = getDatabase();
 
-  const postListRef = ref(db);
+  const postListRef = ref(db, userUID);
   // // const newPostRef = push(postListRef);
+  console.log("user Id is", userUID);
   set(postListRef, {
     setofBreweries,
     // Name: newArr[0],
@@ -366,16 +388,13 @@ app.roadTripBtn.addEventListener("click", (e) => {
       trapFocus(e, app.startAndEndFormHolder);
     }
   );
-  cancelTripBtn.addEventListener(
-    "click",
-    (e) => {
-      app.startAndEndFormHolder.removeEventListener(
-        "click",
-        trapStartAndEndFormHolder
-      );
-  app.startAndEndFormHolder.classList.add("startAndEndFormHolderHide");
-    }
-  );
+  cancelTripBtn.addEventListener("click", (e) => {
+    app.startAndEndFormHolder.removeEventListener(
+      "click",
+      trapStartAndEndFormHolder
+    );
+    app.startAndEndFormHolder.classList.add("startAndEndFormHolderHide");
+  });
   // e.preventDefault();
   // await calcRoute(app.brewDirectionArray);
   // app.mapHolder.classList.add("showMap");
@@ -384,7 +403,7 @@ app.roadTripBtn.addEventListener("click", (e) => {
 app.clearListBtn.addEventListener("click", async (e) => {
   e.preventDefault();
   // removeBreweryFromDatabase();
-  let postListRef = ref(db, `setofBreweries`);
+  let postListRef = ref(db, userUID);
   await remove(postListRef).catch((e) => {
     console.error(e);
   });
@@ -397,19 +416,29 @@ app.clearListBtn.addEventListener("click", async (e) => {
   //   app.addedBreweryChecker(key);
   // });
 });
-startAndEndForm.addEventListener('submit', async (e) => {
+startAndEndForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const startingPointVal = startingPoint.value;
   const endingPointVal = endingPoint.value;
-  const calcRouteResult = await calcRoute(app.brewDirectionArray,startingPointVal,endingPointVal,breweryAddressAndNameArr);
-  console.log('calcRoute', calcRouteResult)
+  const calcRouteResult = await calcRoute(
+    app.brewDirectionArray,
+    startingPointVal,
+    endingPointVal,
+    breweryAddressAndNameArr
+  );
+  console.log("calcRoute", calcRouteResult);
   console.log("directionArr", app.brewDirectionArray);
-const link = googleUrlGenerator(calcRouteResult,app.brewDirectionArray,startingPointVal,endingPointVal);
-  console.log('link', link);
-  app.mapHolder.classList.add("showMap")
-  startAndEndForm.reset()
+  const link = googleUrlGenerator(
+    calcRouteResult,
+    app.brewDirectionArray,
+    startingPointVal,
+    endingPointVal
+  );
+  console.log("link", link);
+  app.mapHolder.classList.add("showMap");
+  startAndEndForm.reset();
   app.startAndEndFormHolder.classList.add("startAndEndFormHolderHide");
-})
+});
 // cancelTripBtn.addEventListener('click', (e) => {
 //   app.startAndEndFormHolder.removeEventListener('click',trapStartAndEndFormHolder);
 // },{once:true})
@@ -417,6 +446,14 @@ const link = googleUrlGenerator(calcRouteResult,app.brewDirectionArray,startingP
 app.mapCloseBtn.addEventListener("click", () => {
   app.mapHolder.classList.remove("showMap");
 });
+breweryListCloseBtn.addEventListener("click",function() {
+  this.setAttribute(
+    "aria-expanded",
+    `${!(this.getAttribute("aria-expanded") === "true")}`
+    );  
+    console.log('aria is', this.getAttribute("aria-expanded"))
+  roadTripList.classList.toggle('roadTripHide')
+})
 
 const trapFocus = (e, element) => {
   var focusableEls = element.querySelectorAll(
