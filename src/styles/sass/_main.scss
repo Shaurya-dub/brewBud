@@ -6,12 +6,12 @@
 
 .loadingScreen {
   background-color: rgba(94, 90, 90, 0.569);
-  width:100vw;
-  height:100vh;
+  width: 100vw;
+  height: 100vh;
   position: absolute;
   z-index: 99;
-  display:none;
-  top:0;
+  display: none;
+  top: 0;
 }
 
 .imgHolder {
@@ -23,7 +23,7 @@
 }
 
 .imgHolder img {
- align-self: center;
+  align-self: center;
 }
 
 .breweryList li {
@@ -55,9 +55,9 @@
 
 .breweryList a {
   color: #dba3d4;
-    // -webkit-animation: flicker 7s infinite alternate;
-    // animation: flicker 7s infinite alternate;
-    text-decoration: none;
+  // -webkit-animation: flicker 7s infinite alternate;
+  // animation: flicker 7s infinite alternate;
+  text-decoration: none;
 }
 
 .errorBox {
@@ -71,56 +71,128 @@
 }
 
 .listButton {
-background-color: transparent;
-border:none;  
-color:ivory;
-max-width:70px;
+  background-color: transparent;
+  border: none;
+  color: ivory;
+  max-width: 70px;
 }
 
 .roadTripList {
-  position:fixed;
-  right:5px;
+  position: fixed;
+  display: flex;
   top: 5px;
+  right: 0px;
   // list-style: none;
-  background-color: rgba(94, 90, 90, 0.569);
-  color:#dba3d4;
+  background-color: #00000094;
+  color: #dba3d4;
   border: #fdfdfd;
   border-radius: 15px;
-  width:25%;
+  width: 25%;
+  min-width: 300px;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s ease;
 }
 .roadTripList ul {
-    list-style: none;
+  list-style: none;
+  overflow-y: scroll;
+  max-height: 75vh;
 }
 .roadTripList.roadTripHide {
-  display:none;
+  right: -280px;
+  display: flex;
+}
+
+.roadTripList.roadTripHide .breweryListCloseBtn {
+  transform: rotate(0deg);
+  // display:none;
 }
 
 .addedCheck {
-  width:100%;
+  width: 100%;
   // max-width:50px;
 }
 .startAndEndFormHolder {
-  position:absolute;
-  height:100%;
-  background-color:#000000d5;
-  display:flex;
-  align-items:center;
-  padding:10px;
+  position: absolute;
+  height: 100%;
+  background-color: #000000d5;
+  display: flex;
+  align-items: center;
+  padding: 10px;
 }
 .startAndEndFormHolder.startAndEndFormHolderHide {
-  display:none;
+  display: none;
+}
+
+.savedBreweries {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0px;
+}
+
+.savedBreweries li {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  background-color: rgba(94, 90, 90, 0.569);
+  border-radius: 15px;
+  padding: 0px 10px;
+  width: 70%;
+  margin-bottom: 10px;
+}
+
+.savedBreweries li button {
+  color: white;
+  border: 0px;
+  background-color: transparent;
+}
+.savedBreweries li button:hover,
+.savedBreweries li button:focus-visible {
+  animation: flicker 7s infinite alternate;
+}
+
+.savedBrewCard {
+  margin-left: 10px;
+}
+
+.buttonHolder {
+  display: flex;
+  // width:89%;
+  justify-content: center;
 }
 .buttonHolder button {
-  margin:0px 10px;
+  margin: 0px 10px;
   font-size: 1.2rem;
+  border-radius: 15px;
+  border: 0px;
+  background-color: #e4e4e4a6;
+  color: #fff;
+  font-weight: 100;
+  padding: 3px 7px;
 }
 
 .inputHolder {
-  margin:30px 0px;
+  margin: 30px 0px;
 }
 .inputHolder input:not(#sameAsStart) {
-  width:100%;
+  width: 100%;
 }
+.breweryListCloseBtn {
+  max-width: 50px;
+  max-width: 50px;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  left: -16px;
+  bottom: 50%;
+  transform: rotate(180deg);
+}
+
+.breweryListCloseBtn img {
+  width: 100%;
+}
+
 // #sameAsStart {
 //   width:auto;
 // }

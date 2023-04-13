@@ -264,6 +264,10 @@ html {
   overflow: hidden;
 }
 
+div[aria-hidden=true] {
+  visibility: hidden;
+}
+
 header {
   padding-top: 40px;
 }
@@ -422,21 +426,33 @@ h1 {
 
 .roadTripList {
   position: fixed;
-  right: 5px;
+  display: flex;
   top: 5px;
-  background-color: rgba(94, 90, 90, 0.569);
+  right: 0px;
+  background-color: rgba(0, 0, 0, 0.5803921569);
   color: #dba3d4;
   border: #fdfdfd;
   border-radius: 15px;
   width: 25%;
+  min-width: 300px;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s ease;
 }
 
 .roadTripList ul {
   list-style: none;
+  overflow-y: scroll;
+  max-height: 75vh;
 }
 
 .roadTripList.roadTripHide {
-  display: none;
+  right: -280px;
+  display: flex;
+}
+
+.roadTripList.roadTripHide .breweryListCloseBtn {
+  transform: rotate(0deg);
 }
 
 .addedCheck {
@@ -456,9 +472,53 @@ h1 {
   display: none;
 }
 
+.savedBreweries {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0px;
+}
+
+.savedBreweries li {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  background-color: rgba(94, 90, 90, 0.569);
+  border-radius: 15px;
+  padding: 0px 10px;
+  width: 70%;
+  margin-bottom: 10px;
+}
+
+.savedBreweries li button {
+  color: white;
+  border: 0px;
+  background-color: transparent;
+}
+
+.savedBreweries li button:hover,
+.savedBreweries li button:focus-visible {
+  animation: flicker 7s infinite alternate;
+}
+
+.savedBrewCard {
+  margin-left: 10px;
+}
+
+.buttonHolder {
+  display: flex;
+  justify-content: center;
+}
+
 .buttonHolder button {
   margin: 0px 10px;
   font-size: 1.2rem;
+  border-radius: 15px;
+  border: 0px;
+  background-color: rgba(228, 228, 228, 0.6509803922);
+  color: #fff;
+  font-weight: 100;
+  padding: 3px 7px;
 }
 
 .inputHolder {
@@ -466,6 +526,21 @@ h1 {
 }
 
 .inputHolder input:not(#sameAsStart) {
+  width: 100%;
+}
+
+.breweryListCloseBtn {
+  max-width: 50px;
+  max-width: 50px;
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  left: -16px;
+  bottom: 50%;
+  transform: rotate(180deg);
+}
+
+.breweryListCloseBtn img {
   width: 100%;
 }
 
@@ -484,6 +559,11 @@ footer p a {
   text-decoration: none;
 }
 
+@media (min-width: 1157px) {
+  .roadTripList.roadTripHide {
+    right: -22%;
+  }
+}
 @media (max-width: 950px) {
   .headWrapper form {
     display: flex;
@@ -491,6 +571,11 @@ footer p a {
   }
   .headWrapper form select {
     margin-top: 5%;
+  }
+}
+@media (max-width: 830px) {
+  .roadTripList {
+    width: 40%;
   }
 }
 @media (max-width: 730px) {
@@ -504,12 +589,18 @@ footer p a {
   .headWrapper form button {
     padding: 6px 20px;
   }
+  .roadTripList {
+    width: 50%;
+  }
   .breweryList {
     width: 100%;
     flex-direction: column;
     align-items: center;
   }
   .breweryList li.fade {
+    width: 100%;
+  }
+  .mapContentHolder {
     width: 100%;
   }
 }
@@ -529,6 +620,16 @@ footer p a {
 .mapHolder {
   display: none;
   transition: all 0.2s ease;
+}
+
+.mapContentHolder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80%;
+  max-width: 1200px;
 }
 
 .mapHolder.showMap {
@@ -552,8 +653,53 @@ footer p a {
 }
 
 #map {
-  width: 70%;
+  width: 100%;
   height: 70%;
+}
+
+.mapDirectionsLinkHolder {
+  width: 100%;
+  background-color: rgba(94, 90, 90, 0.568627451);
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+}
+
+.mapDirectionsCopyLinkHolder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 5px;
+  border-radius: 15px;
+  margin: auto;
+}
+
+.mapDirectionsLinkHolder button {
+  margin-left: 10px;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  align-items: center;
+  width: 1.2em;
+  font-size: 1em;
+}
+
+.mapDirectionsLinkHolder img {
+  width: 100%;
+}
+
+.copyText {
+  font-size: 12px;
+}
+
+.mapDirectionsLink {
+  color: #fff;
+  font-size: 1em;
+  text-shadow: -0.2rem -0.2rem 1rem #ff00de, 0.2rem 0.2rem 1rem #ffe1fb;
 }
 
 html {

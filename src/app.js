@@ -26,13 +26,19 @@ app.roadTripBtn = document.querySelector(".roadTripBtn");
 app.clearListBtn = document.querySelector(".clearListBtn");
 app.mapHolder = document.querySelector(".mapHolder");
 app.mapCloseBtn = document.querySelector(".mapCloseBtn");
-const breweryListCloseBtn = document.querySelector('.breweryListCloseBtn')
+const breweryListCloseBtn = document.querySelector(".breweryListCloseBtn");
 const roadTripList = document.querySelector(".roadTripList");
+const collapsibleModalHolder = document.querySelector(
+  ".collapsibleModalHolder"
+);
 app.startAndEndFormHolder = document.querySelector(".startAndEndFormHolder");
 const startAndEndForm = document.querySelector(".startAndEndForm");
 const cancelTripBtn = document.querySelector(".cancelTripBtn");
 const startingPoint = document.querySelector("#startingPoint");
 const endingPoint = document.querySelector("#endingPoint");
+const mapDirectionsLink = document.querySelector(
+  ".mapDirectionsLink"
+);
 // app.menuButton = document.querySelector(".seeMenu");
 // let google;
 // autoCompleteInput(startingPoint,google).then(() => {
@@ -92,7 +98,7 @@ app.initSnapshot = async () => {
     //   document.querySelector(".roadTripList").style.display = "none";
     // }
     if (data) {
-      console.log("incoming data", data.setofBreweries);
+      // console.log("incoming data", data.setofBreweries);
       setofBreweries = { ...data.setofBreweries };
       for (let brewery in data.setofBreweries) {
         // look at later (put this in separate function for reusability)
@@ -107,7 +113,7 @@ app.initSnapshot = async () => {
         );
         removeButton.addEventListener("click", removeBreweryFromDatabase);
 
-        savedBreweryCard.append(removeButton);
+        savedBreweryCard.prepend(removeButton);
         app.breweryRefObj[data.setofBreweries[brewery].id] =
           data.setofBreweries[brewery].Name;
 
@@ -134,12 +140,14 @@ app.initSnapshot = async () => {
           document.querySelector(
             `[data-brewery="${data.setofBreweries[brewery].id}"]`
           )
-        ) 
+        )
           app.addedBreweryChecker(data.setofBreweries[brewery].id);
-        
       }
-      // document.querySelector(".roadTripList").classList.remove("roadTripHide");
+      // roadTripList.classList.remove("roadTripHide");
+      roadTripList.style.display = "initial";
     } else {
+      roadTripList.style.display = "none";
+      // roadTripList.classList.remove("roadTripHide");
       // document.querySelector(".roadTripList").classList.add("roadTripHide");
       document.querySelectorAll(".listButton").forEach((btn) => {
         btn.innerHTML = `+`;
@@ -164,7 +172,7 @@ app.nullChecker = (val, term) => {
 // Look at later (optimize)
 app.addedBreweryChecker = (breweryId, inDisplayFunc) => {
   const i = breweryId;
-  console.log('refObj',app.breweryRefObj)
+  console.log("refObj", app.breweryRefObj);
   if (app.breweryRefObj[breweryId]) {
     if (inDisplayFunc) {
       return true;
@@ -180,9 +188,9 @@ app.addedBreweryChecker = (breweryId, inDisplayFunc) => {
     if (inDisplayFunc) {
       return false;
     }
-    let addButton = document.querySelector(`[data-brewery="${i}"]`)
-    if(addButton) addButton.innerHTML = '+'
-    console.log('addButton', i, addButton)
+    let addButton = document.querySelector(`[data-brewery="${i}"]`);
+    if (addButton) addButton.innerHTML = "+";
+    console.log("addButton", i, addButton);
   }
 };
 
@@ -277,10 +285,10 @@ app.displayFunction = (str) => {
 };
 
 app.addBreweryToList = function (e) {
-  console.log('num of breweries',breweryAddressAndNameArr)
-  if(breweryAddressAndNameArr.length >= 10) {
-    window.alert('You can only add 10 breweries per trip')
-    return
+  console.log("num of breweries", breweryAddressAndNameArr);
+  if (breweryAddressAndNameArr.length >= 10) {
+    window.alert("You can only add 10 breweries per trip");
+    return;
   }
   // console.log("running", e.target.data);
   let objToSend = {};
@@ -434,6 +442,7 @@ startAndEndForm.addEventListener("submit", async (e) => {
     startingPointVal,
     endingPointVal
   );
+  mapDirectionsLink.innerHTML = `<a class="mapDirectionsLink" target="_blank" href="${link}">Click here to open your directions link</a>`;
   console.log("link", link);
   app.mapHolder.classList.add("showMap");
   startAndEndForm.reset();
@@ -446,14 +455,35 @@ startAndEndForm.addEventListener("submit", async (e) => {
 app.mapCloseBtn.addEventListener("click", () => {
   app.mapHolder.classList.remove("showMap");
 });
-breweryListCloseBtn.addEventListener("click",function() {
+breweryListCloseBtn.addEventListener("click", function (e) {
   this.setAttribute(
     "aria-expanded",
     `${!(this.getAttribute("aria-expanded") === "true")}`
-    );  
-    console.log('aria is', this.getAttribute("aria-expanded"))
-  roadTripList.classList.toggle('roadTripHide')
-})
+  );
+  collapsibleModalHolder.setAttribute(
+    "aria-hidden",
+    `${!(collapsibleModalHolder.getAttribute("aria-hidden") === "true")}`
+  );
+  console.log("aria is", this.getAttribute("aria-expanded"));
+  roadTripList.classList.toggle("roadTripHide");
+  console.log(
+    "aria-hidden is",
+    collapsibleModalHolder.getAttribute("aria-hidden")
+  );
+  // if (this.getAttribute("aria-expanded") === "true") {
+  //   collapsibleModalHolder.removeAttribute("aria-hidden");
+  //   // trapFocus(e, roadTripList);
+
+  //   // console.log("now trapping focus", this);
+  // } else {
+  //   // console.log("no longer trapping focus");
+  //   collapsibleModalHolder.setAttribute("aria-hidden", true);
+  //   console.log(
+  //     "aria-hidden is",
+  //     collapsibleModalHolder.getAttribute("aria-hidden")
+  //   );
+  // }
+});
 
 const trapFocus = (e, element) => {
   var focusableEls = element.querySelectorAll(

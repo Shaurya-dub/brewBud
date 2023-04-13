@@ -20,13 +20,14 @@
   "homepage": "https://github.com/Shaurya-dub/brewBud#readme",
   "devDependencies": {
     "netlify-cli": "^6.14.19",
-    "webpack": "^5.75.0",
+    "webpack": "^5.77.0",
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.15.1",
     "@googlemaps/markerclusterer": "^2.0.15",
     "axios": "^0.24.0",
+    "cli": "^1.0.1",
     "firebase": "^9.16.0"
   }
 }
