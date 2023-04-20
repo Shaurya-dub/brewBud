@@ -81,9 +81,6 @@ h1 {
           0.2rem 0.2rem 1rem #fff,
           0 0 2rem #ff00de,
           0 0 4rem #ff00de,
-          0 0 6rem #ff00de,
-          0 0 8rem #ff00de,
-          0 0 10rem #ff00de;
   }
 
   20%, 24%, 55% {
@@ -92,7 +89,7 @@ h1 {
 } 
 
 @keyframes borderFlicker {
-  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+ 100% {
       box-shadow:
           0 0 .5rem #fff,
           inset 0 0 .5rem #fff,
