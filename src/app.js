@@ -36,15 +36,11 @@ const startAndEndForm = document.querySelector(".startAndEndForm");
 const cancelTripBtn = document.querySelector(".cancelTripBtn");
 const startingPoint = document.querySelector("#startingPoint");
 const endingPoint = document.querySelector("#endingPoint");
-const mapDirectionsLink = document.querySelector(
-  ".mapDirectionsLink"
-);
-// app.menuButton = document.querySelector(".seeMenu");
-// let google;
-// autoCompleteInput(startingPoint,google).then(() => {
-//   autoCompleteInput(endingPoint,google)
-// })
-autoCompleteInput(startingPoint, endingPoint);
+const mapDirectionsLink = document.querySelector(".mapDirectionsLink");
+
+// autoCompleteInput(startingPoint, endingPoint).catch((e) => {
+//   console.error("hi", e);
+// });
 const ul = document.querySelector(".breweryList");
 const savedBreweries = document.querySelector(".savedBreweries");
 let userUID;
@@ -56,9 +52,6 @@ const removeBreweryFromDatabase = async (e) => {
     console.log("brewname", brewName);
     // console.log("e", e.target.attributes);
     const postListRef = ref(db, `${userUID}/setofBreweries/${brewName}`);
-    // .then(() => {
-    //   app.addedBreweryChecker
-    // })
     await remove(postListRef).catch((err) => {
       console.error("something went wrong", err);
     });
@@ -80,7 +73,10 @@ let breweryAddressAndNameArr = [];
 // add the value to the endpoint
 app.initSnapshot = async () => {
   console.log("initSnap");
-  userUID = await authInit();
+  userUID = await authInit()
+ await autoCompleteInput(startingPoint, endingPoint).catch((e) => {
+    console.error("hi", e);
+  });
   console.log("userId", userUID);
   await onValue(ref(db, userUID), (snapshot) => {
     setofBreweries = {};
@@ -104,7 +100,7 @@ app.initSnapshot = async () => {
         // look at later (put this in separate function for reusability)
         let savedBreweryCard = document.createElement("li");
         savedBreweryCard.innerHTML = `<h3 class="savedBrewCard">${data.setofBreweries[brewery].Name}</h3>`;
-        // look at later (maybe do this in literals instead of step by step?)
+        // look at later (maybe do this in literals instead of step by step? ALSO use event delegation here)
         let removeButton = document.createElement("button");
         removeButton.innerText = "X";
         removeButton.setAttribute(
@@ -322,21 +318,9 @@ app.addBreweryToList = function (e) {
   console.log("user Id is", userUID);
   set(postListRef, {
     setofBreweries,
-    // Name: newArr[0],
-    // Address: newArr[1],
-    // Phone: newArr[2],
-    // Website: newArr[3],
-    //  objToSend
-  }).then(() => {
-    // console.log("siccess");
-    // app.addedBreweryChecker(buttonAttribute);
+  }).catch((e) => {
+    console.error(e);
   });
-  // loader.load().then(() => {
-  //   let map = new google.maps.Map(document.getElementById("map"), {
-  //     center: { lat: -34.397, lng: 150.644 },
-  //     zoom: 8,
-  //   });
-  // });
 };
 
 app.breweryListDisplay = () => {};
@@ -387,22 +371,18 @@ app.form.addEventListener("submit", function (e) {
     app.getCity(selectValue, inputValue);
   }
 });
-
+// Should move this to the form submit listener^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 app.roadTripBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
   app.startAndEndFormHolder.classList.remove("startAndEndFormHolderHide");
-  app.startAndEndFormHolder.addEventListener(
-    "keydown",
-    function trapStartAndEndFormHolder(e) {
-      trapFocus(e, app.startAndEndFormHolder);
-    }
-  );
+  app.startAndEndFormHolder.addEventListener("keydown", trapFocus);
   cancelTripBtn.addEventListener("click", (e) => {
-    app.startAndEndFormHolder.removeEventListener(
-      "click",
-      trapStartAndEndFormHolder
-    );
+    e.stopPropagation();
+
+    app.startAndEndFormHolder.removeEventListener("keydown", trapFocus);
     app.startAndEndFormHolder.classList.add("startAndEndFormHolderHide");
   });
+  startingPoint.focus();
   // e.preventDefault();
   // await calcRoute(app.brewDirectionArray);
   // app.mapHolder.classList.add("showMap");
@@ -434,8 +414,8 @@ startAndEndForm.addEventListener("submit", async (e) => {
     endingPointVal,
     breweryAddressAndNameArr
   );
-  console.log("calcRoute", calcRouteResult);
-  console.log("directionArr", app.brewDirectionArray);
+  // console.log("calcRoute", calcRouteResult);
+  // console.log("directionArr", app.brewDirectionArray);
   const link = googleUrlGenerator(
     calcRouteResult,
     app.brewDirectionArray,
@@ -443,18 +423,51 @@ startAndEndForm.addEventListener("submit", async (e) => {
     endingPointVal
   );
   mapDirectionsLink.innerHTML = `<a class="mapDirectionsLink" target="_blank" href="${link}">Click here to open your directions link</a>`;
-  console.log("link", link);
+  const copyLinkBtn = document.querySelector(".copyLinkBtn");
+  const copyConfirmationContainer = document.querySelector(
+    ".confirmTextContainer"
+  );
+  const copyConfirmationMessage = document.querySelector(".confirmText");
+  const copyLink = async () => {
+    await copyToClipboard(
+      link,
+      copyConfirmationContainer,
+      copyConfirmationMessage,
+      "Link Copied"
+    );
+  };
+  copyLinkBtn.addEventListener("click", copyLink);
+
+  // console.log("link", link);
   app.mapHolder.classList.add("showMap");
+  const mapContentHolder = document.querySelector(".mapContentHolder");
+  mapContentHolder.addEventListener("keydown", trapFocus);
   startAndEndForm.reset();
   app.startAndEndFormHolder.classList.add("startAndEndFormHolderHide");
+  const mapCloseBtn = document.querySelector(".mapCloseBtn");
+  mapCloseBtn.addEventListener(
+    "click",
+    () => {
+      mapContentHolder.removeEventListener("keydown", trapFocus);
+      copyLinkBtn.removeEventListener("click", copyLink);
+      app.mapHolder.classList.remove("showMap");
+    },
+    { once: true }
+  );
+  mapCloseBtn.focus();
 });
 // cancelTripBtn.addEventListener('click', (e) => {
 //   app.startAndEndFormHolder.removeEventListener('click',trapStartAndEndFormHolder);
 // },{once:true})
 
-app.mapCloseBtn.addEventListener("click", () => {
-  app.mapHolder.classList.remove("showMap");
-});
+// app.mapCloseBtn.addEventListener("click", () => {
+//   app.mapHolder.classList.remove("showMap");
+// });
+
+// function trapRoadTripList(e) {
+//   return trapFocus(e, roadTripList);
+// }
+
 breweryListCloseBtn.addEventListener("click", function (e) {
   this.setAttribute(
     "aria-expanded",
@@ -470,24 +483,37 @@ breweryListCloseBtn.addEventListener("click", function (e) {
     "aria-hidden is",
     collapsibleModalHolder.getAttribute("aria-hidden")
   );
-  // if (this.getAttribute("aria-expanded") === "true") {
-  //   collapsibleModalHolder.removeAttribute("aria-hidden");
-  //   // trapFocus(e, roadTripList);
-
-  //   // console.log("now trapping focus", this);
-  // } else {
-  //   // console.log("no longer trapping focus");
-  //   collapsibleModalHolder.setAttribute("aria-hidden", true);
-  //   console.log(
-  //     "aria-hidden is",
-  //     collapsibleModalHolder.getAttribute("aria-hidden")
-  //   );
-  // }
+  this.getAttribute("aria-expanded") === "true"
+    ? roadTripList.addEventListener("keydown", trapFocus)
+    : roadTripList.removeEventListener("keydown", trapFocus);
 });
 
-const trapFocus = (e, element) => {
-  var focusableEls = element.querySelectorAll(
-    'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])'
+const copyToClipboard = async (
+  textToCopy,
+  confirmationParent,
+  confirmationChild,
+  confirmationMessage
+) => {
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    // alert("Text successfully copied to clipboard!");
+
+    confirmationParent.style.display = "block";
+    confirmationChild.innerText = confirmationMessage;
+    setTimeout(() => {
+      confirmationParent.style.display = "none";
+    }, 2000);
+  } catch (error) {
+    alert(`Failed to copy text to clipboard: ${error.message}`);
+  }
+};
+
+function trapFocus(e) {
+  e.stopPropagation();
+  console.log("event", e);
+  console.log("this", this);
+  var focusableEls = this.querySelectorAll(
+    'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled]), li'
   );
   var firstFocusableEl = focusableEls[0];
   var lastFocusableEl = focusableEls[focusableEls.length - 1];
@@ -511,4 +537,4 @@ const trapFocus = (e, element) => {
       e.preventDefault();
     }
   }
-};
+}

@@ -56,7 +56,7 @@
   //   background-color: #fff;
   padding: 20px 5px;
   border-radius: 15px;
-//   width: 80%;
+  //   width: 80%;
   margin: auto;
 }
 
@@ -88,4 +88,36 @@
   color: #fff;
   font-size: 1em;
   text-shadow: -0.2rem -0.2rem 1rem #ff00de, 0.2rem 0.2rem 1rem #ffe1fb;
+}
+
+.copyButtonHolder {
+  position: relative;
+}
+
+.confirmTextContainer {
+  display: none;
+  background-color: #fff;
+  position: absolute;
+  width: 87px;
+  left: -10px;
+  border-radius: 8px;
+  font-size: 25px;
+  text-align: center;
+}
+.confirmText {
+  margin: 0px;
+}
+
+.googleMarkerLabel {
+  color: black !important;
+  //   background-color: white;
+//   font-family: "Lucida Grande", "Arial", sans-serif !important;
+  //   font-size: 10px;
+  font-weight: bold !important;
+  text-align: center;
+  width: 40px !important;
+  height: 40px !important;
+  //   border: 2px solid black;
+  //   white-space: nowrap;
+  z-index: 99999 !important;
 }

@@ -60,27 +60,32 @@
     <main>
       <div class="wrapper">
         <section id="mapHolder" class="mapHolder">
-          <div class="mapContentHolder">
+          <div
+            class="mapContentHolder"
+            aria-label="Google Map of your generated roadtrip"
+          >
             <span class="mapCloseBtnHolder">
               <button
                 aria-controls="mapHolder"
-                aria-label="close"
+                aria-label="close map"
                 class="mapCloseBtn"
               >
                 X
               </button>
             </span>
-            <div id="map"></div>
+            <div aria-label="Google Map" id="map"></div>
             <div class="mapDirectionsLinkHolder">
               <div class="mapDirectionsCopyLinkHolder">
                 <span class="mapDirectionsLink"></span>
-                <button
-                  aria-label="Copy link to clipboard"
-                  onclick="copyToClipboard()"
-                >
-                  <img src="./media/copyBtn.png" alt="Copy" />
-                  <span class="copyText">Copy</span> 
-                </button>
+                <div class="copyButtonHolder">
+                  <button aria-label="Copy link to clipboard" class="copyLinkBtn">
+                    <img src="./media/copyBtn.png" alt="Copy" />
+                    <span class="copyText">Copy</span>
+                  </button>
+                  <span class="confirmTextContainer"
+                    > <p class="confirmText"  aria-live="polite"></p></span
+                  >
+                </div>
               </div>
             </div>
           </div>
@@ -139,6 +144,7 @@
     </main>
     <!-- Js  -->
     <!-- <script type="module" src="app.js"></script> -->
+    
     <script type="module" src="../dist/bundle.js"></script>
 
     <!-- <script type="module" src="firebase.js"></script> -->
