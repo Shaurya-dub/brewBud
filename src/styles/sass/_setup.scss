@@ -223,6 +223,6 @@ html {
 }
 
 // intended to make aria-hidden content non-focusable 
-div[aria-hidden=true]{
+.collapsibleModalHolder[aria-hidden=true]{
     visibility: hidden;
 }

@@ -49,13 +49,11 @@ function markerMaker(lat, lng, map, markerTitle, label) {
     ariaLabel: markerTitle,
   });
   marker.addListener("click", function () {
-    console.log("clicking");
     infoWindow.open({
       anchor: marker,
       map,
     });
   });
-  // marker.setLabel(label)
   return marker;
 }
 async function calcRoute(
@@ -118,10 +116,10 @@ async function calcRoute(
 
     const lat = routeCords[i].end_location.lat();
     const lng = routeCords[i].end_location.lng();
-    const marker = markerMaker(lat, lng, map, markerTitle, markerLabel);
+    const marker = markerMaker(lat, lng, map, markerTitle, "B");
     markers.push(marker);
   }
-  google.maps.event.trigger(map, "resize");
+  console.log('markers',markers);
   return res;
 }
 const googleUrlGenerator = (res, waypointAddressArr, startPoint, endPoint) => {

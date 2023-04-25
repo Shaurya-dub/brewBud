@@ -264,7 +264,7 @@ html {
   overflow: hidden;
 }
 
-div[aria-hidden=true] {
+.collapsibleModalHolder[aria-hidden=true] {
   visibility: hidden;
 }
 
@@ -723,15 +723,6 @@ footer p a {
 
 .confirmText {
   margin: 0px;
-}
-
-.googleMarkerLabel {
-  color: black !important;
-  font-weight: bold !important;
-  text-align: center;
-  width: 40px !important;
-  height: 40px !important;
-  z-index: 99999 !important;
 }
 
 html {
