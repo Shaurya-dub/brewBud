@@ -421,7 +421,7 @@ h1 {
   max-width: 800px;
 }
 
-.listButton {
+.buttonLinkHolder button {
   background-color: transparent;
   border: none;
   color: ivory;

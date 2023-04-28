@@ -48,7 +48,7 @@ const removeBreweryFromDatabase = async (e) => {
   // let postListRef;
   // let brewName;
   if (e) {
-    const brewName = e.target.attributes[0].value;
+    const brewName = e.target.attributes[1].value;
     console.log("brewname", brewName);
     // console.log("e", e.target.attributes);
     const postListRef = ref(db, `${userUID}/setofBreweries/${brewName}`);
@@ -65,27 +65,25 @@ const removeBreweryFromDatabase = async (e) => {
 
 let setofBreweries = {};
 app.brewDirectionArray = [];
-// look at later (do we really need this refObj?, we could just use setofBreweries)
-app.breweryRefObj = {};
+// done (do we really need this refObj?, we could just use setofBreweries)
+// app.breweryRefObj = {};
 let breweryAddressAndNameArr = [];
 // select the select element on html
 // capture the value
 // add the value to the endpoint
 app.initSnapshot = async () => {
-  console.log("initSnap");
-  userUID = await authInit()
- await autoCompleteInput(startingPoint, endingPoint).catch((e) => {
+  // console.log("initSnap");
+  userUID = await authInit();
+  await autoCompleteInput(startingPoint, endingPoint).catch((e) => {
     console.error("hi", e);
   });
-  console.log("userId", userUID);
+  // console.log("userId", userUID);
   await onValue(ref(db, userUID), (snapshot) => {
     setofBreweries = {};
     app.brewDirectionArray = [];
-    app.breweryRefObj = {};
+    // app.breweryRefObj = {};
     breweryAddressAndNameArr = [];
     const data = snapshot.val();
-    // console.log("snapshot", data);
-    // console.log("set after snapshot", setofBreweries);
     // look at later (maybe make more efficient)
     savedBreweries.innerHTML = "";
     // if (data) {
@@ -95,23 +93,34 @@ app.initSnapshot = async () => {
     // }
     if (data) {
       // console.log("incoming data", data.setofBreweries);
-      setofBreweries = { ...data.setofBreweries };
+      // setofBreweries = { ...data.setofBreweries };
       for (let brewery in data.setofBreweries) {
-        // look at later (put this in separate function for reusability)
-        let savedBreweryCard = document.createElement("li");
-        savedBreweryCard.innerHTML = `<h3 class="savedBrewCard">${data.setofBreweries[brewery].Name}</h3>`;
-        // look at later (maybe do this in literals instead of step by step? ALSO use event delegation here)
-        let removeButton = document.createElement("button");
-        removeButton.innerText = "X";
-        removeButton.setAttribute(
-          "data-reference",
-          data.setofBreweries[brewery].id
-        );
-        removeButton.addEventListener("click", removeBreweryFromDatabase);
+        setofBreweries[brewery] = data.setofBreweries[brewery];
+        // Done look at later (put this in separate function for reusability)
+        // let savedBreweryCard = document.createElement("li");
+        // savedBreweryCard.innerHTML = `<h3 class="savedBrewCard">${data.setofBreweries[brewery].Name}</h3>`;
+        // let removeButton = document.createElement("button");
+        // removeButton.innerText = "X";
+        // removeButton.setAttribute(
+        //   "data-reference",
+        //   data.setofBreweries[brewery].id
+        // );
+        // removeButton.addEventListener("click", removeBreweryFromDatabase);
 
-        savedBreweryCard.prepend(removeButton);
-        app.breweryRefObj[data.setofBreweries[brewery].id] =
-          data.setofBreweries[brewery].Name;
+        // savedBreweryCard.prepend(removeButton);
+        const breweryName = data.setofBreweries[brewery].Name;
+        const brewId = data.setofBreweries[brewery].id;
+        const breweryAddress = data.setofBreweries[brewery].Address;
+        const savedBreweryCard = makeRemovableListEl(
+          breweryName,
+          "savedBrewCard",
+          removeBreweryFromDatabase,
+          "remove brewery from list",
+          "data-reference",
+          brewId
+        );
+        // app.breweryRefObj[data.setofBreweries[brewery].id] =
+        //   data.setofBreweries[brewery].Name;
 
         breweryAddressAndNameArr.push(data.setofBreweries[brewery].Name);
         // console.log("saved", savedBreweryCard);
@@ -120,12 +129,12 @@ app.initSnapshot = async () => {
         // let objectForSet = {};
         // objectForSet[data.setofBreweries[brewery].Name] = data.setofBreweries[brewery];
         // setofBreweries.add(objectForSet);
-        // look at later (readability, and do we need to re-do all this when initially loading, can we just copy the object into local setofBreweries?)
+        // Done look at later (readability, and do we need to re-do all this when initially loading, can we just copy the object into local setofBreweries?)
 
         // setofBreweries[data.setofBreweries[brewery].id] =
         //   data.setofBreweries[brewery];
         let directionObj = {
-          location: data.setofBreweries[brewery].Address,
+          location: breweryAddress,
           stopover: true,
           // name: data.setofBreweries[brewery].Name,
         };
@@ -145,8 +154,12 @@ app.initSnapshot = async () => {
       roadTripList.style.display = "none";
       // roadTripList.classList.remove("roadTripHide");
       // document.querySelector(".roadTripList").classList.add("roadTripHide");
+      // MAKE SURE THAT BUTTONS HAVE THIS CLASSLIST, AND FIGURE OUT EVENT HANDLER SICH
       document.querySelectorAll(".listButton").forEach((btn) => {
         btn.innerHTML = `+`;
+        btn.disabled = false;
+        btn.removeAttribute("aria-disabled");
+        btn.setAttribute("aria-label", "add brewery to list");
       });
     }
     // console.log("snap", app.breweryRefObj);
@@ -166,27 +179,54 @@ app.nullChecker = (val, term) => {
 
 // Disable "add" button for breweries already in database
 // Look at later (optimize)
-app.addedBreweryChecker = (breweryId, inDisplayFunc) => {
-  const i = breweryId;
-  console.log("refObj", app.breweryRefObj);
-  if (app.breweryRefObj[breweryId]) {
-    if (inDisplayFunc) {
-      return true;
-    }
-    try {
-      document.querySelector(
-        `[data-brewery="${i}"]`
-      ).innerHTML = `<img class="addedCheck" src="./media/whiteCheck.png" alt="brewery added to list">`;
-    } catch (e) {
-      console.error("something went wrong", e);
+app.addedBreweryChecker = (
+  breweryId,
+  inDisplayFunc,
+  passedBtn,
+  eventHandler
+) => {
+  // console.log("refObj", app.breweryRefObj);
+  // console.log("setofBreweries", setofBreweries, "and i is", i);
+  let addButton =
+    passedBtn || document.querySelector(`[data-brewery="${breweryId}"]`);
+  if (setofBreweries[breweryId]?.Name) {
+    // if (inDisplayFunc) {
+    //   return true;
+    // }
+    if (addButton) {
+      addButton.innerHTML = `<img class="addedCheck" src="./media/whiteCheck.png" alt="brewery added">`;
+      console.log(
+        "added btn",
+        document.querySelector(`[data-brewery="${breweryId}"]`)
+      );
+      addButton.disabled = "true";
+      addButton.setAttribute("aria-disabled", "true");
+      addButton.setAttribute("aria-label", "added to list");
+      addButton.removeEventListener("click", eventHandler);
+
+      console.log("disabled", addButton.getAttribute("aria-disabled"));
+      if (inDisplayFunc) {
+        addButton.setAttribute("data-brewery", breweryId);
+        return addButton;
+      }
     }
   } else {
-    if (inDisplayFunc) {
-      return false;
+    // if (inDisplayFunc) {
+    //   return false;
+    // }
+    console.log("not added btn", addButton);
+    if (addButton) {
+      addButton.innerHTML = "+";
+      addButton.disabled = false;
+      addButton.removeAttribute("aria-disabled");
+      addButton.setAttribute("aria-label", "add to list");
+      console.log("not-disabled", addButton.getAttribute("aria-disabled"));
+      addButton.addEventListener("click", eventHandler);
+      if (inDisplayFunc) {
+        addButton.setAttribute("data-brewery", breweryId);
+        return addButton;
+      }
     }
-    let addButton = document.querySelector(`[data-brewery="${i}"]`);
-    if (addButton) addButton.innerHTML = "+";
-    console.log("addButton", i, addButton);
   }
 };
 
@@ -217,15 +257,15 @@ app.getCity = (selectInput, userInput) => {
         const breweryType = result.brewery_type;
         if (breweryType !== "closed" && breweryType !== "planning") {
           app.displayFunction(result);
-          console.log("breweries", result);
+          // console.log("breweries", result);
           // Look at later (do we need to spread this list? ALSO should avoid double loop with buttons)
-          let buttonList = document.querySelectorAll(".listButton");
-          const breweryButtons = [...buttonList];
-          breweryButtons.forEach((btn) => {
-            btn.addEventListener("click", app.addBreweryToList);
-            // console.log("button", btn);
-            // console.log("list of set", setofBreweries);
-          });
+          // let buttonList = document.querySelectorAll(".listButton");
+          // const breweryButtons = [...buttonList];
+          // breweryButtons.forEach((btn) => {
+          //   btn.addEventListener("click", app.addBreweryToList);
+          //   // console.log("button", btn);
+          //   // console.log("list of set", setofBreweries);
+          // });
         }
       });
       // app.addedBreweryChecker();
@@ -243,6 +283,7 @@ app.getCity = (selectInput, userInput) => {
       document.querySelector(".loadingScreen").style.display = "none";
     })
     .catch((err) => {
+      console.error("debug me", err);
       app.errorHandlingFunc(err);
       document.querySelector(".loadingScreen").style.display = "none";
     });
@@ -251,6 +292,8 @@ app.getCity = (selectInput, userInput) => {
 // append result from API to the page
 app.displayFunction = (str) => {
   const li = document.createElement("li");
+  const buttonLinkHolder = document.createElement("div");
+  buttonLinkHolder.classList.add("buttonLinkHolder");
   li.setAttribute("tabindex", 0);
   li.classList.add("breweryCard");
   // look at later (redundant h2)
@@ -268,20 +311,60 @@ app.displayFunction = (str) => {
   const postalCode = app.nullChecker(str.postal_code, "Postal Code");
   const phone = app.nullChecker(str.phone, "Phone Number");
   const site = app.nullChecker(str.website_url, "Website");
-  const buttonChecker = app.addedBreweryChecker(str.id, true)
-    ? `<img class="addedCheck" src="./media/whiteCheck.png" alt="brewery added to list">`
-    : `+`;
-  li.innerHTML = `<h2>${name}</h2>
-    <p>${street}, ${city} ${postalCode}, ${state}</p>
-    <p class="phone"> ${phone}</p> <div class='buttonLinkHolder'><a href="${site}">${site}</a> <button class='listButton' data-brewery="${str.id}">${buttonChecker}</button> </div> `;
+  buttonLinkHolder.innerHTML = `<a href="${site}">${site}</a>`;
+  let newBtn = document.createElement("button");
+  const addBreweryBtn = app.addedBreweryChecker(
+    str.id,
+    true,
+    newBtn,
+    app.addBreweryToList
+  );
+  addBreweryBtn.classList.add('listButton');
+  buttonLinkHolder.appendChild(addBreweryBtn);
+  // console.log("setofBreweries DISPLAYFUNC", setofBreweries, 'id being passed', str.id);
 
+  // const buttonChecker = app.addedBreweryChecker(str.id, true)
+  //   ? `<img class="addedCheck" src="./media/whiteCheck.png" alt="brewery added to list">`
+  //   : `+`;
+
+  // const addBreweryButton = app.addedBreweryChecker(str.id, true)
+  //   ? `<button disabled aria-disabled='true' aria-label='brewery added to list' class='listButton' data-brewery="${str.id}"><img class="addedCheck" src="./media/whiteCheck.png" alt="brewery added to list"></button>`
+  //   : `<button aria-label='add brewery to list' class='listButton' data-brewery="${str.id}">+</button>`;
+
+  li.innerHTML = `<h2>${name}</h2> <p>${street}, ${city} ${postalCode}, ${state}</p> <p class="phone"> ${phone}</p>`;
+  li.appendChild(buttonLinkHolder);
   ul.appendChild(li);
   // app.addedBreweryChecker(str.id);
   // console.log('id is',str.id )
 };
 
+const makeRemovableListEl = (
+  listContent,
+  listClass,
+  listRemoveFunc,
+  ariaLabel,
+  listAttributeName,
+  listAttributeValue
+) => {
+  let removableListEl = document.createElement("li");
+  removableListEl.innerHTML = `<h3 class="${listClass}">${listContent}</h3>`;
+  // look at later (maybe do this in literals instead of step by step? ALSO use event delegation here)
+  let removeButton = document.createElement("button");
+  removeButton.innerText = "X";
+  removeButton.setAttribute("aria-label", ariaLabel);
+  if (listAttributeName) {
+    removeButton.setAttribute(listAttributeName, listAttributeValue);
+  } else {
+    console.error("no attribute");
+  }
+  removeButton.addEventListener("click", listRemoveFunc);
+
+  removableListEl.prepend(removeButton);
+  return removableListEl;
+};
+
 app.addBreweryToList = function (e) {
-  console.log("num of breweries", breweryAddressAndNameArr);
+  // console.log("num of breweries", breweryAddressAndNameArr);
   if (breweryAddressAndNameArr.length >= 10) {
     window.alert("You can only add 10 breweries per trip");
     return;
@@ -315,7 +398,7 @@ app.addBreweryToList = function (e) {
 
   const postListRef = ref(db, userUID);
   // // const newPostRef = push(postListRef);
-  console.log("user Id is", userUID);
+  // console.log("user Id is", userUID);
   set(postListRef, {
     setofBreweries,
   }).catch((e) => {
@@ -477,12 +560,12 @@ breweryListCloseBtn.addEventListener("click", function (e) {
     "aria-hidden",
     `${!(collapsibleModalHolder.getAttribute("aria-hidden") === "true")}`
   );
-  console.log("aria is", this.getAttribute("aria-expanded"));
+  // console.log("aria is", this.getAttribute("aria-expanded"));
   roadTripList.classList.toggle("roadTripHide");
-  console.log(
-    "aria-hidden is",
-    collapsibleModalHolder.getAttribute("aria-hidden")
-  );
+  // console.log(
+  //   "aria-hidden is",
+  //   collapsibleModalHolder.getAttribute("aria-hidden")
+  // );
   this.getAttribute("aria-expanded") === "true"
     ? roadTripList.addEventListener("keydown", trapFocus)
     : roadTripList.removeEventListener("keydown", trapFocus);
@@ -510,8 +593,8 @@ const copyToClipboard = async (
 
 function trapFocus(e) {
   e.stopPropagation();
-  console.log("event", e);
-  console.log("this", this);
+  // console.log("event", e);
+  // console.log("this", this);
   var focusableEls = this.querySelectorAll(
     'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled]), li'
   );
