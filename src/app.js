@@ -7,6 +7,7 @@
 // import { config } from "dotenv";
 // namespace
 const app = {};
+import { update } from "firebase/database";
 import {
   fireBaseApp,
   db,
@@ -43,6 +44,7 @@ const mapDirectionsLink = document.querySelector(".mapDirectionsLink");
 // });
 const ul = document.querySelector(".breweryList");
 const savedBreweries = document.querySelector(".savedBreweries");
+const roadTripButtons = document.querySelector(".roadTripButtons");
 let userUID;
 const removeBreweryFromDatabase = async (e) => {
   // let postListRef;
@@ -52,11 +54,11 @@ const removeBreweryFromDatabase = async (e) => {
     console.log("brewname", brewName);
     // console.log("e", e.target.attributes);
     const postListRef = ref(db, `${userUID}/setofBreweries/${brewName}`);
-    await remove(postListRef).catch((err) => {
-      console.error("something went wrong", err);
+    await remove(postListRef).catch((e) => {
+      errorHandlingFunction(e)
     });
     // console.log("remove response", setofBreweries);
-    app.addedBreweryChecker(brewName);
+    app.addedBreweryChecker(brewName, app.addBreweryToList);
   }
   // else {
   //   postListRef = ref(db, `setofBreweries`);
@@ -73,9 +75,11 @@ let breweryAddressAndNameArr = [];
 // add the value to the endpoint
 app.initSnapshot = async () => {
   // console.log("initSnap");
-  userUID = await authInit();
+  userUID = await authInit().catch((e) => {
+    errorHandlingFunction(e)
+  })
   await autoCompleteInput(startingPoint, endingPoint).catch((e) => {
-    console.error("hi", e);
+    errorHandlingFunction(e);
   });
   // console.log("userId", userUID);
   await onValue(ref(db, userUID), (snapshot) => {
@@ -145,8 +149,12 @@ app.initSnapshot = async () => {
           document.querySelector(
             `[data-brewery="${data.setofBreweries[brewery].id}"]`
           )
-        )
-          app.addedBreweryChecker(data.setofBreweries[brewery].id);
+        ) {
+          app.addedBreweryChecker(
+            data.setofBreweries[brewery].id,
+            app.addBreweryToList
+          );
+        }
       }
       // roadTripList.classList.remove("roadTripHide");
       roadTripList.style.display = "initial";
@@ -156,14 +164,16 @@ app.initSnapshot = async () => {
       // document.querySelector(".roadTripList").classList.add("roadTripHide");
       // MAKE SURE THAT BUTTONS HAVE THIS CLASSLIST, AND FIGURE OUT EVENT HANDLER SICH
       document.querySelectorAll(".listButton").forEach((btn) => {
-        btn.innerHTML = `+`;
-        btn.disabled = false;
-        btn.removeAttribute("aria-disabled");
-        btn.setAttribute("aria-label", "add brewery to list");
+        app.addedBreweryChecker(null, app.addBreweryToList, false, btn);
+        // btn.innerHTML = `+`;
+        // btn.disabled = false;
+        // btn.removeAttribute("aria-disabled");
+        // btn.setAttribute("aria-label", "add brewery to list");
+        // btn.addEventListener("click",app.addBreweryToList)
       });
     }
     // console.log("snap", app.breweryRefObj);
-  });
+  })
 };
 
 app.initSnapshot();
@@ -181,9 +191,9 @@ app.nullChecker = (val, term) => {
 // Look at later (optimize)
 app.addedBreweryChecker = (
   breweryId,
+  eventHandler,
   inDisplayFunc,
-  passedBtn,
-  eventHandler
+  passedBtn
 ) => {
   // console.log("refObj", app.breweryRefObj);
   // console.log("setofBreweries", setofBreweries, "and i is", i);
@@ -231,8 +241,21 @@ app.addedBreweryChecker = (
 };
 
 // error handling display's gif when error is encountered
-app.errorHandlingFunc = (e) => {
-  ul.innerHTML = `<div class="errorBox"> <img src = "media/wasted.gif"/> <p> Sorry, your search didn't return any results, try searching when you're sober</p></div>`;
+const errorHandlingFunction = (e) => {
+  // ul.innerHTML = `<div class="errorBox"> <img src = "media/wasted.gif"/> <p> Sorry, your search didn't return any results, try searching when you're sober</p></div>`;
+  const errorScreen = document.querySelector(".errorScreen");
+  const errorMessage = document.querySelector(".errorMessage");
+  errorScreen.classList.remove("errorScreenHide")
+  errorScreen.focus();
+  // errorScreen.removeAttribute("aria-hidden")
+  errorMessage.innerHTML = e?.message || null;
+  const closeBtn = document.querySelector(".closeBtn");
+  closeBtn.addEventListener("click", function () {
+    // errorScreen.setAttribute("aria-hidden", "true");
+  errorScreen.classList.add("errorScreenHide");
+
+  },{once:true});
+
 };
 
 // Make API call get brewery result based on parameters provided by user
@@ -258,7 +281,7 @@ app.getCity = (selectInput, userInput) => {
         if (breweryType !== "closed" && breweryType !== "planning") {
           app.displayFunction(result);
           // console.log("breweries", result);
-          // Look at later (do we need to spread this list? ALSO should avoid double loop with buttons)
+          // Done Look at later (do we need to spread this list? ALSO should avoid double loop with buttons)
           // let buttonList = document.querySelectorAll(".listButton");
           // const breweryButtons = [...buttonList];
           // breweryButtons.forEach((btn) => {
@@ -284,7 +307,7 @@ app.getCity = (selectInput, userInput) => {
     })
     .catch((err) => {
       console.error("debug me", err);
-      app.errorHandlingFunc(err);
+      errorHandlingFunction(err);
       document.querySelector(".loadingScreen").style.display = "none";
     });
 };
@@ -296,14 +319,14 @@ app.displayFunction = (str) => {
   buttonLinkHolder.classList.add("buttonLinkHolder");
   li.setAttribute("tabindex", 0);
   li.classList.add("breweryCard");
-  // look at later (redundant h2)
-  const h2 = document.createElement("h2");
-  h2.append(str.name);
-  li.appendChild(h2);
+  // Done look at later (redundant h2)
+  // const h2 = document.createElement("h2");
+  // h2.append(str.name);
+  // li.appendChild(h2);
   setTimeout((e) => {
     li.classList.add("fade");
   }, 50);
-  // Look at later (better way to do this?)
+  // Done Look at later (better way to do this?)
   const name = str.name.replace(/[^a-zA-Z0-9 ]/g, "");
   const street = app.nullChecker(str.street, "Street address");
   const city = app.nullChecker(str.city, "City info");
@@ -315,11 +338,11 @@ app.displayFunction = (str) => {
   let newBtn = document.createElement("button");
   const addBreweryBtn = app.addedBreweryChecker(
     str.id,
+    app.addBreweryToList,
     true,
-    newBtn,
-    app.addBreweryToList
+    newBtn
   );
-  addBreweryBtn.classList.add('listButton');
+  addBreweryBtn.classList.add("listButton");
   buttonLinkHolder.appendChild(addBreweryBtn);
   // console.log("setofBreweries DISPLAYFUNC", setofBreweries, 'id being passed', str.id);
 
@@ -348,7 +371,6 @@ const makeRemovableListEl = (
 ) => {
   let removableListEl = document.createElement("li");
   removableListEl.innerHTML = `<h3 class="${listClass}">${listContent}</h3>`;
-  // look at later (maybe do this in literals instead of step by step? ALSO use event delegation here)
   let removeButton = document.createElement("button");
   removeButton.innerText = "X";
   removeButton.setAttribute("aria-label", ariaLabel);
@@ -371,7 +393,7 @@ app.addBreweryToList = function (e) {
   }
   // console.log("running", e.target.data);
   let objToSend = {};
-  const keyArray = ["Name", "Address", "Phone", "Website", "id"];
+  // const keyArray = ["Name", "Address", "Phone", "Website", "id"];
   const brewCard = [...e.target.parentNode.parentNode.childNodes];
   // console.log("brewCard", this.getAttribute('data-brewery'));
   // let newArr =brewCard.filter((el) => el)
@@ -386,24 +408,29 @@ app.addBreweryToList = function (e) {
   newArr.push(buttonAttribute);
   // console.log('newArr is', newArr);
   // look at later (can we make this more efficient in regards to looping?)
-  for (let i = 0; i < keyArray.length; i++) {
-    let objKey = keyArray[i];
-    objToSend[objKey] = newArr[i];
-  }
-  setofBreweries[objToSend.id] = objToSend;
-  // console.log("set", setofBreweries);
-
+  //   for (let i = 0; i < keyArray.length; i++) {
+  //     let objKey = keyArray[i];
+  //     objToSend[objKey] = newArr[i];
+  //   }
+  const objId = buttonAttribute;
+  // console.log(÷set", setofBreweries);
+  // console.log("sentObj", sentObj);
   // const filteredArr = objToSend.filter((el) => el && el !== "Button");
   // const db = getDatabase();
 
-  const postListRef = ref(db, userUID);
+  const postListRef = ref(db, `${userUID}/setofBreweries/${objId}`);
   // // const newPostRef = push(postListRef);
   // console.log("user Id is", userUID);
-  set(postListRef, {
-    setofBreweries,
-  }).catch((e) => {
-    console.error(e);
+  update(postListRef, {
+    Name: newArr[0],
+    Address: newArr[1],
+    Phone: newArr[2],
+    Website: newArr[3],
+    id: newArr[4],
   });
+  // .catch((e) => {
+  //   console.error(e);
+  // });
 };
 
 app.breweryListDisplay = () => {};
@@ -434,7 +461,7 @@ const geoCodeUrl = (zip) => {
       app.getCity("by_dist", latAndLng);
     })
     .catch((err) => {
-      app.errorHandlingFunc(err);
+      errorHandlingFunction(err);
     });
 };
 
@@ -459,13 +486,17 @@ app.roadTripBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   app.startAndEndFormHolder.classList.remove("startAndEndFormHolderHide");
   app.startAndEndFormHolder.addEventListener("keydown", trapFocus);
+  startingPoint.focus();
+  roadTripButtons.setAttribute("aria-hidden", true);
+  savedBreweries.setAttribute("aria-hidden", true);
   cancelTripBtn.addEventListener("click", (e) => {
     e.stopPropagation();
 
     app.startAndEndFormHolder.removeEventListener("keydown", trapFocus);
     app.startAndEndFormHolder.classList.add("startAndEndFormHolderHide");
+    savedBreweries.removeAttribute("aria-hidden");
+    roadTripButtons.removeAttribute("aria-hidden");
   });
-  startingPoint.focus();
   // e.preventDefault();
   // await calcRoute(app.brewDirectionArray);
   // app.mapHolder.classList.add("showMap");
@@ -476,7 +507,7 @@ app.clearListBtn.addEventListener("click", async (e) => {
   // removeBreweryFromDatabase();
   let postListRef = ref(db, userUID);
   await remove(postListRef).catch((e) => {
-    console.error(e);
+    errorHandlingFunction(e);
   });
   // document.querySelectorAll('.listButton').forEach((btn) => {
   //   btn.innerHTML = `+`
@@ -496,12 +527,14 @@ startAndEndForm.addEventListener("submit", async (e) => {
     startingPointVal,
     endingPointVal,
     breweryAddressAndNameArr
-  );
+  ).catch((e) => {
+    errorHandlingFunction(e);
+  })
   // console.log("calcRoute", calcRouteResult);
   // console.log("directionArr", app.brewDirectionArray);
   const link = googleUrlGenerator(
     calcRouteResult,
-    app.brewDirectionArray,
+    breweryAddressAndNameArr,
     startingPointVal,
     endingPointVal
   );
@@ -517,7 +550,7 @@ startAndEndForm.addEventListener("submit", async (e) => {
       copyConfirmationContainer,
       copyConfirmationMessage,
       "Link Copied"
-    );
+    )
   };
   copyLinkBtn.addEventListener("click", copyLink);
 
@@ -534,6 +567,8 @@ startAndEndForm.addEventListener("submit", async (e) => {
       mapContentHolder.removeEventListener("keydown", trapFocus);
       copyLinkBtn.removeEventListener("click", copyLink);
       app.mapHolder.classList.remove("showMap");
+      savedBreweries.removeAttribute("aria-hidden");
+      roadTripButtons.removeAttribute("aria-hidden");
     },
     { once: true }
   );

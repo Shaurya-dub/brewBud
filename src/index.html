@@ -56,6 +56,17 @@
         <img src="./media/glug.gif" alt="loading" />
       </div>
     </section>
+
+    <section class="errorScreen errorScreenHide" role="alert" aria-live="assertive" aria-hidden="true">
+      <div class="errorBox">
+        <h2>Error Message</h2>
+        <p>
+          There was an error processing your request. Please try again later.
+        </p>
+        <p class="errorMessage"></p>
+        <button class="closeBtn" aria-label="Close error message">Close</button>
+      </div>
+    </section>
     <!-- main starts here -->
     <main>
       <div class="wrapper">
@@ -78,13 +89,16 @@
               <div class="mapDirectionsCopyLinkHolder">
                 <span class="mapDirectionsLink"></span>
                 <div class="copyButtonHolder">
-                  <button aria-label="Copy link to clipboard" class="copyLinkBtn">
+                  <button
+                    aria-label="Copy link to clipboard"
+                    class="copyLinkBtn"
+                  >
                     <img src="./media/copyBtn.png" alt="Copy" />
                     <span class="copyText">Copy</span>
                   </button>
-                  <span class="confirmTextContainer"
-                    > <p class="confirmText"  aria-live="polite"></p></span
-                  >
+                  <span class="confirmTextContainer">
+                    <p class="confirmText" aria-live="polite"></p
+                  ></span>
                 </div>
               </div>
             </div>
@@ -123,17 +137,15 @@
                       placeholder="Ending Point"
                     />
                   </span>
-                  <input type="checkbox" id="sameAsStart" />
-                  <label for="sameAsStart">Same as Start Address</label>
                 </div>
                 <div class="buttonHolder">
                   <button type="submit" class="generateTripBtn">Lets Go</button>
-                  <button class="cancelTripBtn">Cancel</button>
+                  <button type="button" class="cancelTripBtn">Cancel</button>
                 </div>
               </form>
             </div>
             <ul class="savedBreweries"></ul>
-            <div class="buttonHolder">
+            <div class="buttonHolder roadTripButtons">
               <button class="clearListBtn">Clear</button>
               <button class="roadTripBtn">Roadtrip</button>
             </div>
@@ -146,11 +158,11 @@
     <!-- <script type="module" src="app.js"></script> -->
 
     <script type="module" src="../dist/bundle.js"></script>
-    
+
     <!-- <script type="module" src="firebase.js"></script> -->
     <script
-    src="https://kit.fontawesome.com/4129e3b163.js"
-    crossorigin="anonymous"
+      src="https://kit.fontawesome.com/4129e3b163.js"
+      crossorigin="anonymous"
     ></script>
   </body>
 </html>

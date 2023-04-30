@@ -13,7 +13,8 @@
   max-width: 1200px;
 }
 
-.mapHolder.showMap {
+.mapHolder.showMap,
+.errorScreen {
   display: flex;
   flex-direction: column;
   justify-content: center;

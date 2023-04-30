@@ -411,6 +411,10 @@ h1 {
   text-decoration: none;
 }
 
+.errorScreen {
+  display: none;
+}
+
 .errorBox {
   background-color: #fff;
   display: flex;
@@ -452,7 +456,7 @@ h1 {
 
 .roadTripList.roadTripHide {
   right: -280px;
-  display: flex;
+  display: none;
 }
 
 .roadTripList.roadTripHide .breweryListCloseBtn {
@@ -472,7 +476,8 @@ h1 {
   padding: 10px;
 }
 
-.startAndEndFormHolder.startAndEndFormHolderHide {
+.startAndEndFormHolder.startAndEndFormHolderHide,
+.errorScreen.errorScreenHide {
   display: none;
 }
 
@@ -636,7 +641,8 @@ footer p a {
   max-width: 1200px;
 }
 
-.mapHolder.showMap {
+.mapHolder.showMap,
+.errorScreen {
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -23,13 +23,13 @@ const authInit = async () => {
   let userId
   const auth = getAuth();
   await setPersistence(auth,browserSessionPersistence)
-  .catch((e) => {
-    console.error('error',e)
-  })
+  // .catch((e) => {
+  //   alert('error in auth',e.message)
+  // })
   await signInAnonymously(auth)
-.catch((e) => {
-  console.error('error signing in', e)
-})
+// .catch((e) => {
+//   console.error('error signing in', e)
+// })
 const user = auth.currentUser;
 if(user) {
   console.log('user',user)

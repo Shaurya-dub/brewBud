@@ -116,7 +116,7 @@ async function calcRoute(
 
     const lat = routeCords[i].end_location.lat();
     const lng = routeCords[i].end_location.lng();
-    const marker = markerMaker(lat, lng, map, markerTitle, "B");
+    const marker = markerMaker(lat, lng, map, markerTitle, markerLabel);
     markers.push(marker);
   }
   console.log('markers',markers);
@@ -124,6 +124,7 @@ async function calcRoute(
 }
 const googleUrlGenerator = (res, waypointAddressArr, startPoint, endPoint) => {
   // look at later (this oculd be an object literal)
+  console.log('res',res,waypointAddressArr)
   let geoCodedArr = res.geocoded_waypoints;
   const startId = geoCodedArr.pop().place_id;
   const endId = geoCodedArr.shift().place_id;
@@ -141,7 +142,7 @@ const googleUrlGenerator = (res, waypointAddressArr, startPoint, endPoint) => {
 
   for (let i = 0; i < waypointOrderArr.length; i++) {
     const waypointOrderIndex = waypointOrderArr[i];
-    addressHolderArr.push(waypointAddressArr[waypointOrderIndex].location);
+    addressHolderArr.push(waypointAddressArr[waypointOrderIndex]);
     placeIdHolderArr.push(geoCodedArr[i].place_id);
   }
   const placeIds = placeIdHolderArr.join("|");

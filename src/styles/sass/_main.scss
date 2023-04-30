@@ -67,6 +67,9 @@
           0 0 4rem #ff00de;
   text-decoration: none;
 }
+.errorScreen {
+  display:none;
+}
 
 .errorBox {
   background-color: #fff;
@@ -108,7 +111,8 @@
 }
 .roadTripList.roadTripHide {
   right: -280px;
-  display: flex;
+  display: none;
+  // visibility:hidden
 }
 
 .roadTripList.roadTripHide .breweryListCloseBtn {
@@ -128,7 +132,8 @@
   align-items: center;
   padding: 10px;
 }
-.startAndEndFormHolder.startAndEndFormHolderHide {
+.startAndEndFormHolder.startAndEndFormHolderHide,
+.errorScreen.errorScreenHide {
   display: none;
 }
 
