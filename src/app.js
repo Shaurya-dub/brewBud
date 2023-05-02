@@ -78,17 +78,16 @@ let breweryAddressAndNameArr = [];
 // add the value to the endpoint
 app.initSnapshot = async () => {
   // console.log("initSnap");
-  const firebaseConfig = fetch("/.netlify/functions/fetch-firebase").then(
+  fetch("/.netlify/functions/fetch-firebase").then(
     (response) => {
       return response.json();
     }
-  ).then((data) => {
+  ).then(async(data) => {
     console.log('data here',data)
-    return data
+    const fireBaseApp = initializeApp(data);
+    db = getDatabase(fireBaseApp);
+    userUID = await authInit();
   })
-  const fireBaseApp = initializeApp(firebaseConfig);
-  db = getDatabase(fireBaseApp);
-  userUID = await authInit();
   await autoCompleteInput(startingPoint, endingPoint);
   // console.log("userId", userUID);
   await onValue(ref(db, userUID), (snapshot) => {
