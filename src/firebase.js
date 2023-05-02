@@ -34,28 +34,28 @@ fetch("/.netlify/functions/fetch-firebase")
   })
   .then((data) => {
     // firebaseConfig = data.config_object;
-    console.log("firebase data", data);
-    const {
-      apiKey,
-      authDomain,
-      databaseURL,
-      projectId,
-      storageBucket,
-      messagingSenderId,
-      appId,
-      measurementId,
-    } = data;
-   const firebaseConfig = {
-      apiKey: apiKey,
-      authDomain: authDomain,
-      databaseURL: databaseURL,
-      projectId: projectId,
-      storageBucket: storageBucket,
-      messagingSenderId: messagingSenderId,
-      appId: appId,
-      measurementId: measurementId,
-    };
-   return firebaseConfig
+  //   console.log("firebase data", data);
+  //   const {
+  //     apiKey,
+  //     authDomain,
+  //     databaseURL,
+  //     projectId,
+  //     storageBucket,
+  //     messagingSenderId,
+  //     appId,
+  //     measurementId,
+  //   } = data;
+  //  const firebaseConfig = {
+  //     apiKey: apiKey,
+  //     authDomain: authDomain,
+  //     databaseURL: databaseURL,
+  //     projectId: projectId,
+  //     storageBucket: storageBucket,
+  //     messagingSenderId: messagingSenderId,
+  //     appId: appId,
+  //     measurementId: measurementId,
+  //   };
+   return data
   });
 }
 
