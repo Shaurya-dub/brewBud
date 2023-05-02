@@ -32,17 +32,17 @@ fetch("/.netlify/functions/fetch-firebase")
   .then((data) => {
     // firebaseConfig = data.config_object;
     console.log('firebase data',data)
-  //  firebaseConfig = {
-  //     apiKey: data.api_key,
-  //     authDomain: "brewbud-80fd3.firebaseapp.com",
-  //     databaseURL: "https://brewbud-80fd3-default-rtdb.firebaseio.com",
-  //     projectId: "brewbud-80fd",
-  //     storageBucket: "brewbud-80fd3.appspot.com",
-  //     messagingSenderId: "303106774801",
-  //     appId: "1:303106774801:web:6da98e2516b0eedb7a9eb0",
-  //     measurementId: "G-QBZKLD2Z1K",
-  //   };
-  firebaseConfig = data.res_object
+    const {apiKey,authDomain,databaseURL,projectId,storageBucket,messagingSenderId,appId,measurementId} = data
+   firebaseConfig = {
+      apiKey: apiKey,
+      authDomain: authDomain,
+      databaseURL: databaseURL,
+      projectId: projectId,
+      storageBucket: storageBucket,
+      messagingSenderId: messagingSenderId,
+      appId: appId,
+      measurementId: measurementId,
+    };
   });
 
 // Initialize Firebase
