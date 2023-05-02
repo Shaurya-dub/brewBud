@@ -1,4 +1,4 @@
-const firebaseHandler = async (event) => {
+const handler = async (event) => {
   const config_object = process.env.FIREBASE_CONFIG;
 
   try {
@@ -14,4 +14,4 @@ const firebaseHandler = async (event) => {
     };
   }
 };
-module.exports = { firebaseHandler };
+module.exports = { handler };

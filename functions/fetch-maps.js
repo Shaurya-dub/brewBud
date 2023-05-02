@@ -1,4 +1,4 @@
-const mapsHandler = async (event) => {
+const handler = async (event) => {
   const api_key = process.env.MAPS_KEY;
 
   try {
@@ -14,4 +14,4 @@ const mapsHandler = async (event) => {
     };
   }
 };
-module.exports = { mapsHandler };
+module.exports = { handler };
