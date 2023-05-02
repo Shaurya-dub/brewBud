@@ -24,7 +24,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-let firebaseConfig;
+// let firebaseConfig;
 let fireBaseApp;
 // let db
 const initFirebase = async () => {
@@ -45,7 +45,7 @@ fetch("/.netlify/functions/fetch-firebase")
       appId,
       measurementId,
     } = data;
-    firebaseConfig = {
+   const firebaseConfig = {
       apiKey: apiKey,
       authDomain: authDomain,
       databaseURL: databaseURL,
