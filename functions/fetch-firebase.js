@@ -1,10 +1,10 @@
 const handler = async (event) => {
-  const config_object = process.env.FIREBASE_CONFIG;
+  const api_key = process.env.FIREBASE_KEY;
 
   try {
     return {
       statusCode: 200,
-      body: JSON.stringify(config_object),
+      body: JSON.stringify(api_key),
     };
   } catch (error) {
     const { status, statusText, headers, data } = error.response;

@@ -7,7 +7,7 @@ fetch("/.netlify/functions/fetch-maps")
   .then((response) => response.json())
   .then((data) => {
     loader = new Loader({
-      apiKey: data.apiKey,
+      apiKey: data.api_key,
       version: "weekly",
       libraries: ["places", "maps"],
     });
