@@ -83,6 +83,7 @@ app.initSnapshot = async () => {
       return response.json();
     }
   ).then((data) => {
+    console.log('data here',data)
     return data
   })
   const fireBaseApp = initializeApp(firebaseConfig);
