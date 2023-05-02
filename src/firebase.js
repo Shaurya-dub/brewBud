@@ -25,7 +25,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 let firebaseConfig                   
-fetch("/.netlify/functions/getApiKey")
+fetch("/.netlify/functions/fetch-firebase")
   .then((response) => response.json())
   .then((data) => {
     firebaseConfig = data.config_object;

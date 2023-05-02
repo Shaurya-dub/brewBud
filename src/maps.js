@@ -3,7 +3,7 @@ import { Loader } from "@googlemaps/js-api-loader";
 
 // use default algorithm and renderer
 let loader;
-fetch("/.netlify/functions/getApiKey")
+fetch("/.netlify/functions/fetch-maps")
   .then((response) => response.json())
   .then((data) => {
     loader = new Loader({
