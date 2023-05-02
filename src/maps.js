@@ -2,18 +2,17 @@ import { Loader } from "@googlemaps/js-api-loader";
 // import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 // use default algorithm and renderer
-const loader = new Loader({
-  apiKey: "hiddenForCommit",
-  version: "weekly",
-  libraries: ["places", "maps"],
-});
-// loader.load();
-// async function initFunc() {
-//   await google.maps.importLibrary("places");
-// }
-// initFunc();
-// const {google} = await loader.load();
-
+let loader;
+fetch("/.netlify/functions/getApiKey")
+  .then((response) => response.json())
+  .then((data) => {
+    loader = new Loader({
+      apiKey: data.apiKey,
+      version: "weekly",
+      libraries: ["places", "maps"],
+    });
+    // ...rest of your code
+  });
 async function autoCompleteInput(...inputs) {
   // await google.maps.importLibrary("places");
   // if (!storeVar) {
@@ -21,7 +20,7 @@ async function autoCompleteInput(...inputs) {
   //   storeVar = await loader.load();
   // }
 
-  await loader.load().catch((e) => console.error('hi',e))
+  await loader.load().catch((e) => console.error("loading error", e));
   inputs.map((input) => {
     const autoComplete = new google.maps.places.Autocomplete(input);
     autoComplete.addListener("place_changed", () => {
@@ -41,7 +40,6 @@ function markerMaker(lat, lng, map, markerTitle, label) {
     title: markerTitle,
     label: label,
     optimized: false,
-  
   });
   console.log("passed label", label);
   const infoWindow = new google.maps.InfoWindow({
@@ -72,18 +70,14 @@ async function calcRoute(
 
   // look at later (error handling using status (?))
 
-  const res = await directionsService
-    .route({
-      origin: startingPoint,
-      destination: endingPoint,
-      waypoints: brewDirectionArray,
-      optimizeWaypoints: true,
-      travelMode: "DRIVING",
-    })
-    .catch((err) => {
-      console.error("error", err);
-    });
-  console.log("res is", res);
+  const res = await directionsService.route({
+    origin: startingPoint,
+    destination: endingPoint,
+    waypoints: brewDirectionArray,
+    optimizeWaypoints: true,
+    travelMode: "DRIVING",
+  });
+
   directionsRenderer.setDirections(res);
   const routeCords = res.routes[0].legs;
   const waypointOrder = res.routes[0].waypoint_order;
@@ -119,12 +113,12 @@ async function calcRoute(
     const marker = markerMaker(lat, lng, map, markerTitle, markerLabel);
     markers.push(marker);
   }
-  console.log('markers',markers);
+  console.log("markers", markers);
   return res;
 }
 const googleUrlGenerator = (res, waypointAddressArr, startPoint, endPoint) => {
   // look at later (this oculd be an object literal)
-  console.log('res',res,waypointAddressArr)
+  console.log("res", res, waypointAddressArr);
   let geoCodedArr = res.geocoded_waypoints;
   const startId = geoCodedArr.pop().place_id;
   const endId = geoCodedArr.shift().place_id;
@@ -145,9 +139,12 @@ const googleUrlGenerator = (res, waypointAddressArr, startPoint, endPoint) => {
     addressHolderArr.push(waypointAddressArr[waypointOrderIndex]);
     placeIdHolderArr.push(geoCodedArr[i].place_id);
   }
+  console.log("LINK SHIT HERE", addressHolderArr);
   const placeIds = placeIdHolderArr.join("|");
-  const wayPointAdresses = encodeURIComponent(addressHolderArr.join("|"));
-  googleUrl += `&waypoints=${wayPointAdresses}&waypoint_place_ids=${placeIds}`;
+  const wayPointAddresses = encodeURIComponent(addressHolderArr.join("|"));
+  console.log("WAYPOINT ADDRESS", wayPointAddresses);
+
+  googleUrl += `&waypoints=${wayPointAddresses}&waypoint_place_ids=${placeIds}`;
   return googleUrl;
 };
 // initMap();

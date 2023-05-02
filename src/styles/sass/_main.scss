@@ -81,6 +81,14 @@
   max-width: 800px;
 }
 
+// .buttonLinkHolder {
+//       display: flex;
+//     flex-wrap: wrap;
+//     flex-direction: column;
+//     align-items: center;
+
+// }
+
 .buttonLinkHolder button {
   background-color: transparent;
   border: none;
@@ -107,7 +115,7 @@
 .roadTripList ul {
   list-style: none;
   overflow-y: scroll;
-  max-height: 75vh;
+  max-height: 50vh;
 }
 .roadTripList.roadTripHide {
   right: -280px;

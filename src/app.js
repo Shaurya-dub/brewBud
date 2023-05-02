@@ -75,12 +75,8 @@ let breweryAddressAndNameArr = [];
 // add the value to the endpoint
 app.initSnapshot = async () => {
   // console.log("initSnap");
-  userUID = await authInit().catch((e) => {
-    errorHandlingFunction(e)
-  })
-  await autoCompleteInput(startingPoint, endingPoint).catch((e) => {
-    errorHandlingFunction(e);
-  });
+  userUID = await authInit()
+  await autoCompleteInput(startingPoint, endingPoint)
   // console.log("userId", userUID);
   await onValue(ref(db, userUID), (snapshot) => {
     setofBreweries = {};
@@ -176,7 +172,10 @@ app.initSnapshot = async () => {
   })
 };
 
-app.initSnapshot();
+app.initSnapshot().catch((e) => {
+  console.log('new err')
+  errorHandlingFunction(e)
+})
 
 // Check for values from API call return null
 app.nullChecker = (val, term) => {
@@ -537,7 +536,7 @@ startAndEndForm.addEventListener("submit", async (e) => {
     breweryAddressAndNameArr,
     startingPointVal,
     endingPointVal
-  );
+  )
   mapDirectionsLink.innerHTML = `<a class="mapDirectionsLink" target="_blank" href="${link}">Click here to open your directions link</a>`;
   const copyLinkBtn = document.querySelector(".copyLinkBtn");
   const copyConfirmationContainer = document.querySelector(
