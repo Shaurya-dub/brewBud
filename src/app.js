@@ -10,7 +10,9 @@ const app = {};
 import { update } from "firebase/database";
 import {
   fireBaseApp,
-  db,
+  initializeApp,
+  initFirebase,
+  getDatabase,
   authInit,
   ref,
   set,
@@ -46,6 +48,7 @@ const ul = document.querySelector(".breweryList");
 const savedBreweries = document.querySelector(".savedBreweries");
 const roadTripButtons = document.querySelector(".roadTripButtons");
 let userUID;
+let db;
 const removeBreweryFromDatabase = async (e) => {
   // let postListRef;
   // let brewName;
@@ -55,7 +58,7 @@ const removeBreweryFromDatabase = async (e) => {
     // console.log("e", e.target.attributes);
     const postListRef = ref(db, `${userUID}/setofBreweries/${brewName}`);
     await remove(postListRef).catch((e) => {
-      errorHandlingFunction(e)
+      errorHandlingFunction(e);
     });
     // console.log("remove response", setofBreweries);
     app.addedBreweryChecker(brewName, app.addBreweryToList);
@@ -75,8 +78,11 @@ let breweryAddressAndNameArr = [];
 // add the value to the endpoint
 app.initSnapshot = async () => {
   // console.log("initSnap");
-  userUID = await authInit()
-  await autoCompleteInput(startingPoint, endingPoint)
+  const firebaseConfig = await initFirebase();
+  const fireBaseApp = initializeApp(firebaseConfig);
+  db = getDatabase(fireBaseApp);
+  userUID = await authInit();
+  await autoCompleteInput(startingPoint, endingPoint);
   // console.log("userId", userUID);
   await onValue(ref(db, userUID), (snapshot) => {
     setofBreweries = {};
@@ -169,13 +175,13 @@ app.initSnapshot = async () => {
       });
     }
     // console.log("snap", app.breweryRefObj);
-  })
+  });
 };
 
 app.initSnapshot().catch((e) => {
-  console.log('new err')
-  errorHandlingFunction(e)
-})
+  console.log("new err");
+  errorHandlingFunction(e);
+});
 
 // Check for values from API call return null
 app.nullChecker = (val, term) => {
@@ -244,17 +250,19 @@ const errorHandlingFunction = (e) => {
   // ul.innerHTML = `<div class="errorBox"> <img src = "media/wasted.gif"/> <p> Sorry, your search didn't return any results, try searching when you're sober</p></div>`;
   const errorScreen = document.querySelector(".errorScreen");
   const errorMessage = document.querySelector(".errorMessage");
-  errorScreen.classList.remove("errorScreenHide")
+  errorScreen.classList.remove("errorScreenHide");
   errorScreen.focus();
   // errorScreen.removeAttribute("aria-hidden")
   errorMessage.innerHTML = e?.message || null;
   const closeBtn = document.querySelector(".closeBtn");
-  closeBtn.addEventListener("click", function () {
-    // errorScreen.setAttribute("aria-hidden", "true");
-  errorScreen.classList.add("errorScreenHide");
-
-  },{once:true});
-
+  closeBtn.addEventListener(
+    "click",
+    function () {
+      // errorScreen.setAttribute("aria-hidden", "true");
+      errorScreen.classList.add("errorScreenHide");
+    },
+    { once: true }
+  );
 };
 
 // Make API call get brewery result based on parameters provided by user
@@ -528,7 +536,7 @@ startAndEndForm.addEventListener("submit", async (e) => {
     breweryAddressAndNameArr
   ).catch((e) => {
     errorHandlingFunction(e);
-  })
+  });
   // console.log("calcRoute", calcRouteResult);
   // console.log("directionArr", app.brewDirectionArray);
   const link = googleUrlGenerator(
@@ -536,7 +544,7 @@ startAndEndForm.addEventListener("submit", async (e) => {
     breweryAddressAndNameArr,
     startingPointVal,
     endingPointVal
-  )
+  );
   mapDirectionsLink.innerHTML = `<a class="mapDirectionsLink" target="_blank" href="${link}">Click here to open your directions link</a>`;
   const copyLinkBtn = document.querySelector(".copyLinkBtn");
   const copyConfirmationContainer = document.querySelector(
@@ -549,7 +557,7 @@ startAndEndForm.addEventListener("submit", async (e) => {
       copyConfirmationContainer,
       copyConfirmationMessage,
       "Link Copied"
-    )
+    );
   };
   copyLinkBtn.addEventListener("click", copyLink);
 
