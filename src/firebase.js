@@ -26,16 +26,26 @@ import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 let firebaseConfig;
 let fireBaseApp;
-let db
+// let db
+const initFirebase = async () => {
 fetch("/.netlify/functions/fetch-firebase")
   .then((response) => {
     return response.json();
   })
   .then((data) => {
     // firebaseConfig = data.config_object;
-    console.log('firebase data',data)
-    const {apiKey,authDomain,databaseURL,projectId,storageBucket,messagingSenderId,appId,measurementId} = data
-   firebaseConfig = {
+    console.log("firebase data", data);
+    const {
+      apiKey,
+      authDomain,
+      databaseURL,
+      projectId,
+      storageBucket,
+      messagingSenderId,
+      appId,
+      measurementId,
+    } = data;
+    firebaseConfig = {
       apiKey: apiKey,
       authDomain: authDomain,
       databaseURL: databaseURL,
@@ -45,44 +55,17 @@ fetch("/.netlify/functions/fetch-firebase")
       appId: appId,
       measurementId: measurementId,
     };
-    fireBaseApp = initializeApp(firebaseConfig);
-    db = getDatabase(fireBaseApp);
+   return firebaseConfig
   });
+}
+
+
+
 
 // Initialize Firebase
 
 
 const authInit = async () => {
-  fetch("/.netlify/functions/fetch-firebase")
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      // firebaseConfig = data.config_object;
-      console.log("firebase data", data);
-      const {
-        apiKey,
-        authDomain,
-        databaseURL,
-        projectId,
-        storageBucket,
-        messagingSenderId,
-        appId,
-        measurementId,
-      } = data;
-      firebaseConfig = {
-        apiKey: apiKey,
-        authDomain: authDomain,
-        databaseURL: databaseURL,
-        projectId: projectId,
-        storageBucket: storageBucket,
-        messagingSenderId: messagingSenderId,
-        appId: appId,
-        measurementId: measurementId,
-      };
-      fireBaseApp = initializeApp(firebaseConfig);
-      db = getDatabase(fireBaseApp);
-    });
   const auth = getAuth();
   await setPersistence(auth, browserSessionPersistence);
   // .catch((e) => {
@@ -97,5 +80,5 @@ const authInit = async () => {
   return user?.uid;
 };
 
-export { fireBaseApp, db, authInit, ref, set, remove, push, onValue };
+export { fireBaseApp, initializeApp, getDatabase, initFirebase, authInit, ref, set, remove, push, onValue };
 // const analytics = getAnalytics(app);
