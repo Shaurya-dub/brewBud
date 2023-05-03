@@ -23,16 +23,13 @@ async function autoCompleteInput(...inputs) {
   //   });
   // const mapsCall = await fetch("/.netlify/functions/fetch-maps");
   // const mapsData = await mapsCall.json();
-  // const loader = new Loader({
-  //   apiKey: process.env.MAPS_KEY,
-  //   version: "weekly",
-  //   libraries: ["places", "maps"],
-  // });
-  // console.log('changes')
-  await fetch("/.netlify/functions/fetch-maps").catch((e) =>
-    console.error("maps loading error", e)
-  )
-
+  const loader = new Loader({
+    apiKey: process.env.MAPS_KEY,
+    version: "weekly",
+    libraries: ["places", "maps"],
+  });
+  console.log('changes')
+  await loader.load().catch((e) => console.error("loading error", e));
   inputs.map((input) => {
     const autoComplete = new google.maps.places.Autocomplete(input);
     autoComplete.addListener("place_changed", () => {
