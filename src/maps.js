@@ -1,9 +1,10 @@
 import { Loader } from "@googlemaps/js-api-loader";
 
 async function autoCompleteInput(...inputs) {
-  // const mapsData = await mapsCall.json();
+  const mapsCall = await fetch("/.netlify/functions/fetch-maps");
+  const mapsData = await mapsCall.json();
   const loader = new Loader({
-    apiKey: process.env.MAPS_KEY,
+    apiKey: mapsData,
     version: "weekly",
     libraries: ["places", "maps"],
   });
