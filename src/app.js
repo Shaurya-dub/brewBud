@@ -89,7 +89,6 @@ const initSnapshot = async () => {
   // console.log("initSnap");
    const fireBaseCall = await fetch("/.netlify/functions/fetch-firebase")
    const firebaseData = await fireBaseCall.json()
-   console.log('data here',firebaseData)
    const fireBaseApp = initializeApp(firebaseData);
    db = getDatabase(fireBaseApp);
    userUID = await authInit();
