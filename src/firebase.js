@@ -68,6 +68,7 @@ const initFirebase = async (db,userUID) => {
   db = getDatabase(fireBaseApp);
   userUID = await authInit();
 };
+// initFirebase()
 
 // Initialize Firebase
 

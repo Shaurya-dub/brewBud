@@ -20,6 +20,7 @@ import {
   onValue,
 } from "./firebase.js";
 import { calcRoute, autoCompleteInput, googleUrlGenerator } from "./maps.js";
+// require("dotenv").config();
 
 // namespace variables
 const form = document.querySelector("form");
