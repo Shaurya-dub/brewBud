@@ -60,13 +60,13 @@ let fireBaseApp;
 // }
 
 
-const initFirebase = async (db,userUID) => {
+const initFirebase = async (db) => {
   const fireBaseCall = await fetch("/.netlify/functions/fetch-firebase");
   const firebaseData = await fireBaseCall.json();
   console.log("data here", firebaseData);
   const fireBaseApp = initializeApp(firebaseData);
   db = getDatabase(fireBaseApp);
-  userUID = await authInit();
+  // userUID = await authInit();
 };
 // initFirebase()
 
