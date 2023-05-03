@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- CSS & Google fonts -->
     <link rel="stylesheet" href="styles/sass/style.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Chathura:wght@300&family=Source+Sans+Pro:wght@600&display=swap"
@@ -17,14 +16,10 @@
     <title>Brewbud</title>
   </head>
   <body>
-    <!-- header starts here -->
     <header>
       <div class="headWrapper">
         <h1>Brewbud</h1>
         <form action="#">
-          <!-- <label for="location" class="sr-only"
-            >Please enter the location you want to search</label
-          > -->
           <input
             type="text"
             id="location"
@@ -32,9 +27,6 @@
             aria-label="Please enter the location you want to search"
             required
           />
-          <!-- <label for="select" class="sr-only"
-            >Please pick how you want your search results filtered</label
-          > -->
           <select
             name="select"
             id="select"
@@ -51,13 +43,17 @@
       </div>
     </header>
     <section class="loadingScreen">
-      <!-- <p>Loading Active</p> -->
       <div class="imgHolder">
         <img src="./media/glug.gif" alt="loading" />
       </div>
     </section>
 
-    <section class="errorScreen errorScreenHide" role="alert" aria-live="assertive" aria-hidden="true">
+    <section
+      class="errorScreen errorScreenHide"
+      role="alert"
+      aria-live="assertive"
+      aria-hidden="true"
+    >
       <div class="errorBox">
         <h2>Error Message</h2>
         <p>
@@ -67,7 +63,6 @@
         <button class="closeBtn" aria-label="Close error message">Close</button>
       </div>
     </section>
-    <!-- main starts here -->
     <main>
       <div class="wrapper">
         <section id="mapHolder" class="mapHolder">
@@ -105,7 +100,6 @@
           </div>
         </section>
         <section id="roadTripList" class="roadTripList roadTripHide">
-          <!-- look at later (add aria controls to buttons) -->
           <button
             class="breweryListCloseBtn"
             aria-controls="roadTripList"
@@ -154,12 +148,9 @@
         <ul class="breweryList"></ul>
       </div>
     </main>
-    <!-- Js  -->
-    <!-- <script type="module" src="app.js"></script> -->
 
     <script type="module" src="./dist/bundle.js"></script>
 
-    <!-- <script type="module" src="firebase.js"></script> -->
     <script
       src="https://kit.fontawesome.com/4129e3b163.js"
       crossorigin="anonymous"

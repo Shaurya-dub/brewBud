@@ -1,27 +1,6 @@
 import { Loader } from "@googlemaps/js-api-loader";
-// import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
-// use default algorithm and renderer
-// const fetchFunc = await fetch("/.netlify/functions/fetch-maps");
-// const data = await fetchFunc.json();
-// const loader = new Loader({
-//   apiKey: data.api_key,
-//   version: "weekly",
-//   libraries: ["places", "maps"],
-// });
 async function autoCompleteInput(...inputs) {
-  // let loader;
-  // fetch("/.netlify/functions/fetch-maps")
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     loader = new Loader({
-  //       apiKey: data.api_key,
-  //       version: "weekly",
-  //       libraries: ["places", "maps"],
-  //     });
-  //     // ...rest of your code
-  //   });
-  // const mapsCall = await fetch("/.netlify/functions/fetch-maps");
   const mapsData = await mapsCall.json();
   const loader = new Loader({
     apiKey: data.api_key,
@@ -50,7 +29,6 @@ function markerMaker(lat, lng, map, markerTitle, label) {
     label: label,
     optimized: false,
   });
-  console.log("passed label", label);
   const infoWindow = new google.maps.InfoWindow({
     content: markerTitle,
     ariaLabel: markerTitle,
@@ -76,8 +54,6 @@ async function calcRoute(
 
   var map = new google.maps.Map(document.getElementById("map"));
   directionsRenderer.setMap(map);
-
-  // look at later (error handling using status (?))
 
   const res = await directionsService.route({
     origin: startingPoint,
@@ -122,12 +98,9 @@ async function calcRoute(
     const marker = markerMaker(lat, lng, map, markerTitle, markerLabel);
     markers.push(marker);
   }
-  console.log("markers", markers);
   return res;
 }
 const googleUrlGenerator = (res, waypointAddressArr, startPoint, endPoint) => {
-  // look at later (this oculd be an object literal)
-  console.log("res", res, waypointAddressArr);
   let geoCodedArr = res.geocoded_waypoints;
   const startId = geoCodedArr.pop().place_id;
   const endId = geoCodedArr.shift().place_id;
@@ -148,13 +121,10 @@ const googleUrlGenerator = (res, waypointAddressArr, startPoint, endPoint) => {
     addressHolderArr.push(waypointAddressArr[waypointOrderIndex]);
     placeIdHolderArr.push(geoCodedArr[i].place_id);
   }
-  console.log("LINK SHIT HERE", addressHolderArr);
   const placeIds = placeIdHolderArr.join("|");
   const wayPointAddresses = encodeURIComponent(addressHolderArr.join("|"));
-  console.log("WAYPOINT ADDRESS", wayPointAddresses);
 
   googleUrl += `&waypoints=${wayPointAddresses}&waypoint_place_ids=${placeIds}`;
   return googleUrl;
 };
-// initMap();
 export { calcRoute, autoCompleteInput, googleUrlGenerator };
