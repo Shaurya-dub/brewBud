@@ -286,6 +286,7 @@ h1 {
   border-radius: 25px;
   text-align: center;
   flex-wrap: wrap;
+  background-color: black;
   color: white;
   animation: borderFlicker 7s infinite;
 }
@@ -400,8 +401,7 @@ h1 {
   opacity: 100%;
 }
 
-.breweryList li.fade:hover,
-.breweryList li.fade:focus {
+.breweryList li.fade:hover {
   border: 2px solid #fdfdfd;
 }
 
