@@ -406,9 +406,12 @@ h1 {
   border: 2px solid #fdfdfd;
 }
 
-.breweryList a, .buttonLinkHolder p {
+.breweryList a,
+.buttonLinkHolder p {
   color: #dba3d4;
   text-decoration: none;
+  display: inline;
+  margin: 0px;
 }
 
 .errorScreen {
