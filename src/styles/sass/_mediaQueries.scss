@@ -1,3 +1,10 @@
+@media (min-width: 1157px) {
+  .roadTripList.roadTripHide {
+    right:-22%;
+  }
+}
+
+
 @media (max-width: 950px) {
   .headWrapper form {
     display: flex;
@@ -5,6 +12,12 @@
   }
   .headWrapper form select {
     margin-top: 5%;
+  }
+}
+
+@media (max-width: 830px) {
+  .roadTripList {
+    width:40%;
   }
 }
 
@@ -20,6 +33,9 @@
   .headWrapper form button {
     padding: 6px 20px;
   }
+  .roadTripList {
+    width: 50%;
+  }
   .breweryList {
     width: 100%;
     flex-direction: column;
@@ -27,6 +43,9 @@
   }
   .breweryList li.fade {
     width: 100%;
+  }
+  .mapContentHolder {
+    width:100%;
   }
 }
 
@@ -43,4 +62,11 @@
   .headWrapper {
     width: 95%;
   }
+  .buttonLinkHolder {
+      display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+
+}
 }

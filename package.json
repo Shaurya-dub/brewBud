@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "netlify": "./node_modules/.bin/netlify",
-    "debug": "netlify dev --inspect"
+    "debug": "netlify dev --inspect",
+    "build": "webpack --mode=development"
   },
   "repository": {
     "type": "git",
@@ -18,9 +19,19 @@
   },
   "homepage": "https://github.com/Shaurya-dub/brewBud#readme",
   "devDependencies": {
-    "netlify-cli": "^6.14.19"
+    "dotenv": "^16.0.3",
+    "netlify-cli": "^6.14.19",
+    "webpack": "^5.81.0",
+    "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "axios": "^0.24.0"
+    "@googlemaps/js-api-loader": "^1.15.1",
+    "@googlemaps/markerclusterer": "^2.0.15",
+    "axios": "^0.24.0",
+    "cli": "^1.0.1",
+    "dotenv-webpack": "^8.0.1",
+    "firebase": "^9.16.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1"
   }
 }
