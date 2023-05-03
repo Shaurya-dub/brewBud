@@ -28,6 +28,7 @@ async function autoCompleteInput(...inputs) {
     version: "weekly",
     libraries: ["places", "maps"],
   });
+  console.log('changes')
   await loader.load().catch((e) => console.error("loading error", e));
   inputs.map((input) => {
     const autoComplete = new google.maps.places.Autocomplete(input);
