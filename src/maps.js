@@ -2,23 +2,26 @@ import { Loader } from "@googlemaps/js-api-loader";
 // import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 // use default algorithm and renderer
-let loader;
-fetch("/.netlify/functions/fetch-maps")
-  .then((response) => response.json())
-  .then((data) => {
-    loader = new Loader({
+async function autoCompleteInput(...inputs) {
+  // let loader;
+  // fetch("/.netlify/functions/fetch-maps")
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     loader = new Loader({
+  //       apiKey: data.api_key,
+  //       version: "weekly",
+  //       libraries: ["places", "maps"],
+  //     });
+  //     // ...rest of your code
+  //   });
+    const fetchFunc = await fetch("/.netlify/functions/fetch-maps")
+    const data = await fetchFunc.json()
+    const loader = new Loader({
       apiKey: data.api_key,
       version: "weekly",
       libraries: ["places", "maps"],
     });
-    // ...rest of your code
-  });
-async function autoCompleteInput(...inputs) {
-  // await google.maps.importLibrary("places");
-  // if (!storeVar) {
-  //   console.log('storeVar')
-  //   storeVar = await loader.load();
-  // }
+
 
   await loader.load().catch((e) => console.error("loading error", e));
   inputs.map((input) => {
