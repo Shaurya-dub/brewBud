@@ -2,6 +2,13 @@ import { Loader } from "@googlemaps/js-api-loader";
 // import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 // use default algorithm and renderer
+// const fetchFunc = await fetch("/.netlify/functions/fetch-maps");
+// const data = await fetchFunc.json();
+// const loader = new Loader({
+//   apiKey: data.api_key,
+//   version: "weekly",
+//   libraries: ["places", "maps"],
+// });
 async function autoCompleteInput(...inputs) {
   // let loader;
   // fetch("/.netlify/functions/fetch-maps")
@@ -14,15 +21,13 @@ async function autoCompleteInput(...inputs) {
   //     });
   //     // ...rest of your code
   //   });
-    const fetchFunc = await fetch("/.netlify/functions/fetch-maps")
-    const data = await fetchFunc.json()
-    const loader = new Loader({
-      apiKey: data.api_key,
-      version: "weekly",
-      libraries: ["places", "maps"],
-    });
-
-
+  const fetchFunc = await fetch("/.netlify/functions/fetch-maps");
+  const data = await fetchFunc.json();
+  const loader = new Loader({
+    apiKey: data.api_key,
+    version: "weekly",
+    libraries: ["places", "maps"],
+  });
   await loader.load().catch((e) => console.error("loading error", e));
   inputs.map((input) => {
     const autoComplete = new google.maps.places.Autocomplete(input);
@@ -35,6 +40,7 @@ async function autoCompleteInput(...inputs) {
     });
   });
 }
+
 function markerMaker(lat, lng, map, markerTitle, label) {
   const latLng = { lat: lat, lng: lng };
   const marker = new google.maps.Marker({

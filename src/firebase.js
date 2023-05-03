@@ -27,40 +27,47 @@ import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 // let firebaseConfig;
 let fireBaseApp;
 // let db
-const initFirebase = async () => {
-fetch("/.netlify/functions/fetch-firebase")
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    // firebaseConfig = data.config_object;
-    console.log("firebase data", data);
-  //   const {
-  //     apiKey,
-  //     authDomain,
-  //     databaseURL,
-  //     projectId,
-  //     storageBucket,
-  //     messagingSenderId,
-  //     appId,
-  //     measurementId,
-  //   } = data;
-  //  const firebaseConfig = {
-  //     apiKey: apiKey,
-  //     authDomain: authDomain,
-  //     databaseURL: databaseURL,
-  //     projectId: projectId,
-  //     storageBucket: storageBucket,
-  //     messagingSenderId: messagingSenderId,
-  //     appId: appId,
-  //     measurementId: measurementId,
-  //   };
-   return data
-  });
-}
+// const initFirebase = async () => {
+// fetch("/.netlify/functions/fetch-firebase")
+//   .then((response) => {
+//     return response.json();
+//   })
+//   .then((data) => {
+//     // firebaseConfig = data.config_object;
+//     console.log("firebase data", data);
+//   //   const {
+//   //     apiKey,
+//   //     authDomain,
+//   //     databaseURL,
+//   //     projectId,
+//   //     storageBucket,
+//   //     messagingSenderId,
+//   //     appId,
+//   //     measurementId,
+//   //   } = data;
+//   //  const firebaseConfig = {
+//   //     apiKey: apiKey,
+//   //     authDomain: authDomain,
+//   //     databaseURL: databaseURL,
+//   //     projectId: projectId,
+//   //     storageBucket: storageBucket,
+//   //     messagingSenderId: messagingSenderId,
+//   //     appId: appId,
+//   //     measurementId: measurementId,
+//   //   };
+//    return data
+//   });
+// }
 
 
-
+const initFirebase = async (db,userUID) => {
+  const fireBaseCall = await fetch("/.netlify/functions/fetch-firebase");
+  const firebaseData = await fireBaseCall.json();
+  console.log("data here", firebaseData);
+  const fireBaseApp = initializeApp(firebaseData);
+  db = getDatabase(fireBaseApp);
+  userUID = await authInit();
+};
 
 // Initialize Firebase
 
