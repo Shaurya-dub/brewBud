@@ -10,6 +10,7 @@ const app = {};
 import { update } from "firebase/database";
 import {
   fireBaseApp,
+  initFirebase,
   initializeApp,
   getDatabase,
   authInit,
