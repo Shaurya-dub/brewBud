@@ -133,7 +133,16 @@
   position: absolute;
   height: 100%;
   background-color: #232323fc;
-background-image: linear-gradient(to bottom, rgba(0,0,0,0.5), 100%, rgba(0,0,0,0)), url(../../media/neonBeer.jpg);  display: flex;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.5),
+      100%,
+      rgba(0, 0, 0, 0)
+    ),
+    url(../../media/neonBeer.jpg);
+  background-position: center;
+  background-size: cover;
+  display: flex;
   align-items: center;
   padding: 20px;
   border-radius: 25px;
