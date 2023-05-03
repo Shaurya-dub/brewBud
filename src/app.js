@@ -210,8 +210,11 @@ const displayFunction = (str) => {
   const state = nullChecker(str.state, "State info");
   const postalCode = nullChecker(str.postal_code, "Postal Code");
   const phone = nullChecker(str.phone, "Phone Number");
-  const site = nullChecker(str.website_url, "Website");
-  buttonLinkHolder.innerHTML = `<a href="${site}">${site}</a>`;
+  // const site = nullChecker(str.website_url, "Website");
+const site = str.website_url
+  ? `<a target="_blank" href="${str.website_url}">${str.website_url}</a>`
+  : `<p>Website unavailable</p>`;
+  buttonLinkHolder.innerHTML = site;
   let newBtn = document.createElement("button");
   const addBreweryBtn = addedBreweryChecker(
     str.id,
