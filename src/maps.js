@@ -21,10 +21,10 @@ async function autoCompleteInput(...inputs) {
   //     });
   //     // ...rest of your code
   //   });
-  const fetchFunc = await fetch("/.netlify/functions/fetch-maps");
-  const data = await fetchFunc.json();
+  const mapsCall = await fetch("/.netlify/functions/fetch-maps");
+  const mapsData = await mapsCall.json();
   const loader = new Loader({
-    apiKey: data.api_key,
+    apiKey: mapsData,
     version: "weekly",
     libraries: ["places", "maps"],
   });
