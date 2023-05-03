@@ -34,7 +34,7 @@ fetch("/.netlify/functions/fetch-firebase")
   })
   .then((data) => {
     // firebaseConfig = data.config_object;
-  //   console.log("firebase data", data);
+    console.log("firebase data", data);
   //   const {
   //     apiKey,
   //     authDomain,
