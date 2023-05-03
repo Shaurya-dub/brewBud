@@ -105,7 +105,7 @@
   background-color: #00000094;
   color: #dba3d4;
   border: #fdfdfd;
-  border-radius: 15px;
+  border-radius: 25px;
   width: 25%;
   min-width: 300px;
   flex-direction: column;
@@ -133,12 +133,15 @@
   // max-width:50px;
 }
 .startAndEndFormHolder {
-  position: absolute;
-  height: 100%;
-  background-color: #000000d5;
-  display: flex;
-  align-items: center;
-  padding: 10px;
+     position: absolute;
+    /* height: 100%; */
+    background-color: #232323fc;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-radius: 25px;
+    top: 0px;
+
 }
 .startAndEndFormHolder.startAndEndFormHolderHide,
 .errorScreen.errorScreenHide {

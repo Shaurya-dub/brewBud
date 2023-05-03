@@ -94,7 +94,7 @@ app.initSnapshot = async () => {
    db = getDatabase(fireBaseApp);
    userUID = await authInit();
   // await initFirebase(db, userUID);
-  // await autoCompleteInput(startingPoint, endingPoint);
+  await autoCompleteInput(startingPoint, endingPoint);
   // console.log("userId", userUID);
   await onValue(ref(db, userUID), (snapshot) => {
     setofBreweries = {};

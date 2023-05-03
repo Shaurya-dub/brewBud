@@ -440,7 +440,7 @@ h1 {
   background-color: rgba(0, 0, 0, 0.5803921569);
   color: #dba3d4;
   border: #fdfdfd;
-  border-radius: 15px;
+  border-radius: 25px;
   width: 25%;
   min-width: 300px;
   flex-direction: column;
@@ -469,11 +469,13 @@ h1 {
 
 .startAndEndFormHolder {
   position: absolute;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8352941176);
+  /* height: 100%; */
+  background-color: rgba(35, 35, 35, 0.9882352941);
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 20px;
+  border-radius: 25px;
+  top: 0px;
 }
 
 .startAndEndFormHolder.startAndEndFormHolderHide,
