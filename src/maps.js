@@ -1,7 +1,7 @@
 import { Loader } from "@googlemaps/js-api-loader";
 
 async function autoCompleteInput(...inputs) {
-  const mapsData = await mapsCall.json();
+  // const mapsData = await mapsCall.json();
   const loader = new Loader({
     apiKey: data.api_key,
     version: "weekly",
