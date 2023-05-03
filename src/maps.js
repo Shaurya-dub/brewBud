@@ -22,13 +22,12 @@ async function autoCompleteInput(...inputs) {
   //     // ...rest of your code
   //   });
   // const mapsCall = await fetch("/.netlify/functions/fetch-maps");
-  // const mapsData = await mapsCall.json();
+  const mapsData = await mapsCall.json();
   const loader = new Loader({
-    apiKey: process.env.MAPS_KEY,
+    apiKey: data.api_key,
     version: "weekly",
     libraries: ["places", "maps"],
   });
-  console.log('changes')
   await loader.load().catch((e) => console.error("loading error", e));
   inputs.map((input) => {
     const autoComplete = new google.maps.places.Autocomplete(input);
