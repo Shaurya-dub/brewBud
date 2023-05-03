@@ -2,15 +2,12 @@ import { Loader } from "@googlemaps/js-api-loader";
 
 async function autoCompleteInput(...inputs) {
   // const mapsData = await mapsCall.json();
-  // const loader = new Loader({
-  //   apiKey: data.api_key,
-  //   version: "weekly",
-  //   libraries: ["places", "maps"],
-  // });
-  // await loader.load()
-  await fetch("/.netlify/functions/fetch-maps").catch(
-    (e) => console.error("loading error", e)
-  );
+  const loader = new Loader({
+    apiKey: process.env.MAPS_KEY,
+    version: "weekly",
+    libraries: ["places", "maps"],
+  });
+  await loader.load().catch((e) => console.error("loading error", e));
   inputs.map((input) => {
     const autoComplete = new google.maps.places.Autocomplete(input);
     autoComplete.addListener("place_changed", () => {
