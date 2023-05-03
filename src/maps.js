@@ -30,9 +30,9 @@ async function autoCompleteInput(...inputs) {
   // });
   // console.log('changes')
   await fetch("/.netlify/functions/fetch-maps").catch((e) =>
-    console.error("loading error", e)
+    console.error("maps loading error", e)
   )
-  
+
   inputs.map((input) => {
     const autoComplete = new google.maps.places.Autocomplete(input);
     autoComplete.addListener("place_changed", () => {
