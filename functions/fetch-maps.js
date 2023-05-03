@@ -1,11 +1,13 @@
+import { Loader } from "@googlemaps/js-api-loader";
+
 const handler = async (event) => {
   const api_key = process.env.MAPS_KEY;
- const loader = new Loader({
-   apiKey: api_key,
-   version: "weekly",
-   libraries: ["places", "maps"],
- });
- const initLoad = await loader.load()
+  const loader = new Loader({
+    apiKey: api_key,
+    version: "weekly",
+    libraries: ["places", "maps"],
+  });
+  const initLoad = await loader.load();
   try {
     return {
       statusCode: 200,
